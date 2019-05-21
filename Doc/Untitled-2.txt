@@ -1,0 +1,184 @@
+/*
+ReserBAR® 
+    Usuario
+        nickname
+        nombre
+        email
+
+        Cliente 
+            apellido
+            fecha de nacimiento 
+            imagen
+
+        restaurante
+            categorias
+            RUT,
+            dirección, 
+            zona, 
+            teléfono,
+            imágeness
+
+    categoria 
+        nombre
+    
+    servicio
+        nombre
+        descripcion
+        precio
+        imagen
+    
+    reservas   
+        id
+        fecha emixion
+        horario
+        cantidad de personas 
+        pre orden
+        precio total
+        evalacion
+
+LISTADO
+    Cliente 
+        registro
+    restaurante
+        crear
+        listar
+        getrestaurante
+    servicio
+        crear
+        get
+    Reservar
+        listado
+        crear
+        eliminar
+        get
+    reservas
+        crear
+        listar
+        pagar
+*/
+
+CREATE TABLE Usuario (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` BOOLEAN DEFAULT 1 NOT NULL,
+    `nickname` VARCHAR(250) NOT NULL,
+    `pass` VARCHAR(250) NOT NULL,
+    `nombre` VARCHAR(250) NOT NULL,
+    `email` VARCHAR(250) NOT NULL,
+    CONSTRAINT UNIQUE (email),
+    CONSTRAINT UNIQUE (nickname),
+    PRIMARY KEY (id)
+);
+CREATE TABLE Cliente (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `apellido` VARCHAR(250) NOT NULL,
+    `fecha_nacimiento` date NOT NULL,
+    `imagen` VARCHAR(250),
+    `id_usuario` int NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+    PRIMARY KEY (id)
+);
+CREATE TABLE zona (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `nombre` VARCHAR(250) NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE restaurante (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `RUT` VARCHAR(250) NOT NULL,
+    `dirección` VARCHAR(250) NOT NULL,
+    `teléfono` VARCHAR(250) NOT NULL,
+    `id_usuario` int NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+    `id_zona` int,
+    FOREIGN KEY (id_zona) REFERENCES zona(id),
+    PRIMARY KEY (id)
+);
+CREATE TABLE restaurante_imagen (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `img` VARCHAR(250) NOT NULL,
+    `id_restaurante` int NOT NULL,
+    FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
+    PRIMARY KEY (id)
+);
+CREATE TABLE categoria (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `nombre` VARCHAR(250) NOT NULL,
+    PRIMARY KEY (id)
+);
+CREATE TABLE restaurante_categoria (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `id_categoria` int NOT NULL,
+    FOREIGN KEY (id_categoria) REFERENCES categoria(id),
+    `id_restaurante` int NOT NULL,
+    FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
+    CONSTRAINT UNIQUE (id_restaurante,id_categoria),
+    PRIMARY KEY (id)
+);
+CREATE TABLE servicio (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `nombre` VARCHAR(250) NOT NULL,
+    `descripcion` text NOT NULL,
+    `precio` DECIMAL NOT NULL,
+    `id_restaurante` int NOT NULL,
+    FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
+    `imagen` VARCHAR(250) NOT NULL,
+    CONSTRAINT UNIQUE (id_restaurante,nombre),
+    PRIMARY KEY (id)
+);
+CREATE TABLE reservas (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `is_active` boolean default true NOT NULL,
+    `fecha_emicion` date NOT NULL,
+    `fecha` date NOT NULL,
+    `hora` time NOT NULL,
+    `personas` int NOT NULL,
+    `precio` DECIMAL NOT NULL,
+    `evalacion` int NOT NULL,
+    `id_restaurante` int NOT NULL,
+    FOREIGN KEY (id_restaurante) REFERENCES restaurante(id),
+    `id_usuario` int NOT NULL,
+    FOREIGN KEY (id_usuario) REFERENCES Usuario(id),
+    PRIMARY KEY (id)
+);
+
+
+INSERT INTO Usuario ( `nickname` ,`pass` ,`nombre` ,`email`) VALUES 
+    ('u1','123','nombre 1','email1@gmail.com'),
+    ('u2','123','nombre 2','email2@gmail.com'),
+    ('r1','123','nombre 3','email3@gmail.com'),
+    ('r2','123','nombre 4','email4@gmail.com');
+INSERT INTO Cliente (`apellido`,`fecha_nacimiento`,`imagen`,`id_usuario`) VALUES 
+    ('apellido1','22/11/1994', 'imagen1', 1),
+    ('apellido3','22/11/1994', 'imagen2', 2);
+INSERT INTO zona (`nombre`) VALUES 
+    ('zona 1'),
+    ('zona 2'),
+    ('zona 3');
+
+INSERT INTO restaurante ( `RUT`,`dirección`,`teléfono`,`id_usuario`,`id_zona`) VALUES 
+    ('RUT1','dirección1','teléfono1',2,NULL),
+    ('RUT2','dirección2','teléfono2',3,NULL);
+INSERT INTO restaurante_imagen (`img`,`id_restaurante`) VALUES 
+    ('imagen1',3),
+    ('imagen2',3),
+    ('imagen3',3),
+    ('imagen4',4);
+INSERT INTO categoria (`nombre`) VALUES 
+    ('categoria1'),
+    ('categoria2'),
+    ('categoria3');
+INSERT INTO restaurante_categoria (`id_categoria`,`id_restaurante`) VALUES 
+    (2,3),
+    (1,3),
+    (2,4);
+INSERT INTO servicio (`nombre`,`descripcion`,`precio`,`id_restaurante`,`imagen`) VALUES 
+    ('nombre1','descripcion1',0,4,null);
+INSERT INTO reservas (`fecha_emicion`,`fecha`,`hora`,`personas`,`precio`,`evalacion`,`id_restaurante`,`id_usuario`) VALUES 
+    ('11/05/2019','13/05/2019','16:00', 5, 10,0,2,1) ;
