@@ -2,12 +2,12 @@
 
 class Model_usuario extends MY_Model
 {
-    public $table = 'Usuario'; // you MUST mention the table name
-	public $primary_key = 'id'; // you MUST mention the primary key
+    public $table = 'Usuario';
+	public $primary_key = 'id'; 
 	public $fillable = array(
 		"nickname","nombre","rut","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password"
-    ); // If you want, you can set an array with the fields that can be filled by insert/update
-	public $protected = array(); // ...Or you can set an array with the fields that cannot be filled by insert/update
+    ); 
+	public $protected = array();
     function __construct()
     {
         parent::__construct();
@@ -21,6 +21,15 @@ class Model_usuario extends MY_Model
             ->where('usuario.rut !=', null)
             ->group_by('usuario.id')
 			->get()->result_array();
+    }
+
+    public function getImgpefil($id)
+    {
+        $result = $this->_database->select("imagen.*")
+        ->from('imagen')
+        ->where('usuario_id', $id)
+        ->get()->result_array();
+        return $result;
     }
 
     

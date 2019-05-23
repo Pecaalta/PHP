@@ -11,7 +11,7 @@
             padding: 0 20px;
             background: #fff;
         }
-        .logo {
+        .logo-form {
             display: block;
             width: 200px;
             max-width: 100%;
@@ -109,7 +109,7 @@
 <div class="container">
     <form action="<?php echo base_url(); ?>restaurante/do_upload" method="post" class="box m-t-50px row z-depth-1">
         <div class="col-12 form-group">
-            <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
+            <img class="logo-form" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
             <h3>Restaurante</h3>
         </div>
         <div class="col-12">

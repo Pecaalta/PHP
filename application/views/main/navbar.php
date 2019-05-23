@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
@@ -43,8 +43,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php endforeach;?>
             </ul>
         </div>
-        
-            
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
+            </li>
+        </ul>
 
 
     </nav>

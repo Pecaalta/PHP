@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
@@ -18,6 +18,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             background: url("<?php echo base_url(); ?>/public/img/bg.jpg")
         }
         .login {
@@ -32,6 +33,17 @@
             align-items: center;
             flex-direction: column;
         }
+        .link {
+            font-weight: 900;
+            padding-bottom: 1rem;
+            display: inline-block;
+            color: #999;
+        }
+        footer{
+            border-top: solid 1px rgba(0,0,0,.08);
+            padding: .5rem 1rem 0 1rem;
+            text-align: center
+        }
         .logo {
             width: 200px;
             max-width: 100%;
@@ -40,6 +52,7 @@
         .m-b-15px {
             margin-bottom: 15px;
         }
+        var
     </style>
 </head>
 <body>
@@ -49,6 +62,11 @@
         <input class="form-control m-b-15px" name="password" type="password" placeholder="Password">
         <p><?php echo $msg; ?></p>
         <input class="btn btn-primary m-b-15px" type="submit" value="Iniciar sesion">
+        <footer>
+            <a class="link" href="<?php echo base_url(); ?>registro/restaurante">Registro Restaurante</a>
+            -
+            <a class="link" href="<?php echo base_url(); ?>registro/cliente">Registro Usuario    </a>
+        </footer>
     </form>
 </body>
 </html>

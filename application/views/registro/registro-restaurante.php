@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
@@ -109,7 +109,7 @@
 </head>
 <body>
 <div class="container">
-    <form action="<?php echo base_url(); ?>registro/post_restaurante" method="post" class="box m-t-50px row z-depth-1">
+    <form action="<?php echo base_url(); ?>registro/post_restaurante" method="POST" class="box m-t-50px row z-depth-1">
         <div class="col-12 form-group">
             <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
             <h3>Restaurante</h3>
@@ -128,6 +128,12 @@
         </div>
         <div class="col-4 form-group">
             <input class="form-control" name="zona" type="text" placeholder="Zona">
+        </div>
+        <div class="col-6 form-group">
+            <input class="form-control" type="password" name="password" placeholder="Contraseña">
+        </div>
+        <div class="col-6 form-group">
+            <input class="form-control" type="password" name="repassword" placeholder="Repeticion Contraseña">
         </div>
 
         <div class="col-6 form-group">

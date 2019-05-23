@@ -1,9 +1,8 @@
-<style>
-	.inline-block{
-		display: inline-block;
-	}
-	.margin-auto {
-		margin: auto;
+
+.inline-block{
+    display: inline-block;
+}
+.margin-auto {
+    margin: auto;
     display: block;
-	}
-</style>
+}

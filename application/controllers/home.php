@@ -14,7 +14,7 @@ class home extends CI_Controller {
 		$user = $this->session->userdata('user');
 		if (is_null($user)){
 			redirect('/login');
-		} else if (is_null($user->rut)) {
+		} else if (is_null($user["rut"])) {
 			$this->nav = array(
 				"nav" => array(
 					array( "href" => "home", "texto" => "Home", "class" => "active" ),
