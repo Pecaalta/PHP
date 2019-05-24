@@ -4,7 +4,7 @@
 	<div class="jumbotron" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
 		<div class="text-white text-center py-5 px-4 my-5">
 			<div>
-				<h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>As tu reserva !! </strong></h2>
+				<h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Has tu reserva</strong></h2>
 				<div class="md-form">
 					<input type="date" class="datepicker">
   				</div>
@@ -37,11 +37,11 @@
 		<div class="col-12">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination pagination-circle pg-blue justify-content-center">
-					<li class="page-item disabled"><a class="page-link">First</a></li>
+					<li class="page-item disabled"><a class="page-link">Primera</a></li>
 					<li class="page-item disabled">
 					<a class="page-link" aria-label="Previous">
 						<span aria-hidden="true">&laquo;</span>
-						<span class="sr-only">Previous</span>
+						<span class="sr-only">Anterior</span>
 					</a>
 					</li>
 					<li class="page-item active"><a class="page-link">1</a></li>
@@ -52,10 +52,10 @@
 					<li class="page-item">
 					<a class="page-link" aria-label="Next">
 						<span aria-hidden="true">&raquo;</span>
-						<span class="sr-only">Next</span>
+						<span class="sr-only">Siguiente</span>
 					</a>
 					</li>
-					<li class="page-item"><a class="page-link">Last</a></li>
+					<li class="page-item"><a class="page-link">Ultima</a></li>
 				</ul>
 			</nav>
 		</div>

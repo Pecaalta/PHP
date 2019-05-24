@@ -123,7 +123,7 @@
             <input class="form-control" type="password" name="password" placeholder="Contraseña">
         </div>
         <div class="col-6 form-group">
-            <input class="form-control" type="password" name="repassword" placeholder="Repeticion Contraseña">
+            <input class="form-control" type="password" name="repassword" placeholder="Repetir Contraseña">
         </div>
         <div class="col-12">
             <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">

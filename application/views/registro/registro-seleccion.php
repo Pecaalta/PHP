@@ -87,7 +87,7 @@
         <div class="col-12">
             <div class="  m-t-50px ">
                 <h1>Registrate para difrutar de nuestros servicios</h1>
-                <p>Elije el tipo de usaurio que te quede mejor y acompañanos</p>
+                <p>Elige el tipo de usuario que te quede mejor y acompañanos</p>
             </div>
         </div>
     </div>
