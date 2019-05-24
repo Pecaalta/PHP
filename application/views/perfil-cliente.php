@@ -1,10 +1,12 @@
 
-
+<style>
+    img {
+        max-width: 100%;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12 col-md-4">
-        <?php foreach ($img as $oImg):?>
-        <img src="./uploads/<?php echo $oImg['img'] ?>" alt="">
-        <?php endforeach;?>
+        <img src="../../uploads/<?php echo $img ?>" alt="">
     </div>
     <div class="col-sm-12 col-md-8">
         <ul>

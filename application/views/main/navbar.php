@@ -22,32 +22,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .logo {
             height: 15px;
         }
+        .w-36{
+            width: 36px;
+        }
+        .h-36{
+            height: 36px;
+        }
     </style>
 
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark primary-color mb-5">
-        <a class="navbar-brand" href="#"> 
-            <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav"
-        aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="basicExampleNav">
-            <ul class="navbar-nav mr-auto">
-                <?php foreach ($nav as $item):?>
-                    <li class="nav-item <?php echo $item['class']; ?>">
-                        <a class="nav-link" href="<?php echo base_url().$item['href']; ?>"><?php echo $item["texto"]; ?></a>
-                    </li>
-                <?php endforeach;?>
-            </ul>
-        </div>
-        <ul class="nav justify-content-end">
-            <li class="nav-item">
-                <a class="nav-link" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
+<nav class="navbar navbar-expand-lg navbar-dark primary-color">
+  <a class="navbar-brand" href="#">
+    <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
+    aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent-555">
+    <ul class="navbar-nav mr-auto">
+        <?php foreach ($nav as $item):?>
+            <li class="nav-item <?php echo $item['class']; ?>">
+                <a class="nav-link" href="<?php echo base_url().$item['href']; ?>"><?php echo $item["texto"]; ?></a>
             </li>
-        </ul>
-
-
-    </nav>
+        <?php endforeach;?>
+    </ul>
+    <ul class="navbar-nav ml-auto nav-flex-icons">
+        <?php if (!isset($id) && !isset($rut)):?>
+            <li class="nav-item">
+                <a class="nav-link" href="<?php echo base_url() ?>login">Entrar</a>
+            </li>
+        <?php endif;?>
+        <?php if (isset($id) || isset($rut)):?>
+            <li class="nav-item avatar dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                <img src="<?php echo base_url() . '/uploads/' . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
+                    alt="avatar image">
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
+                aria-labelledby="navbarDropdownMenuLink-55">
+                    <?php if (isset($id)):?>
+                        <a class="dropdown-item" href="<?php echo base_url().'usuario/perfil/'.$id; ?>">Mi Perfil</a>
+                    <?php endif;?>
+                    <?php if (isset($rut)):?>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/perfil/'.$rut; ?>">Mi local</a>
+                    <?php endif;?>
+                    <a class="dropdown-item" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
+                </div>
+            </li>
+        <?php endif;?>
+    </ul>
+  </div>
+</nav>

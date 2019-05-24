@@ -11,23 +11,38 @@ class home extends CI_Controller {
 		$this->load->library('session');	
 		$this->load->model('model_usuario');
 
-		$user = $this->session->userdata('user');
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		if (is_null($user)){
-			redirect('/login');
-		} else if (is_null($user["rut"])) {
 			$this->nav = array(
 				"nav" => array(
-					array( "href" => "home", "texto" => "Home", "class" => "active" ),
-					array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+					array( "href" => "", "texto" => "Home", "class" => "active" )
 				)
 			);
 		} else {
-			$this->nav = array(
-				"nav" => array(
-					array( "href" => "ss", "texto" => "sdssssad", "class" => "active" ),
-					array( "href" => "sdsad", "texto" => "sdsad", "class" => "" )
-				)
-			);
+			if (!is_null($user['id'])) {
+				$lImg = $this->model_usuario->getImgpefil($user["id"]);
+				if (!is_null($lImg) && sizeof($lImg) > 0){
+					$lImg = $lImg[0]["img"];
+				} else {
+					$lImg = null;
+				}
+				$this->nav = array(
+					"nav" => array(
+						array( "href" => "home", "texto" => "Home", "class" => "active" ),
+						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+					),
+					"img" => $lImg,
+					"id" => $user['id']
+				);
+			} else {
+				$this->nav = array(
+					"nav" => array(
+						array( "href" => "", "texto" => "Home", "class" => "active" )
+					),
+					"img" => null,
+					"rut" => $user['rut']
+				);
+			}
 		}
 
     }

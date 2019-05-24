@@ -13,23 +13,35 @@ class Registro extends CI_Controller {
 
 		$this->load->model('model_usuario');
 		$this->load->model('model_imagen');
-		$user = $this->session->userdata('user');
-		if (!is_null($user)){
-			redirect('/login');
-		} else if (is_null($user["rut"])) {
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		if (is_null($user)){
 			$this->nav = array(
 				"nav" => array(
-					array( "href" => "home", "texto" => "Home", "class" => "active" ),
-					array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+					array( "href" => "", "texto" => "Home", "class" => "active" )
 				)
 			);
 		} else {
-			$this->nav = array(
-				"nav" => array(
-					array( "href" => "ss", "texto" => "sdssssad", "class" => "active" ),
-					array( "href" => "sdsad", "texto" => "sdsad", "class" => "" )
-				)
-			);
+			if (is_null($user['rut'])) {
+				$this->nav = array(
+					"nav" => array(
+						array( "href" => "home", "texto" => "Home", "class" => "active" ),
+						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+					),
+					"img" => null,
+					"id" => $user['id']
+				);
+			} else {
+				$lImg = $this->model_usuario->getImgpefil($user["id"]);
+				$this->nav = array(
+					"nav" => array(
+						array( "href" => "", "texto" => "Home", "class" => "active" ),
+						array( "href" => "login", "texto" => "Entrar", "class" => "" ),
+						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+					),
+					"img" => $lImg[0]["img"],
+					"rut" => $user['rut']
+				);
+			}
 		}
 	}
 	
@@ -125,7 +137,7 @@ class Registro extends CI_Controller {
 			$data["id_img"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $data["id"]));
 		}
 		$this->session->set_userdata('user',$data);
-                redirect("/home");
+         redirect("/home");
 	}
 
 }
