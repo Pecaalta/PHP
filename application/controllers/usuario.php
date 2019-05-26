@@ -46,12 +46,12 @@ class usuario extends CI_Controller {
 			}
 		}
 	}
-	
+
 	/**
 	 * Pagina de seleccion en registro
 	 */
 	public function perfil($id){
-		
+
 		$user = $this->model_usuario->get($id);
 		$lImg = $this->model_usuario->getImgpefil($id);
 		if (!is_null($lImg) && sizeof($lImg) > 0){
@@ -67,5 +67,14 @@ class usuario extends CI_Controller {
 		$this->load->view('perfil-cliente', $data);
 	}
 
+	public function editar($id){
 
+		$user = $this->model_usuario->get($id);
+		
+		$data = array(
+			"user" => json_decode(json_encode($user), true),
+		);
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('editar-cliente', $data);
+	}
 }

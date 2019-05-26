@@ -53,7 +53,7 @@
                 <img width="210px" height="210px;" src="<?php echo base_url() . '/uploads/' . $img; ?>" class="rounded-circle z-depth-0" />
                 <div id="divedit">
                     <a>
-                        <i id="editar" class="fas fa-pencil-alt"></i> Editar Perfil
+                        <i id="editar" class="fas fa-pencil-alt" href="<?php echo base_url().'editar/'.$id; ?>"></i> Editar Perfil
                     </a>
                 </div>
             </div>
