@@ -4,7 +4,7 @@
 	<div class="jumbotron" style="background-image: url(https://mdbootstrap.com/img/Photos/Others/gradient1.jpg);">
 		<div class="text-white text-center py-5 px-4 my-5">
 			<div>
-				<h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Has tu reserva</strong></h2>
+				<h2 class="card-title h1-responsive pt-3 mb-5 font-bold"><strong>Haz tu reserva</strong></h2>
 				<div class="md-form">
 					<input type="date" class="datepicker">
   				</div>
@@ -29,7 +29,7 @@
 					<?php endforeach;?>
 				</div>
 				<h3 class="text-center font-weight-bold mb-3"><strong><?php echo $item["nombre"] ?></strong></h3>
-				<a class="btn btn-success btn-md margin-auto">Read more</a>
+				<a class="btn btn-success btn-md margin-auto">Leer mas</a>
 			</div>
 		<?php endforeach;?>
 	</div>
