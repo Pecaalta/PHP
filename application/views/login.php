@@ -52,7 +52,7 @@
         .m-b-15px {
             margin-bottom: 15px;
         }
-        var
+        
     </style>
 </head>
 <body>
