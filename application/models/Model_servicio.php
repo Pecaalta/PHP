@@ -14,11 +14,9 @@ class Model_servicio extends MY_Model
     }
 
     public function serviciosDisponibles($id){
-        $result = $this->_database->select("servicio.*")
-        ->from('servicio')
-        ->where('id_restaurante', $id)
-        ->get()->result_array();
-        return $result;
+        $sql = "select * from servicio where id_restaurante = ?";
+        $query = $this->_database->query($sql, array($id));
+        return $query;
     }
     
 }

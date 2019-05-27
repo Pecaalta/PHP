@@ -10,7 +10,10 @@
     .carousel-inner img {
       width: 100%;
       height: 100%;
-  }
+    }
+    .servicios{
+        padding: 10px;
+    }
 </style>
 
 <div class="container contenedor">
@@ -34,8 +37,8 @@
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div id="home" class="container tab-pane active"><br>
-      <p>Descripcion, vamos a tener que agregar otro campo</p>
+    <div id="home" class="container tab-pane active text-center servicios"><br>
+      <p><strong><?php echo $user["descripcionRestaurante"] ?></strong></p>
     </div>
     <div id="menu1" class="container tab-pane fade"><br>
       <div class="container">
@@ -57,11 +60,34 @@
     </div>
     <div id="menu2" class="container tab-pane fade"><br>
       <h3>Nuestras comidas disponibles:</h3>
-      <ul>
-        <?php foreach($servicio as $item):?>
-          <li><?php echo $item ?></li>
+      <div class="accordion md-accordion servicios" id="accordionEx" role="tablist" aria-multiselectable="true">
+        <?php foreach($servicio->result() as $item):?>
+            <div class="card">
+
+                <div class="card-header" role="tab" id="headingOne1">
+                    <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne<?php echo $item->nombre ?>" aria-expanded="true" aria-controls="collapseOne1">
+                        <h5 class="mb-0"><?php echo $item->nombre; ?> <i class="fas fa-angle-down rotate-icon"></i></h5>
+                    </a>
+                </div>
+
+                <div id="collapseOne<?php echo $item->nombre ?>" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                    <div class="card-body">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="md-v-line"></div><i class="fas fa-info mr-4 pr-3"></i>
+                                <?php echo $item->descripcion; ?>
+                            </li>
+                            <li class="list-group-item">
+                                <div class="md-v-line"></div><i class="fas fa-dollar-sign mr-4 pr-3"></i>
+                                <?php echo $item->precio; ?>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
         <?php endforeach;?>
-      </ul>
+      </div>
     </div>
     <div id="menu3" class="container tab-pane fade"><br>
       <h3>Menu 2</h3>

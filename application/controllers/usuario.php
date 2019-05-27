@@ -88,7 +88,7 @@ class usuario extends CI_Controller {
 
 		$user = $this->model_usuario->get($id);
 		$lImg = $this->model_usuario->getImgpefil($id);
-		$servicios = $this->model_servicio->get($id);
+		$servicios = $this->model_servicio->serviciosDisponibles($id);
 		if (!is_null($lImg) && sizeof($lImg) > 0){
 			$lImg = $lImg[0]["img"];
 		} else {
@@ -97,7 +97,7 @@ class usuario extends CI_Controller {
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
 			"img" => $lImg,
-			"servicio" => json_decode(json_encode($servicios), true)
+			"servicio" => $servicios
 		);
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('restaurante/restaurante-index', $data);

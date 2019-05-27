@@ -83,7 +83,8 @@ CREATE TABLE `usuario` (
   `apellido` varchar(100) DEFAULT NULL,
   `fecha_de_nacimiento` date DEFAULT NULL,
   `end_perfil` tinyint(1) DEFAULT NULL,
-  `created_at` date DEFAULT NULL
+  `created_at` date DEFAULT NULL,
+  `descripcionRestaurante` varchar(250) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `zona` (
