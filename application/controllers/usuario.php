@@ -12,6 +12,7 @@ class usuario extends CI_Controller {
 
 		$this->load->model('model_usuario');
 		$this->load->model('model_imagen');
+		$this->load->model('model_servicio');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		if (is_null($user)){
 			$this->nav = array(
@@ -41,6 +42,7 @@ class usuario extends CI_Controller {
 						array( "href" => "", "texto" => "Home", "class" => "active" )
 					),
 					"img" => null,
+					"id" => $user['id'],
 					"rut" => $user['rut']
 				);
 			}
@@ -76,5 +78,28 @@ class usuario extends CI_Controller {
 		);
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('editar-cliente', $data);
+	}
+
+
+	/**
+	 * Pagina de restaurante -
+	 */
+	public function restaurante($id){
+
+		$user = $this->model_usuario->get($id);
+		$lImg = $this->model_usuario->getImgpefil($id);
+		$servicios = $this->model_servicio->get($id);
+		if (!is_null($lImg) && sizeof($lImg) > 0){
+			$lImg = $lImg[0]["img"];
+		} else {
+			$lImg = null;
+		}
+		$data = array(
+			"user" => json_decode(json_encode($user), true),
+			"img" => $lImg,
+			"servicio" => json_decode(json_encode($servicios), true)
+		);
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('restaurante/restaurante-index', $data);
 	}
 }

@@ -26,14 +26,27 @@ class home extends CI_Controller {
 				} else {
 					$lImg = null;
 				}
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "home", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => $lImg,
-					"id" => $user['id']
-				);
+				if(is_null($user['rut'])){
+					$this->nav = array(
+						"nav" => array(
+							array( "href" => "home", "texto" => "Home", "class" => "active" ),
+							array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+						),
+						"img" => $lImg,
+						"id" => $user['id']
+					);
+				}
+				else{
+					$this->nav = array(
+						"nav" => array(
+							array( "href" => "home", "texto" => "Home", "class" => "active" ),
+							array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
+						),
+						"img" => $lImg,
+						"id" => $user['id'],
+						"rut" => $user['rut']
+					);
+				}
 			} else {
 				$this->nav = array(
 					"nav" => array(
