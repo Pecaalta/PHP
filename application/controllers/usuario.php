@@ -102,4 +102,9 @@ class usuario extends CI_Controller {
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('restaurante/restaurante-index', $data);
 	}
+
+	public function editarRestaurante($id){
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('restaurante/restaurante-editar');
+	}
 }

@@ -7,33 +7,34 @@
         border-radius: 3px;
         margin-top: 15px;
     }
-    .carousel-inner img {
-      width: 100%;
-      height: 100%;
-    }
     .servicios{
         padding: 10px;
     }
+    .ancho{
+        width: 70%;
+    }
 </style>
 
-<div class="container contenedor">
+<div class="container contenedor text-center">
   <h1 class="display-4"><?php echo $user["nickname"]?></h1>
   <br>
   <!-- Nav pills -->
-  <ul class="nav nav-pills" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link active" data-toggle="pill" href="#home">Descripción</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="pill" href="#menu1">Imágenes</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="pill" href="#menu2">Servicios</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="pill" href="#menu3">Reserva</a>
-    </li>
-  </ul>
+  <div class="center-block d-flex align-items-center justify-content-center">
+    <ul class="nav nav-pills" role="tablist">
+        <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" href="#home">Descripción</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#menu1">Imágenes</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#menu2">Servicios</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#menu3">Reserva</a>
+        </li>
+    </ul>
+  </div>
 
   <!-- Tab panes -->
   <div class="tab-content">
@@ -58,7 +59,7 @@
 
         </div>
     </div>
-    <div id="menu2" class="container tab-pane fade"><br>
+    <div id="menu2" class="container tab-pane fade ancho"><br>
       <h3>Nuestras comidas disponibles:</h3>
       <div class="accordion md-accordion servicios" id="accordionEx" role="tablist" aria-multiselectable="true">
         <?php foreach($servicio->result() as $item):?>
