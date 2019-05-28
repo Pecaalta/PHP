@@ -26,7 +26,5 @@ class Cliente extends CI_Controller {
 		} else {
 			$this->load->view('perfil-cliente', array("msg" => $msg));
 		}
-	}
-
-	
+	}	
 }

@@ -52,7 +52,7 @@
             <div class="avatar mx-auto white">
                 <img width="210px" height="210px;" src="<?php echo base_url() . '/uploads/' . $img; ?>" class="rounded-circle z-depth-0" />
                 <div id="divedit">
-                    <a>
+                    <a href=<?php echo base_url().'usuario/editar/'.$id; ?>>
                         <i id="editar" class="fas fa-pencil-alt" href="<?php echo base_url().'editar/'.$id; ?>"></i> Editar Perfil
                     </a>
                 </div>
