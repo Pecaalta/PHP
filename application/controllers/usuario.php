@@ -72,7 +72,7 @@ class usuario extends CI_Controller {
 	public function editar($id){
 
 		$user = $this->model_usuario->get($id);
-		
+
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
 		);
@@ -80,8 +80,17 @@ class usuario extends CI_Controller {
 		$this->load->view('editar-cliente', $data);
 	}
 
+	public function cambio_password($id){
+
+		$user = $this->model_usuario->get($id);
+
+		$data = array(
+			"user" => json_decode(json_encode($user), true),
+		);
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('editar-password', $data);
+	}
 
 
 
-	
 }

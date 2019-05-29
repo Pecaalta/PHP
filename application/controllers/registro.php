@@ -149,7 +149,6 @@ public function editar_cliente(){
 		"telefono" => $this->input->post('telefono'),
 		"email" => $this->input->post('email'),
 		"apellido" => $this->input->post('apellido'),
-		"password" => $this->input->post('password'),
 		"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento')
 	);
 	$data["id"] = $this->model_usuario->update($data);
@@ -165,6 +164,16 @@ public function editar_cliente(){
 	}
 	$this->session->set_userdata('user',$data);
 			 redirect("/home");
+}
+
+public function editar_password_cliente(){
+	$data = array(
+		"password" => $this->input->post('password')
+	);
+	$data["id"] = $this->model_usuario->update($data);
+
+	$this->session->set_userdata('user',$data);
+	redirect("/home");
 }
 
 }

@@ -56,6 +56,11 @@
                         <i id="editar" class="fas fa-pencil-alt" href="<?php echo base_url().'editar/'.$id; ?>"></i> Editar Perfil
                     </a>
                 </div>
+                <div id="diveditpass">
+                    <a href=<?php echo base_url().'usuario/cambio_password/'.$id; ?>>
+                        <i id="editarpass" class="fas fa-pencil-alt" href="<?php echo base_url().'editar_password/'.$id; ?>"></i> Cambiar contraseña
+                    </a>
+                </div>
             </div>
             <div class="card-body">
                 <h5><i class="fas fa-user"></i></h5>
