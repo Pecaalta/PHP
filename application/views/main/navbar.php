@@ -63,12 +63,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
                 aria-labelledby="navbarDropdownMenuLink-55">
-                    <?php if (isset($id)):?>
+                    <?php if (isset($id) and !isset($rut)):?>
                         <a class="dropdown-item" href="<?php echo base_url().'usuario/perfil/'.$id; ?>">Mi Perfil</a>
                     <?php endif;?>
                     <?php if (isset($rut)):?>
-                        <a class="dropdown-item" href="<?php echo base_url().'usuario/restaurante/'.$id; ?>">Mi local</a>
-                        <a class="dropdown-item" href="<?php echo base_url().'usuario/editarRestaurante/'.$id; ?>">Editar mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/principal/'.$id; ?>">Mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/editar/'.$id; ?>">Editar mi local</a>
                     <?php endif;?>
                     <a class="dropdown-item" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
                 </div>
