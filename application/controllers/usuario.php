@@ -81,30 +81,7 @@ class usuario extends CI_Controller {
 	}
 
 
-	/**
-	 * Pagina de restaurante -
-	 */
-	public function restaurante($id){
 
-		$user = $this->model_usuario->get($id);
-		$lImg = $this->model_usuario->getImgpefil($id);
-		$servicios = $this->model_servicio->serviciosDisponibles($id);
-		if (!is_null($lImg) && sizeof($lImg) > 0){
-			$lImg = $lImg[0]["img"];
-		} else {
-			$lImg = null;
-		}
-		$data = array(
-			"user" => json_decode(json_encode($user), true),
-			"img" => $lImg,
-			"servicio" => $servicios
-		);
-		$this->load->view('main/navbar', $this->nav);
-		$this->load->view('restaurante/restaurante-index', $data);
-	}
 
-	public function editarRestaurante($id){
-		$this->load->view('main/navbar', $this->nav);
-		$this->load->view('restaurante/restaurante-editar');
-	}
+	
 }

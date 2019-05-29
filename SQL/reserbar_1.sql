@@ -35,16 +35,6 @@ CREATE TABLE `reservas` (
   `id_usuario` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE `restaurante` (
-  `id` int(11) NOT NULL,
-  `is_active` tinyint(1) NOT NULL DEFAULT '1',
-  `RUT` varchar(250) NOT NULL,
-  `dirección` varchar(250) NOT NULL,
-  `teléfono` varchar(250) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  `id_zona` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 CREATE TABLE `restaurante_categoria` (
   `id` int(11) NOT NULL,
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
@@ -106,11 +96,6 @@ ALTER TABLE `reservas`
   ADD KEY `id_restaurante` (`id_restaurante`),
   ADD KEY `id_usuario` (`id_usuario`);
 
-ALTER TABLE `restaurante`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `id_usuario` (`id_usuario`),
-  ADD KEY `id_zona` (`id_zona`);
-
 ALTER TABLE `restaurante_categoria`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id_restaurante` (`id_restaurante`,`id_categoria`),
@@ -140,9 +125,6 @@ ALTER TABLE `imagen`
 ALTER TABLE `reservas`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `restaurante`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
 ALTER TABLE `restaurante_categoria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
@@ -160,19 +142,15 @@ ALTER TABLE `zona`
 
 
 ALTER TABLE `reservas`
-  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id`),
+  ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
-
-ALTER TABLE `restaurante`
-  ADD CONSTRAINT `restaurante_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`),
-  ADD CONSTRAINT `restaurante_ibfk_2` FOREIGN KEY (`id_zona`) REFERENCES `zona` (`id`);
 
 ALTER TABLE `restaurante_categoria`
   ADD CONSTRAINT `restaurante_categoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`),
-  ADD CONSTRAINT `restaurante_categoria_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id`);
+  ADD CONSTRAINT `restaurante_categoria_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 
 ALTER TABLE `restaurante_imagen`
-  ADD CONSTRAINT `restaurante_imagen_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `restaurante` (`id`);
+  ADD CONSTRAINT `restaurante_imagen_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 
 ALTER TABLE `servicio`
   ADD CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
