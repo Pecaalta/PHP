@@ -125,7 +125,7 @@ class Registro extends CI_Controller {
 			"end_perfil" => false,
 			"is_active" => false
 		);
-		$data["id"] = $this->model_usuario->update($data);
+		$data["id"] = $this->model_usuario->insert($data);
 
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
