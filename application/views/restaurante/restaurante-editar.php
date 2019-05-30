@@ -13,5 +13,9 @@
 </style>
 
 <div class="container contenedor text-center">
-
+    <ul>
+        <li>
+            <a href="<?php echo base_url().'restaurante/servicios/'.$id; ?>">Gestionar servicios</a>
+        </li>
+    </ul>
 </div>

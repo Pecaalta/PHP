@@ -1,15 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Restaurante extends CI_Controller {
+class Servicio extends CI_Controller {
+	
+	private $nav;
 
-    private $nav;
-
-	public function __construct(){
+    public function __construct(){
 		parent::__construct();
 		$this->load->library('session');
-		$this->load->helper('url');
 		$this->load->library('form_validation');
+		$this->load->helper('url');
+		$this->load->helper('form');
 
 		$this->load->model('model_usuario');
 		$this->load->model('model_imagen');
@@ -48,9 +49,9 @@ class Restaurante extends CI_Controller {
 				);
 			}
 		}
-	}
+    }
 
-	private function controlAcceso($id){
+    private function controlAcceso($id){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		if (is_null($user) or $user['id'] != $id or is_null($user['rut'])) {
 			$this->load->view('main/navbar', $this->nav);
@@ -60,55 +61,7 @@ class Restaurante extends CI_Controller {
 		return true;
 	}
 
-	private function infoGeneral($id){
-		$user = $this->model_usuario->get($id);
-		$lImg = $this->model_usuario->getImgpefil($id);
-		$servicios = $this->model_servicio->serviciosDisponibles($id);
-		if (!is_null($lImg) && sizeof($lImg) > 0){
-			$lImg = $lImg[0]["img"];
-		} else {
-			$lImg = null;
-		}
-		$data = array(
-			"user" => json_decode(json_encode($user), true),
-			"img" => $lImg,
-			"servicio" => $servicios
-		);
-		return $data;
-	}
-
-
-	/**
-	 * Pagina de restaurante -
-	 */
-	public function principal($id){
-
-		$data = $this->infoGeneral($id);
-		$this->load->view('main/navbar', $this->nav);
-		$this->load->view('restaurante/restaurante-index', $data);
-	}
-
-	public function editar($id){
-
-		if($this->controlAcceso($id)){
-			$data = $this->infoGeneral($id);
-			$this->load->view('main/navbar', $this->nav);
-			$this->load->view('restaurante/restaurante-editar', $data);
-		}
-	}
-
-	public function servicios($id){
-		if($this->controlAcceso($id)){
-			$data = $this->infoGeneral($id);
-			$this->load->view('main/navbar', $this->nav);
-			$this->load->view('restaurante/restaurante-servicios',$data);
-		}
-		
-	}
-
-
-
-	public function nuevoServicio(){
+    public function nuevoServicio(){
         $data = array(
 			"nombre" => $this->input->post('nombre'),
             "is_active" => true,
@@ -117,10 +70,42 @@ class Restaurante extends CI_Controller {
             "id_restaurante" => 2,
             "imagen" => null
 		);    
+		
+		$config = array(
+			array(
+					'field' => $data["nombre"],
+					'label' => 'Nombre de servicio',
+					'rules' => 'required | alpha_numeric_spaces',
+					'errors' => array(
+						'required' => 'El %s es inválido.'
+						)
+			),
+			array(
+					'field' => $data["descripcion"],
+					'label' => 'Descripcion del servicio',
+					'rules' => 'required | alpha_numeric_spaces',
+					'errors' => array(
+							'required' => 'La %s es inválida.'
+					),
+			),
+			array(
+					'field' => $data["precio"],
+					'label' => 'Precio del servicio',
+					'rules' => 'required | decimal | less_than[0]'
+			)
+		);
+	
+		$this->form_validation->set_rules($config);
 
-		$data["id"] = $this->model_servicio->insertar($data);
-		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		redirect("/restaurante/servicios/".$user["id"]);
+		if ($this->form_validation->run() === FALSE) {
+			$user = json_decode(json_encode($this->session->userdata('user')), true);
+			$this->load->view('main/navbar', $this->nav);
+			$this->load->view('/restaurante/servicios'.$user["id"]);
+		} else {
+			$data["id"] = $this->model_servicio->insertar($data);
+
+        	redirect("/restaurante/servicios");
+		}
 	}
 
 }

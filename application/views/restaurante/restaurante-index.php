@@ -66,12 +66,12 @@
             <div class="card">
 
                 <div class="card-header" role="tab" id="headingOne1">
-                    <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne<?php echo $item->nombre ?>" aria-expanded="true" aria-controls="collapseOne1">
+                    <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne<?php echo $item->id ?>" aria-expanded="true" aria-controls="collapseOne1">
                         <h5 class="mb-0"><?php echo $item->nombre; ?> <i class="fas fa-angle-down rotate-icon"></i></h5>
                     </a>
                 </div>
 
-                <div id="collapseOne<?php echo $item->nombre ?>" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                <div id="collapseOne<?php echo $item->id ?>" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
                     <div class="card-body">
                         <ul class="list-group">
                             <li class="list-group-item">

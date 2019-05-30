@@ -18,5 +18,10 @@ class Model_servicio extends MY_Model
         $query = $this->_database->query($sql, array($id));
         return $query;
     }
-    
+
+    public function insertar($data){
+        $sql = "INSERT INTO `Servicio`(`nombre`, `is_active`, `descripcion`, `precio`, `id_restaurante`, `imagen`) VALUES (?,?,?,?,?,?)";
+        $query = $this->_database->query($sql, array($data['nombre'],$data['is_active'],$data['descripcion'],$data['precio'],$data['id_restaurante'],$data['imagen']));
+        //return $query;
+    }
 }
