@@ -166,7 +166,12 @@ public function editar_cliente(){
 	}else{
 		$data["id_img"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $data["id"]));
 	}
-	$this->session->set_userdata('user',$data);
+	$this->session->unset_userdata('user');
+	$usuario = $this->model_usuario
+			->where('nickname', $user['nickname'])
+			->where('password', $user['password'])
+			->get();
+	$this->session->set_userdata('user',$usuario);
 			 redirect("/home");
 }
 
@@ -180,7 +185,12 @@ public function editar_pass(){
 	$this->model_usuario->where('id', $user['id']);
 	$data["id"] = $this->model_usuario->update($data);
 
-	$this->session->set_userdata('user',$data);
+	$this->session->unset_userdata('user');
+	$usuario = $this->model_usuario
+			->where('nickname', $user['nickname'])
+			->where('password', $this->input->post('password'))
+			->get();
+	$this->session->set_userdata('user',$usuario);
 			 redirect("/home");
 }
 
