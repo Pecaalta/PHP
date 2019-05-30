@@ -141,6 +141,9 @@ class Registro extends CI_Controller {
 	}
 
 public function editar_cliente(){
+
+	$user = json_decode(json_encode($this->session->userdata('user')), true);
+
 	$data = array(
 		"nombre" => $this->input->post('nombre'),
 		"rut" => $this->input->post('rut'),
@@ -151,6 +154,7 @@ public function editar_cliente(){
 		"apellido" => $this->input->post('apellido'),
 		"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento')
 	);
+	$this->model_usuario->where('id', $user['id']);
 	$data["id"] = $this->model_usuario->update($data);
 
 	$config['upload_path'] = './uploads/';
@@ -166,14 +170,18 @@ public function editar_cliente(){
 			 redirect("/home");
 }
 
-public function editar_password_cliente(){
+public function editar_pass(){
+
+	$user = json_decode(json_encode($this->session->userdata('user')), true);
+
 	$data = array(
-		"password" => $this->input->post('password')
+		"password" => $this->input->post('password'),
 	);
+	$this->model_usuario->where('id', $user['id']);
 	$data["id"] = $this->model_usuario->update($data);
 
 	$this->session->set_userdata('user',$data);
-	redirect("/home");
+			 redirect("/home");
 }
 
 }

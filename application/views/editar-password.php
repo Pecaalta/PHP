@@ -113,7 +113,7 @@
 
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>registro/editar_password_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+        <form action="<?php echo base_url(); ?>registro/editar_pass" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
                 <h3>Modificar contraseña</h3>
