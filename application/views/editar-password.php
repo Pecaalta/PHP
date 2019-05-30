@@ -113,40 +113,25 @@
 
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>registro/editar_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+        <form action="<?php echo base_url(); ?>registro/editar_pass" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
-                <h3>Modificar usuario</h3>
+                <h3>Modificar contraseña</h3>
             </div>
-            <div class="col-4 form-group">
-                <input class="form-control" type="text" name="nickname" value="<?php echo $user["nickname"] ?>" placeholder="Nickname" disabled>
+            <div class="col-12 form-group">
+                <input class="form-control" type="password" name="oldpassword" placeholder="Contraseña actual">
             </div>
-            <div class="col-4 form-group">
-                <input class="form-control" type="text" name="nombre" value="<?php echo $user["nombre"] ?>" placeholder="Nombre">
+            <div class="col-12 form-group">
+                <input class="form-control" type="password" name="password" placeholder="Nueva contraseña">
             </div>
-            <div class="col-4 form-group">
-                <input class="form-control" type="text" name="apellido" value="<?php echo $user["apellido"] ?>" placeholder="Apellido">
-            </div>
-            <div class="col-6 form-group">
-                <input class="form-control" type="date" name="fecha_de_nacimiento" value="<?php echo $user["fecha_de_nacimiento"] ?>" placeholder="Fecha de nacimiento">
-            </div>
-            <div class="col-6 form-group">
-                <input class="form-control" type="text" name="email" value="<?php echo $user["email"] ?>" placeholder="Email">
-            </div>
-            <div class="col-12">
-                <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
-                    <div id="drag_upload_file">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)">
-                        <img id="output" src="" alt="">
-                    </div>
-                </div>
+            <div class="col-12 form-group">
+                <input class="form-control" type="password" name="repassword" placeholder="Repetir contraseña">
             </div>
            <!-- <div class="col-12">
                 <p class="error"><?php echo $msg; ?></p>
             </div> -->
             <div class="col-12">
-                <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Editar perfil">
+                <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Guardar cambios">
             </div>
         </form>
 </body>

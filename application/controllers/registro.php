@@ -141,6 +141,9 @@ class Registro extends CI_Controller {
 	}
 
 public function editar_cliente(){
+
+	$user = json_decode(json_encode($this->session->userdata('user')), true);
+
 	$data = array(
 		"nombre" => $this->input->post('nombre'),
 		"rut" => $this->input->post('rut'),
@@ -149,9 +152,9 @@ public function editar_cliente(){
 		"telefono" => $this->input->post('telefono'),
 		"email" => $this->input->post('email'),
 		"apellido" => $this->input->post('apellido'),
-		"password" => $this->input->post('password'),
 		"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento')
 	);
+	$this->model_usuario->where('id', $user['id']);
 	$data["id"] = $this->model_usuario->update($data);
 
 	$config['upload_path'] = './uploads/';
@@ -163,7 +166,31 @@ public function editar_cliente(){
 	}else{
 		$data["id_img"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $data["id"]));
 	}
-	$this->session->set_userdata('user',$data);
+	$this->session->unset_userdata('user');
+	$usuario = $this->model_usuario
+			->where('nickname', $user['nickname'])
+			->where('password', $user['password'])
+			->get();
+	$this->session->set_userdata('user',$usuario);
+			 redirect("/home");
+}
+
+public function editar_pass(){
+
+	$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+	$data = array(
+		"password" => $this->input->post('password'),
+	);
+	$this->model_usuario->where('id', $user['id']);
+	$data["id"] = $this->model_usuario->update($data);
+
+	$this->session->unset_userdata('user');
+	$usuario = $this->model_usuario
+			->where('nickname', $user['nickname'])
+			->where('password', $this->input->post('password'))
+			->get();
+	$this->session->set_userdata('user',$usuario);
 			 redirect("/home");
 }
 

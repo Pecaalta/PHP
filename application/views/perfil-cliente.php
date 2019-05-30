@@ -29,21 +29,43 @@
         font-weight: bold;
     }
 
-    #editar {
+    #editar,
+    #editarpass {
         font-size: 1em;
     }
 
     #divedit {
-        width: 60%;
+        width: 38%;
         margin: auto;
         margin-top: 2px;
         background-color: #ebecf0;
         font-weight: 700;
         border-radius: 3px;
+        font-size: 12px;
     }
 
-    .my-5{
+    #diveditpass {
+        width: 59%;
+        margin: auto;
+        margin-top: 2px;
+        background-color: #ebecf0;
+        font-weight: 700;
+        border-radius: 3px;
+        font-size: 12px;
+    }
+
+    a{
+        color: black;
+    }
+
+    .my-5 {
         margin-top: 15px !important;
+    }
+
+    #botones {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 </style>
 <section class="text-center my-5 p-1">
@@ -51,10 +73,17 @@
         <div class="card testimonial-card">
             <div class="avatar mx-auto white">
                 <img width="210px" height="210px;" src="<?php echo base_url() . '/uploads/' . $img; ?>" class="rounded-circle z-depth-0" />
-                <div id="divedit">
-                    <a href=<?php echo base_url().'usuario/editar/'.$id; ?>>
-                        <i id="editar" class="fas fa-pencil-alt" href="<?php echo base_url().'editar/'.$id; ?>"></i> Editar Perfil
-                    </a>
+                <div id="botones">
+                    <div id="divedit">
+                        <a href=<?php echo base_url() . 'usuario/editar/' . $id; ?>>
+                            <i id="editar" class="fas fa-pencil-alt"></i> Editar Perfil
+                        </a>
+                    </div>
+                    <div id="diveditpass">
+                        <a href=<?php echo base_url() . 'usuario/cambio_password/' . $id; ?>>
+                            <i id="editarpass" class="fas fa-key"></i> Cambiar contraseña
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
