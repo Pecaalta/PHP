@@ -61,6 +61,15 @@
                     </div>
                 </div>
                 <div class="col-12">
+                    <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
+                        <div id="drag_upload_file">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)">
+                        <img id="output" src="" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
                     <input type="submit" value="Añadir servicio">
                 </div>
             </form>

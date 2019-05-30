@@ -125,6 +125,13 @@ class Restaurante extends CI_Controller {
             "imagen" => null
 		);    
 
+		$config['upload_path'] = './uploads/servicios/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+		$this->upload->do_upload('img');
+		$data["imagen"] = $this->upload->data()["client_name"];
+
 		$data["id"] = $this->model_servicio->insertar($data);
 		redirect("/restaurante/servicios/".$user["id"]);
 	}
