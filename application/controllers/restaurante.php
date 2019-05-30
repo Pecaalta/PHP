@@ -97,6 +97,13 @@ class Restaurante extends CI_Controller {
 		}
 	}
 
+
+
+	/**
+	 * SERVICIOS - esto deberia ir en otro controlador pero por ahora lo dejo aca
+ 	 */
+
+
 	public function servicios($id){
 		if($this->controlAcceso($id)){
 			$data = $this->infoGeneral($id);
@@ -106,20 +113,45 @@ class Restaurante extends CI_Controller {
 		
 	}
 
-
-
 	public function nuevoServicio(){
+
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
         $data = array(
 			"nombre" => $this->input->post('nombre'),
             "is_active" => true,
             "descripcion" => $this->input->post('descripcion'),
             "precio" => $this->input->post('precio'),
-            "id_restaurante" => 2,
+            "id_restaurante" => $user['id'],
             "imagen" => null
 		);    
 
 		$data["id"] = $this->model_servicio->insertar($data);
+		redirect("/restaurante/servicios/".$user["id"]);
+	}
+
+	public function modificarServicio(){
+
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
+        $data = array(
+			"nombre" => $this->input->post('nombre'),
+            "descripcion" => $this->input->post('descripcion'),
+            "precio" => $this->input->post('precio'),
+            "id" => $this->input->post('id'),
+            "imagen" => null
+		);    
+
+		$data["id"] = $this->model_servicio->modificar($data);
+		redirect("/restaurante/servicios/".$user["id"]);
+	}
+
+	public function eliminarServicio(){
+
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+        $data = array(
+            "id" => $this->input->post('id')
+		);    
+		
+		$data["id"] = $this->model_servicio->eliminar($data);
 		redirect("/restaurante/servicios/".$user["id"]);
 	}
 

@@ -106,8 +106,7 @@ ALTER TABLE `restaurante_imagen`
   ADD KEY `id_restaurante` (`id_restaurante`);
 
 ALTER TABLE `servicio`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `id_restaurante` (`id_restaurante`,`nombre`);
+  ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `usuario`
   ADD PRIMARY KEY (`id`);

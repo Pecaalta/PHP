@@ -5,7 +5,6 @@
             type: "POST",
             url: "servicio/nuevoServicio",
             data: $(this).serialize(),
-            dataType: "dataType",
             success: function () {
                 console.log("pablitoclavounclavito");
                 alert("papas");

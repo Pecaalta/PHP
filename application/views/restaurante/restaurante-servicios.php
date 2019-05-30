@@ -61,31 +61,75 @@
                     </div>
                 </div>
                 <div class="col-12">
-                    <input type="submit" value="Registrarse">
+                    <input type="submit" value="Añadir servicio">
                 </div>
             </form>
         </div>
 
-        <div id="menu1" class="container tab-pane active text-right servicios"><br>
+        <div id="menu1" class="container tab-pane text-right servicios"><br>
             <div class="flex-column">
                 <ul class="nav nav-tabs flex-column col-4 modificarLista" role="tablist">
                     <?php foreach($servicio->result() as $item):?>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#modificar<?php echo $item->id ?>"><?php echo $item->nombre ?></a>
-                        </li>
+                        <?php if($item->is_active): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#modificar<?php echo $item->id ?>"><?php echo $item->nombre ?></a>
+                            </li>
+                        <?php endif;?>    
                     <?php endforeach;?>
                 </ul>
             </div>
             <div class="tab-content flex-column">
                 <?php foreach($servicio->result() as $item):?>
                     <div id="modificar<?php echo $item->id ?>" class=" tab-pane col-8 modificarMuestra"><br>
-                        <p><?php echo $item->id ?></p>
+                        <form action="<?php echo base_url(); ?>restaurante/modificarServicio" method="post" enctype='multipart/form-data' id="frm_modificarServicio<?php echo $item->id ?>">
+                            <div class="col-4 form-group">
+                                <input style="display: none" readonly class="form-control" type="text" name="id" value="<?php echo $item->id ?>">
+                            </div>
+                            <div class="col-4 form-group">
+                                <input class="form-control" type="text" name="nombre" placeholder="Nombre" value="<?php echo $item->nombre ?>">
+                            </div>
+                            <div class="col-4 form-group">
+                                <input class="form-control" type="text" name="descripcion" placeholder="Nombre" value="<?php echo $item->descripcion ?>">
+                            </div>
+                            <div class="col-4 form-group">
+                                <input class="form-control" type="text" name="precio" placeholder="Nombre" value="<?php echo $item->precio ?>">
+                            </div>
+                            <div class="col-12">
+                                <input type="submit" value="Modificar servicio">
+                            </div>
+                        </form>
                     </div>
                 <?php endforeach;?>
             </div>
         </div>    
 
-        <div id="menu2" class="container tab-pane active text-center servicios"><br>
+        <div id="menu2" class="container tab-pane text-right servicios"><br>
+            <div class="flex-column">
+                <ul class="nav nav-tabs flex-column col-4 modificarLista" role="tablist">
+                    <?php foreach($servicio->result() as $item):?>
+                        <?php if($item->is_active): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#eliminar<?php echo $item->id ?>"><?php echo $item->nombre ?></a>
+                            </li>
+                        <?php endif;?>    
+                    <?php endforeach;?>
+                </ul>
+            </div>
+            <div class="tab-content flex-column">
+                <?php foreach($servicio->result() as $item):?>
+                    <div id="eliminar<?php echo $item->id ?>" class=" tab-pane col-8 modificarMuestra"><br>
+                        <form action="<?php echo base_url(); ?>restaurante/eliminarServicio" method="post" enctype='multipart/form-data' id="frm_eliminarServicio<?php echo $item->id ?>">
+                            <div class="col-4 form-group">
+                                <input style="display: none" readonly class="form-control" type="text" name="id" value="<?php echo $item->id ?>">
+                            </div>
+                            <p>Quieres dar de baja el servicio <?php echo $item->nombre ?>?</p>
+                            <div class="col-12">
+                                <input type="submit" value="Eliminar servicio">
+                            </div>
+                        </form>
+                    </div>
+                <?php endforeach;?>
+            </div>
         </div>
     </div>
 </div>
