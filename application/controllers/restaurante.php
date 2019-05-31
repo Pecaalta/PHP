@@ -97,6 +97,14 @@ class Restaurante extends CI_Controller {
 		}
 	}
 
+	public function editarDatos($id){
+		if($this->controlAcceso($id)){
+			$data = $this->infoGeneral($id);
+			$this->load->view('main/navbar', $this->nav);
+			$this->load->view('restaurante/restaurante-datos', $data);
+		}
+	}
+
 
 
 	/**

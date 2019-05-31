@@ -14,13 +14,12 @@
         width: 70%;
     }
     #block_container {
-    display: flex;
-    justify-content: center;
-}
-#bloc1, #bloc2
-{
-    display:inline;
-}
+        display: flex;
+        justify-content: center;
+    }
+    #bloc1, #bloc2 {
+        display:inline;
+    }
 </style>
 
 <div class="container contenedor text-center">
