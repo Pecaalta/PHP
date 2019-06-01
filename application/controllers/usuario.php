@@ -80,10 +80,11 @@ class usuario extends CI_Controller {
 		$this->load->view('editar-cliente', $data);
 	}
 
-	public function id_exist($name){
+	public function id_exist(){
+		$nick = $this->input->post('nick');
 		header('Content-Type: application/json');
 		try {
-			$exist = $this->model_usuario->isExist($name);
+			$exist = $this->model_usuario->isExist($nick);
 			echo json_encode( array('status' => true , "body" => $exist ) );
 		} catch (\Throwable $th) {
 			echo json_encode( array('status' => false , "body" => $th ) );

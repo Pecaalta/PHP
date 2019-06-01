@@ -18,6 +18,7 @@ class welcome extends CI_Controller {
 	}
 
 	public function sugerencias() {
+		$texto = $this->input->post('texto');
 		$array = array(
 			array('href' => "sada" , "name" => "sada" ),
 			array('href' => "sada" , "name" => "sada" ),
