@@ -7,6 +7,9 @@ class welcome extends CI_Controller {
         parent::__construct();
 		$this->load->helper('url');
 		$this->load->library('session');
+		$this->load->model('model_usuario');
+		$this->load->model('model_imagen');
+		$this->load->model('model_servicio');
     }
 
 	public function perfil() {
@@ -18,15 +21,16 @@ class welcome extends CI_Controller {
 	}
 
 	public function sugerencias() {
-		$texto = $this->input->post('texto');
-		$array = array(
-			array('href' => "sada" , "name" => "sada" ),
-			array('href' => "sada" , "name" => "sada" ),
-			array('href' => "sada" , "name" => "sada" )
-		);
-		foreach ($array as $key) {
-			$this->load->view('componentes/item',$key);
+		$texto = $this->input->post("text");
+		$array = $this->model_servicio->autocompletado($texto);
+		if (sizeof($array) > 0) {
+			foreach ($array as $key) {
+				$this->load->view('componentes/item',$key);
+			}
+		}else {
+			$this->load->view('componentes/item', array('href' => '#', 'name' => 'No se encontraron explora en home'));
 		}
 	}
+	
 	
 }

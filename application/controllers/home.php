@@ -66,70 +66,64 @@ class home extends CI_Controller {
 
 	public function index() {
 		$this->load->view('main/navbar', $this->nav);
-		$msg = $this->session->userdata('msg_error');
-		$lTiendas = array(
-			array(
-				'nombre' => "nombre 1",
-				"imagen" => "https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg",
-				"calificacin" => 5,
-				"tags" => [ "tag1", "tag2" ]
-			),
-			array(
-				'nombre' => "nombre 1",
-				"imagen" => "https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg",
-				"calificacin" => 5,
-				"tags" => [ "tag1", "tag2" ]
-			),
-			array(
-				'nombre' => "nombre 1",
-				"imagen" => "https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg",
-				"calificacin" => 5,
-				"tags" => [ "tag1", "tag2" ]
-			),
-			array(
-				'nombre' => "nombre 1",
-				"imagen" => "https://mdbootstrap.com/img/Photos/Others/img%20(27).jpg",
-				"calificacin" => 5,
-				"tags" => [ 
-					"tag1", 
-					"tag1", 
-					"tag1", 
-					"tag1" 
-				]
-			)
-		);
+		$this->load->model('model_servicio');
+
+		$data = $this->input->get("data");
+		$page = $this->input->get("per_page");
+		$limit = $this->input->get("limit");
+
+		if ($page == null) $page = 0;
+		if ($limit == null) $limit = 9;
+		$offset = $page * $limit;
 		
-		$breadcrumb = array(
-			array(
-				"text" => "Home",
-				"value" => "Home"
-			),
-			array(
-				"text" => "Home",
-				"value" => "Home"
-			),
-			array(
-				"text" => "Home",
-				"value" => "Home"
-			)
-		);
-		$page = array(
-			array(
-				"text" => "1",
-				"value" => "Home"
-			),
-			array(
-				"text" => "2",
-				"value" => "Home"
-			),
-			array(
-				"text" => "3",
-				"value" => "Home"
-			)
-		);
+		$msg = $this->session->userdata('msg_error');
+		$lTiendas = $this->model_servicio->alltienda(null,$offset,$limit);
+		$lCountTiendas = $this->model_servicio->alltiendaCount(null,$offset,$limit);
+		$top = $this->model_servicio->toptienda();
+		$top[0]["class"] = "active";
+		for ($i=0; $i < sizeof($top); $i++) { 
+			$top[$i]["index"] = $i;
+		}
+
+		// Carga parametros que no sean del paginador
+		$gets = $this->input->get();
+		$base_url = base_url()."/home";
+		if (sizeof($gets) > 0){
+			$array = array( );
+			foreach ($gets as $key => $value) {
+				if($key != "per_page")
+					$array[] = $key."=".$value;
+			}
+			$base_url .= "?". join("&", $array);
+		}
+
+		// Configuracion de paginador
+		$this->load->library('pagination');
+		
+		$config['base_url'] = $base_url;
+		$config['total_rows'] = $lCountTiendas/$limit;
+		$config['per_page'] = 1;
+		$config['display_pages'] = true;
+
+		$config['page_query_string'] = true;
+		$config['first_link'] = 'Primera';
+		$config['last_link'] = 'Ultima';
+		$config['attributes'] = array('class' => 'page-link');
+		// Activo
+		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
+		$config['cur_tag_close'] = '</a></li>';
+		// Numeros
+		$config['num_tag_open'] = '<li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+
+		
+	  
+	  
+		$this->pagination->initialize($config); 
 		$data = array(
+			"top" => $top,
 			"tienda" => $lTiendas,
-			"page" => $page
+			"page" => $this->pagination->create_links()
 		);
 		$this->load->view('home/listado_tiendas',$data);
 	}

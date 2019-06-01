@@ -79,10 +79,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <div class="md-form my-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="autocompletado" aria-label="Search">
             <div id="dropdown-autocompletado" class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
-                <a class="dropdown-item" href="#">Separated link</a>
             </div>
         </div>
         </form>
