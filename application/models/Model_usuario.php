@@ -32,5 +32,14 @@ class Model_usuario extends MY_Model
         return $result;
     }
 
+    public function isExist($nick)
+    {
+        $result = $this->_database->select("imagen.*")
+        ->from('usuario')
+        ->where('nickname', $nick)
+        ->get()->result_array();
+        return sizeof($result) == 0;
+    }
+
     
 }

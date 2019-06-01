@@ -29,7 +29,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             height: 36px;
         }
     </style>
+    <script>
+        $(document).ready(function(){
 
+            $( "#autocompletado" ).keypress(function() {
+                console.log( "Handler for .keypress() called." );
+                $.ajax({
+                    url: '<?php echo base_url(); ?>/welcome/sugerencias',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {text: $(this).val() },
+                    beforeSend: function(e) {
+                        // animacion de carga
+                    },
+                    success: function(e){
+                        $("#dropdown-autocompletado").html(e);
+                    },
+                    error: function(e){
+                        console.log(e);
+                    },
+                    complete: function(e) {
+                        console.log(e);
+                    },
+                });
+            });
+        });
+        
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark primary-color">
@@ -49,6 +75,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php endforeach;?>
     </ul>
     <ul class="navbar-nav ml-auto nav-flex-icons">
+        <form class="form-inline">
+        <div class="md-form my-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="autocompletado" aria-label="Search">
+            <div id="dropdown-autocompletado" class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <a class="dropdown-item" href="#">Separated link</a>
+            </div>
+        </div>
+        </form>
         <?php if (!isset($id) && !isset($rut)):?>
             <li class="nav-item">
                 <a class="nav-link" href="<?php echo base_url() ?>login">Entrar</a>

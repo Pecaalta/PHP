@@ -16,4 +16,16 @@ class welcome extends CI_Controller {
 	public function index() {
 		redirect('/home');
 	}
+
+	public function sugerencias() {
+		$array = array(
+			array('href' => "sada" , "name" => "sada" ),
+			array('href' => "sada" , "name" => "sada" ),
+			array('href' => "sada" , "name" => "sada" )
+		);
+		foreach ($array as $key) {
+			$this->load->view('componentes/item',$key);
+		}
+	}
+	
 }
