@@ -182,7 +182,8 @@
             dataType: 'html',
             data: {nombre: nombreSer},
             success: function (data) {
-                $( "#prueba" ).text( data);
+                data = JSON.parse(data);
+                $( "#prueba" ).text( data['body'] );
             }
         });
        

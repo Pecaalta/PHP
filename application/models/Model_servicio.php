@@ -110,7 +110,10 @@ class Model_servicio extends MY_Model
         $sql = "SELECT nombre
                 FROM servicio 
                 WHERE nombre = ? AND id_restaurante = ?";
-        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']));
-        return sizeof($query) == 0;
+        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
+        if(sizeof($query) == 0){
+            return "Disponible";
+        }
+        return "Ya tienes un servicio con ese nombre";
     }
 }
