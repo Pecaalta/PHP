@@ -43,9 +43,10 @@
         <div id="home" class="container tab-pane active text-center servicios"><br>
             <form action="<?php echo base_url(); ?>restaurante/nuevoServicio" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
                 <div class="col-4 form-group">
-                    <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+                    <input id="nombreNuevoServicio" class="form-control" type="text" name="nombre" placeholder="Nombre">
+                    <p id="prueba"></p>
                     <div class="invalid-feedback">
-
+                        
                     </div>
                 </div>
                 <div class="col-4 form-group">
@@ -142,3 +143,49 @@
         </div>
     </div>
 </div>
+<!--
+<script>
+        $(document).ready(function(){
+
+            $( "#autocompletado" ).keypress(function() {
+                console.log( "Handler for .keypress() called." );
+                $.ajax({
+                    url: '<?php echo base_url(); ?>/welcome/sugerencias',
+                    type: 'POST',
+                    dataType: 'html',
+                    data: {text: $(this).val() },
+                    beforeSend: function(e) {
+                        // animacion de carga
+                    },
+                    success: function(e){
+                        $("#dropdown-autocompletado").html(e);
+                    },
+                    error: function(e){
+                        console.log(e);
+                    },
+                    complete: function(e) {
+                        console.log(e);
+                    },
+                });
+            });
+        });
+        
+    </script>
+!-->
+<script>
+    $("#nombreNuevoServicio").keyup(function() {
+        var nombreSer = $( "#nombreNuevoServicio" ).val();
+        var url="restaurante/existeServicio"
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>"+url,
+            dataType: 'html',
+            data: {nombre: nombreSer},
+            success: function (data) {
+                $( "#prueba" ).text( data);
+            }
+        });
+       
+    })
+    .keyup();    
+</script>

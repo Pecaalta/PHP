@@ -121,6 +121,21 @@ class Restaurante extends CI_Controller {
 		
 	}
 
+	public function existeServicio(){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$data = array(
+			"nombre" => $this->input->post('nombre'),
+			"id_restaurante" => $user['id']
+		);
+		header('Content-Type: application/json');
+		try {
+			$exist = $this->model_servicio->existeNombreServicio($data);
+			echo json_encode( array('status' => true , "body" => $exist ) );
+		} catch (\Throwable $th) {
+			echo json_encode( array('status' => false , "body" => $th ) );
+		}
+	}
+
 	public function nuevoServicio(){
 
 		$user = json_decode(json_encode($this->session->userdata('user')), true);

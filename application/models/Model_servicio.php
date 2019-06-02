@@ -105,4 +105,12 @@ class Model_servicio extends MY_Model
         ";
         return $this->_database->query($sql)->result_array(); 
     }
+
+    public function existeNombreServicio($data){
+        $sql = "SELECT nombre
+                FROM servicio 
+                WHERE nombre = ? AND id_restaurante = ?";
+        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']));
+        return sizeof($query) == 0;
+    }
 }
