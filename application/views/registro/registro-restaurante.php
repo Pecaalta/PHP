@@ -75,6 +75,8 @@
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 100;
+            cursor: pointer;
         }
         #output {
             max-width: 100%;
@@ -106,44 +108,75 @@
             height: 30px;
         }
     </style>
+        <script>
+          var loadFile = function(event) {
+            var reader = new FileReader();
+            reader.onload = function(){
+              var output = document.getElementById('output');
+              output.src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+            if (event.target.files[0].size > 200) document.getElementById('error').value = "Imagen demaciada pesada" ;
+            
+          };
+        </script>
 </head>
 <body>
 <div class="container">
-    <form action="<?php echo base_url(); ?>registro/post_restaurante" method="POST" class="box m-t-50px row z-depth-1">
+    <form action="<?php echo base_url(); ?>registro/post_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
         <div class="col-12 form-group">
             <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
             <h3>Restaurante</h3>
         </div>
         <div class="col-4 form-group">
-            <input class="form-control" name="nickname" type="text" placeholder="Nickname">
+            <input class="form-control" type="text" name="nickname" placeholder="Nickname" require>
         </div>
         <div class="col-4 form-group">
-            <input class="form-control" name="nombre" type="text" placeholder="Nombre">
+            <input class="form-control" type="text" name="nombre" placeholder="Nombre" require>
         </div>
         <div class="col-4 form-group">
-            <input class="form-control" name="rut" type="text" placeholder="RUT">
-        </div>
-        <div class="col-8 form-group">
-            <input class="form-control" name="direccion" type="text" placeholder="Dirección">
-        </div>
-        <div class="col-4 form-group">
-            <input class="form-control" name="zona" type="text" placeholder="Zona">
-        </div>
-        <div class="col-6 form-group">
-            <input class="form-control" type="password" name="password" placeholder="Contraseña">
-        </div>
-        <div class="col-6 form-group">
-            <input class="form-control" type="password" name="repassword" placeholder="Repetir Contraseña">
+            <input class="form-control" name="rut" type="text" placeholder="RUT" require>
         </div>
 
         <div class="col-6 form-group">
-            <input class="form-control" name="telefono" type="text" placeholder="Teléfono">
+            <input class="form-control" name="telefono" type="text" placeholder="Teléfono" require>
         </div>
         <div class="col-6 form-group">
-            <input class="form-control" name="email" type="text" placeholder="Email">
+            <input class="form-control" type="email" name="email" placeholder="Email" require>
         </div>
+
+        <div class="col-8 form-group">
+            <input class="form-control" name="direccion" type="text" placeholder="Dirección" require>
+        </div>
+        <div class="col-4 form-group">
+            <select class="form-control" name="zona" require>
+                <option value="" selected disabled>Zona</option>
+                <?php foreach ($zonas as $zona):?>
+                    <option value="<?php echo $zona['id']; ?>"><?php echo $zona['nombre']; ?></option>
+                <?php endforeach;?>
+            </select>
+        </div>
+
+        <div class="col-6 form-group">
+            <input class="form-control" type="password" name="password" placeholder="Contraseña" require>
+        </div>
+        <div class="col-6 form-group">
+            <input class="form-control" type="password" name="repassword" placeholder="Repetir Contraseña" require>
+        </div>
+        
+
         <div class="col-12">
-            <p class="error"><?php echo $msg; ?></p>
+            <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
+                <div id="drag_upload_file">
+                  <i class="fas fa-cloud-upload-alt"></i>
+                  <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)" require>
+                  <img id="output" src="" alt="">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <p id="error" class="error"><?php echo $msg; ?></p>
         </div>
         <div class="col-12">
             <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Registrarse">

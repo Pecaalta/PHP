@@ -5,7 +5,7 @@ class Model_usuario extends MY_Model
     public $table = 'Usuario';
 	public $primary_key = 'id'; 
 	public $fillable = array(
-		"nickname","nombre","rut","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at"
+		"nickname","nombre","rut","avatar","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at"
     ); 
 	public $protected = array();
     function __construct()
@@ -32,14 +32,20 @@ class Model_usuario extends MY_Model
         return $result;
     }
 
-    public function isExist($nick)
+    public function listaZona()
     {
-        $result = $this->_database->select("imagen.*")
-        ->from('usuario')
-        ->where('nickname', $nick)
+        return $this->_database->select("id, nombre")
+        ->from('zona')
+        ->where('is_active', 1)
         ->get()->result_array();
-        return sizeof($result) == 0;
     }
-
+    public function listaCategorias()
+    {
+        
+        return $this->_database->select("id, nombre")
+        ->from('Categoria')
+        ->where('is_active', 1)
+        ->get()->result_array();
+    }
     
 }

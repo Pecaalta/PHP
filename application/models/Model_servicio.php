@@ -37,7 +37,7 @@ class Model_servicio extends MY_Model
 
     public function toptienda(){
         $sql = "
-            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion) as evalacion  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion) as evalacion  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -51,7 +51,7 @@ class Model_servicio extends MY_Model
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -88,7 +88,7 @@ class Model_servicio extends MY_Model
                     and Servicio.is_active
                 ) or (
                     LOWER(usuario.nickname) LIKE LOWER('%$name%') 
-                    and Servicio.is_active
+                    and usuario.is_active
                 ) or (
                     LOWER(usuario.nombre) LIKE LOWER('%$name%') 
                     and usuario.is_active
@@ -106,11 +106,81 @@ class Model_servicio extends MY_Model
         return $this->_database->query($sql)->result_array(); 
     }
 
+
+
+    public function CountlistService($date, $offset, $limit,$categoria,$zona,$minimo,$maximo){
+        if ($offset == null || $offset < 0) $offset = 0;
+        if ($limit == null || $limit < 1) $limit = 10;
+        $sqlwhere = "";
+        $sqljoin = "";
+        if ($categoria != null){
+            $sqlwhere .= "
+                and restaurante_categoria.id_categoria = $categoria 
+                and restaurante_categoria.is_active ";
+            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+        }
+        if ($zona != null){
+            $sqlwhere .= " and usuario.zona = $zona ";
+        }
+        if ($minimo != null){
+            $sqlwhere .= " and Servicio.precio >= $minimo ";
+        }
+        if ($maximo != null){
+            $sqlwhere .= " and Servicio.precio <= $maximo ";
+        }
+        $sql = "
+            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            from Servicio 
+            join usuario on Servicio.id_restaurante = usuario.id
+            left join reservas on reservas.id_restaurante = usuario.id
+            $sqljoin
+            where Servicio.is_active = 1 and usuario.is_active = 1 
+            $sqlwhere
+            group by Servicio.id
+        ";
+        return sizeof($this->_database->query($sql)->result_array());
+    }
+    public function listService($date, $offset, $limit,$categoria,$zona,$minimo,$maximo){
+        if ($offset == null || $offset < 0) $offset = 0;
+        if ($limit == null || $limit < 1) $limit = 10;
+        $sqlwhere = "";
+        $sqljoin = "";
+        if ($categoria != null){
+            $sqlwhere .= "
+                and restaurante_categoria.id_categoria = $categoria 
+                and restaurante_categoria.is_active ";
+            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+        }
+        if ($zona != null){
+            $sqlwhere .= " and usuario.zona = $zona ";
+        }
+        if ($minimo != null){
+            $sqlwhere .= " and Servicio.precio >= $minimo ";
+        }
+        if ($maximo != null){
+            $sqlwhere .= " and Servicio.precio <= $maximo ";
+        }
+        $sql = "
+            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            from Servicio 
+            join usuario on Servicio.id_restaurante = usuario.id
+            left join reservas on reservas.id_restaurante = usuario.id
+            $sqljoin
+            where Servicio.is_active = 1 and usuario.is_active = 1 
+            $sqlwhere
+            group by Servicio.id
+            LIMIT $limit OFFSET $offset
+        ";
+        return $this->_database->query($sql)->result_array(); 
+    }
+
+
+
     public function existeNombreServicio($data){
         $sql = "SELECT nombre
                 FROM servicio 
                 WHERE nombre = ? AND id_restaurante = ?";
-        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']));
+        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
         return sizeof($query) == 0;
     }
 }

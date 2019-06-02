@@ -13,7 +13,7 @@
 </style>
 
 
-<div class="container contenedor text-center">
+<div class="container contenedor text-center  z-depth-1">
     <form action="<?php echo base_url(); ?>restaurante/actualizarDatos" method="post" enctype='multipart/form-data' id="frm_actualizarDatos">
         <div class="col-4 form-group" style="display: inline-flex">
             <label  for="nick">Nombre del restaurante</label>
