@@ -102,6 +102,18 @@ class usuario extends CI_Controller {
 		$this->load->view('editar-password', $data);
 	}
 
+	public function nick_disponible(){
+
+		$nickname = $this->input->post('nickname');
+		header('Content-Type: application/json');
+		try {
+			$exist = $this->model_usuario->nickDisponible($nickname);
+			echo json_encode( array('status' => true , "body" => $exist ) );
+		} catch (\Throwable $th) {
+			echo json_encode( array('status' => false , "body" => $th ) );
+		}
+	}
+
 
 
 }
