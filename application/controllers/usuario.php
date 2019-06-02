@@ -104,10 +104,12 @@ class usuario extends CI_Controller {
 
 	public function nick_disponible(){
 
-		$nickname = $this->input->post('nickname');
+		$data = array(
+			"nickname" => $this->input->post('nombre')
+		);
 		header('Content-Type: application/json');
 		try {
-			$exist = $this->model_usuario->nickDisponible($nickname);
+			$exist = $this->model_usuario->nickDisponible2($data);
 			echo json_encode( array('status' => true , "body" => $exist ) );
 		} catch (\Throwable $th) {
 			echo json_encode( array('status' => false , "body" => $th ) );

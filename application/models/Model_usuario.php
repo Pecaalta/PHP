@@ -52,4 +52,15 @@ class Model_usuario extends MY_Model
          }
          return "Ya existe el nickname";
     }
+
+    public function nickDisponible2($data){
+        $sql = "SELECT nickname
+                FROM usuario 
+                WHERE nickname = ?";
+        $query = $this->_database->query($sql, array($data['nickname']))->result_array();
+        if(sizeof($query) == 0){
+            return "Disponible";
+        }
+        return "Ya tienes un servicio con ese nombre";
+    }
 }

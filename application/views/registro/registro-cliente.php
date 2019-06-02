@@ -109,7 +109,7 @@
             reader.readAsDataURL(event.target.files[0]);
         };
     </script>
-
+<!--
     <script>
         $(document).ready(function() {
 
@@ -137,27 +137,9 @@
                 });
             });
         });
-    </script>
+    </script> 
     !-->
-    <script>
-        $("#disponible").keyup(function() {
-                var nick = $("#disponible").val();
-                var url = "usuario/nick_disponible"
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url() ?>" + url,
-                    dataType: 'html',
-                    data: {
-                        nombre: nick
-                    },
-                    success: function(data) {
-                        data = JSON.parse(data);
-                        $("#prueba").text(data['body']);
-                    }
-                });
-            })
-            .keyup();
-    </script>
+    
 </head>
 
 <body>
@@ -170,9 +152,9 @@
             <div class="col-4 form-group">
                 <input id="disponible" class="form-control" type="text" name="nickname" placeholder="Nickname">
             </div>
-            <div id="prueba"></div>
             <div class="col-4 form-group">
                 <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+                <p id="prueba"></p>
             </div>
             <div class="col-4 form-group">
                 <input class="form-control" type="text" name="apellido" placeholder="Apellido">
@@ -206,5 +188,24 @@
             </div>
         </form>
 </body>
+
+<script>
+        $("#disponible").keyup(function() {
+                var nick = $("#disponible").val();
+                var url = "usuario/nick_disponible"
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() ?>" + url,
+                    dataType: 'html',
+                    data: {nombre: nick},
+                    success: function(data) {
+                        data = JSON.parse(data);
+                        $("#prueba").text(data['body']);
+                        console.log(data['body']);
+                    }
+                });
+            })
+            .keyup();
+    </script>
 
 </html>
