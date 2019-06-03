@@ -92,6 +92,18 @@ class usuario extends CI_Controller {
 		}
 	}
 
+	public function email_disponible(){
 
+		$data = array(
+			"email" => $this->input->post('email')
+		);
+		header('Content-Type: application/json');
+		try {
+			$exist = $this->model_usuario->emailDisponible($data);
+			echo json_encode( array('status' => true , "body" => $exist ) );
+		} catch (\Throwable $th) {
+			echo json_encode( array('status' => false , "body" => $th ) );
+		}
+	}
 
 }
