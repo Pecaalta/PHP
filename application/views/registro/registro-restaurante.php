@@ -9,6 +9,16 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
     <style>
         html, body {
             width: 100%;
@@ -107,6 +117,11 @@
             width: 30px;
             height: 30px;
         }
+        #mapid {
+            border: 1px solid #ced4da;
+            overflow: hidden;
+            border-radius: 3px;
+        }
     </style>
         <script>
           var loadFile = function(event) {
@@ -174,6 +189,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 mt-3">
+            <div id="mapid" style="width: 100%; height: 400px;"></div>
+            <input type="hidden" id="lat" name="lat" >
+            <input type="hidden" id="lng" name="lng" >
+
+        </div>
+
+        
 
         <div class="col-12">
             <p id="error" class="error"><?php echo $msg; ?></p>
@@ -184,3 +207,37 @@
     </form>
 </body>
 </html>
+
+
+
+
+
+<script>
+
+	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+	var restaurante = null;
+	var popup = L.popup();
+
+	function onMapClick(e) {
+        document.getElementById('lat').value = e.latlng.lat; 
+        document.getElementById('lng').value = e.latlng.lng; 
+
+		if(restaurante == null) {
+            popup
+                .setLatLng(e.latlng)
+                .setContent("Aqui estaria tu restaurante ")
+                .openOn(mymap);
+			restaurante = L.marker(e.latlng).addTo(mymap);
+		} else {
+			restaurante.setLatLng(e.latlng); 
+		}
+	}
+
+	mymap.on('click', onMapClick);
+
+</script>

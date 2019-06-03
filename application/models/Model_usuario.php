@@ -5,7 +5,7 @@ class Model_usuario extends MY_Model
     public $table = 'Usuario';
 	public $primary_key = 'id'; 
 	public $fillable = array(
-		"nickname","nombre","rut","avatar","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at"
+		"nickname","nombre","rut","avatar","lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at"
     ); 
 	public $protected = array();
     function __construct()

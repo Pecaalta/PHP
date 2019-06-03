@@ -49,6 +49,7 @@ class home extends CI_Controller {
 		
 		$msg = $this->session->userdata('msg_error');
 		
+		$mapalista = $this->model_servicio->listServiceMapa(null, $categoria,$zona,$minimo,$maximo);
 		$lTiendas = $this->model_servicio->listService(null, $offset, $limit,$categoria,$zona,$minimo,$maximo);
 		$lCountTiendas = $this->model_servicio->CountlistService(null, $offset, $limit,$categoria,$zona,$minimo,$maximo);
 		$lZone = $this->model_usuario->listaZona();
@@ -94,11 +95,9 @@ class home extends CI_Controller {
 		$config['num_tag_open'] = '<li class="page-item">';
 		$config['num_tag_close'] = '</li>';
 
-		
-	  
-	  
 		$this->pagination->initialize($config); 
 		$data = array(
+			"mapalista" => json_encode($mapalista),
 			"tienda" => $lTiendas,
 			"page" => $this->pagination->create_links(),
 			"get" => $gets,
@@ -120,7 +119,10 @@ class home extends CI_Controller {
 				26 => 'http://example.com/news/article/2006/06/26/'
 		);
 		
+		$this->load->view('main/navbar', $this->nav);
 		echo $this->calendar->generate(2006, 6, $data);
+		$this->load->view('home/Calendario');
+		
 	}
 
 	public function index() {

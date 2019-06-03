@@ -46,6 +46,7 @@ class Registro extends CI_Controller {
 	 */
 	public function restaurante(){
 		$msg = $this->session->userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$user = $this->session->userdata('user');
 		$lZone = $this->model_usuario->listaZona();
 		if (is_null($user)){
@@ -64,6 +65,7 @@ class Registro extends CI_Controller {
 			redirect('/home');
 		}
 		$msg = $this->session->userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$this->load->view('registro/registro-cliente', array("msg" => $msg));
 	}
 
@@ -113,16 +115,20 @@ class Registro extends CI_Controller {
 			"email" => $this->input->post('email'),
 			"apellido" => $this->input->post('apellido'),
 			"password" => $this->input->post('password'),
+			"lat" => $this->input->post('lat'),
+			"lng" => $this->input->post('lng'),
 			"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
 			"end_perfil" => false,
 			"avatar" => false,
 			"is_active" => false
 		);
 		$msjError = array();
-		if ($data["password"] != $data["repassword"]) {
+		if ($data["password"] != $this->input->post('repassword')) {
 			$msjError[] = "Error la confirmacion de pasword no es correcta";
-		} else if ($data["nickname"] != "") {
+			redirect(current_url());
+		} else if ($data["nickname"] == "") {
 			$msjError[] = "El nickname es nesesario";
+			redirect(current_url());
 		} else {
 			$config['upload_path'] = './uploads/';
 			$config['allowed_types'] = 'gif|jpg|png';

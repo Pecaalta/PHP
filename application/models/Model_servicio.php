@@ -107,7 +107,7 @@ class Model_servicio extends MY_Model
     }
 
 
-
+    
     public function CountlistService($date, $offset, $limit,$categoria,$zona,$minimo,$maximo){
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
@@ -170,6 +170,35 @@ class Model_servicio extends MY_Model
             $sqlwhere
             group by Servicio.id
             LIMIT $limit OFFSET $offset
+        ";
+        return $this->_database->query($sql)->result_array(); 
+    }
+    public function listServiceMapa($date,$categoria,$zona,$minimo,$maximo){
+        $sqlwhere = "";
+        $sqljoin = "";
+        if ($categoria != null){
+            $sqlwhere .= "
+                and restaurante_categoria.id_categoria = $categoria 
+                and restaurante_categoria.is_active ";
+            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+        }
+        if ($zona != null){
+            $sqlwhere .= " and usuario.zona = $zona ";
+        }
+        if ($minimo != null){
+            $sqlwhere .= " and Servicio.precio >= $minimo ";
+        }
+        if ($maximo != null){
+            $sqlwhere .= " and Servicio.precio <= $maximo ";
+        }
+        $sql = "
+            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as text, usuario.lat, usuario.lng 
+            from Servicio 
+            join usuario on Servicio.id_restaurante = usuario.id
+            left join reservas on reservas.id_restaurante = usuario.id
+            $sqljoin
+            where Servicio.is_active = 1 and usuario.is_active = 1 and  usuario.lat is not null and usuario.lng is not NULL 
+            $sqlwhere
         ";
         return $this->_database->query($sql)->result_array(); 
     }

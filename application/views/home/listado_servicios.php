@@ -31,17 +31,15 @@
 	cursor: pointer;
 }
 </style>
-<script>
-function bag(e) {
-	document.getElementsByName(e.getAttribute('data-id'))[0].value = '';
-	form.submit();
-}
-</script>
 <div class="container">
 	<div class="row">
+		<div class="col-12  mt-3">
+			<div id="mapid" class="z-depth-1" style="width: 100%; height: 400px;"></div>
+
+		</div>
 		<form class="col-md-3 mt-3" action="" name="form" method="get" >
 			<div class="row">
-				<h3 class="col-12 mt-3">Orden</h3>
+				<h3 class="col-12 mt-3">Configuracion</h3>
 
 				<label class="col-md-12 col-sm-4 mt-3">Limite</label>
 				<div class="col-md-12 col-sm-8">
@@ -130,6 +128,29 @@ function bag(e) {
 		</div>
 	</div>
 </div>
+<script>
+	function bag(e) {
+		document.getElementsByName(e.getAttribute('data-id'))[0].value = '';
+		form.submit();
+	}
+
+
+	var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		id: 'mapbox.streets'
+	}).addTo(mymap);
+	let tiendas = <?php if(isset($mapalista) && $mapalista != '' ) echo $mapalista; else echo '[]' ?>;
+	console.log(tiendas);
+	
+	tiendas.forEach(e => {		
+		L.marker([e.lat, e.lng]).addTo(mymap)
+			.bindPopup(
+				e.text
+				).openPopup();
+		
+	});
+</script>
 
 </body>
 </html>
