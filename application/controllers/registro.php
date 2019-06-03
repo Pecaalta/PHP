@@ -167,10 +167,10 @@ class Registro extends CI_Controller
 		$this->email->from('contacto.reserbar@gmail.com', 'ReserBAR');
 		$this->email->to($this->input->post('email'));
 		$this->email->subject('Registro de Usuario en ReserBAR');
-		$this->email->message('<h2>Te damos la bienvenida a ReserBAR ' . '<b>' . $data['nickname'] . '</b></h2>' .
+		$this->email->message('<h2><b>' . $data['nickname'] . ', te damos la bienvenida a ReserBAR! ' . '</b></h2>' .
 			'Te has registrado con los siguientes
 		datos: <br><br><b> Nombre:</b> ' . $data['nombre'] . '<br> <b>Apellido:</b> ' . $data['apellido'] 
-		. '<br> <b>Fecha de Nacimiento:</b> ' . $data['fecha_de_nacimiento'] . '<br><br>' . 'Ya estás listo para comenzar a buscar 
+		. '<br> <b>Fecha de Nacimiento:</b> ' . $data['fecha_de_nacimiento'] . '<br><br>' . 'Ya puedes comenzar a buscar 
 		restaurantes y servicios donde deleitar el paladar. <br> Gracias por elegirnos. <br> El equipo de ReserBAR. ');
 
 		$this->email->send();
