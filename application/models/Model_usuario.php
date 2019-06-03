@@ -124,6 +124,7 @@ class Model_usuario extends MY_Model
         }
         return "Ya tienes un servicio con ese nombre";
 <<<<<<< HEAD
+<<<<<<< HEAD
     }
 
     public function listaZona()
@@ -140,6 +141,8 @@ class Model_usuario extends MY_Model
         ->from('Categoria')
         ->where('is_active', 1)
         ->get()->result_array();
+=======
+>>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
 =======
 >>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
     }
