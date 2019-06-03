@@ -116,29 +116,6 @@ class usuario extends CI_Controller {
 		}
 	}
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public function email_disponible(){
-
-		$data = array(
-			"email" => $this->input->post('nombre')
-		);
-		header('Content-Type: application/json');
-		try {
-			$exist = $this->model_usuario->emailDisponible($data);
-			echo json_encode( array('status' => true , "body" => $exist ) );
-		} catch (\Throwable $th) {
-			echo json_encode( array('status' => false , "body" => $th ) );
-		}
-	}
-
-=======
->>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
-=======
->>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
-=======
->>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
 
 
 }

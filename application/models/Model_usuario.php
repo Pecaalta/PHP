@@ -32,67 +32,6 @@ class Model_usuario extends MY_Model
         return $result;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public function isExist($nick)
     {
         $result = $this->_database->select("imagen.*")
@@ -123,28 +62,6 @@ class Model_usuario extends MY_Model
             return "Disponible";
         }
         return "Ya tienes un servicio con ese nombre";
-<<<<<<< HEAD
-<<<<<<< HEAD
-    }
-
-    public function listaZona()
-    {
-        return $this->_database->select("id, nombre")
-        ->from('zona')
-        ->where('is_active', 1)
-        ->get()->result_array();
-    }
-    public function listaCategorias()
-    {
-        
-        return $this->_database->select("id, nombre")
-        ->from('Categoria')
-        ->where('is_active', 1)
-        ->get()->result_array();
-=======
->>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
-=======
->>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
     }
 
 
