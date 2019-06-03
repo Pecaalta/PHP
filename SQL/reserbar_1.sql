@@ -75,7 +75,8 @@ CREATE TABLE `usuario` (
   `end_perfil` tinyint(1) DEFAULT NULL,
   `created_at` date DEFAULT NULL,
   `descripcionRestaurante` varchar(250) DEFAULT NULL,
-  `updated_at` date DEFAULT NULL
+  `updated_at` date DEFAULT NULL,
+  `cantidadMesas` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `zona` (
@@ -84,6 +85,13 @@ CREATE TABLE `zona` (
   `nombre` varchar(250) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+CREATE TABLE `reservas_servicio` (
+  `id` int(11) NOT NULL,
+  `id_servicio` int(11) NOT NULL,
+  `id_reserva` int(11) NOT NULL,
+  `cantidad` int(11) NOT NULL,
+  `is_active` tinyint(1) NOT NULL DEFAULT '1'
+)ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 ALTER TABLE `categoria`
   ADD PRIMARY KEY (`id`);
@@ -114,6 +122,9 @@ ALTER TABLE `usuario`
 ALTER TABLE `zona`
   ADD PRIMARY KEY (`id`);
 
+ALTER TABLE `reservas_servicio`
+  ADD PRIMARY KEY (`id`);
+
 
 ALTER TABLE `categoria`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
@@ -139,6 +150,9 @@ ALTER TABLE `usuario`
 ALTER TABLE `zona`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE `reservas_servicio`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
 
 ALTER TABLE `reservas`
   ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`),
@@ -153,6 +167,10 @@ ALTER TABLE `restaurante_imagen`
 
 ALTER TABLE `servicio`
   ADD CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
+
+ALTER TABLE `reservas_servicio`
+  ADD CONSTRAINT `reservas_servicio_ibfk_1` FOREIGN KEY (`id_servicio`) REFERENCES `servicio` (`id`);
+  ADD CONSTRAINT `reservas_servicio_ibfk_2` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

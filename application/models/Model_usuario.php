@@ -5,7 +5,7 @@ class Model_usuario extends MY_Model
     public $table = 'Usuario';
     public $primary_key = 'id';
     public $fillable = array(
-        "nickname", "nombre", "rut", "direccion", "zona", "telefono", "email", "apellido", "fecha_de_nacimiento", "end_perfil", "is_active", "password", "descripcionRestaurante", "updated_at"
+        "nickname", "nombre", "rut", "direccion", "zona", "telefono", "email", "apellido", "fecha_de_nacimiento", "end_perfil", "is_active", "password", "descripcionRestaurante", "updated_at", "cantidadMesas"
     );
     public $protected = array();
     function __construct()
@@ -63,4 +63,10 @@ class Model_usuario extends MY_Model
         }
         return "Ya tienes un servicio con ese nombre";
     }
+
+
+
+    //De aca para abajo va todo lo realcionado con el usuario tipo RESTAURANTE
+
+    
 }
