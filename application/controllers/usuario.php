@@ -116,6 +116,7 @@ class usuario extends CI_Controller {
 		}
 	}
 
+<<<<<<< HEAD
 	public function email_disponible(){
 
 		$data = array(
@@ -130,6 +131,8 @@ class usuario extends CI_Controller {
 		}
 	}
 
+=======
+>>>>>>> parent of 0de7c38... Merge branch 'ajaxNick' into lucas
 
 
 }
