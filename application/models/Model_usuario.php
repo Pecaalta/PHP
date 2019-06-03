@@ -61,6 +61,6 @@ class Model_usuario extends MY_Model
         if(sizeof($query) == 0){
             return "Disponible";
         }
-        return "Ya tienes un servicio con ese nombre";
+        return "Nickname no disponible";
     }
 }

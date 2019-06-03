@@ -98,6 +98,10 @@
             text-align: center;
             margin: 5px;
         }
+
+        p{
+            float: left;
+        }
     </style>
     <script>
         var loadFile = function(event) {
