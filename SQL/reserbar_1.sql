@@ -76,7 +76,10 @@ CREATE TABLE `usuario` (
   `created_at` date DEFAULT NULL,
   `descripcionRestaurante` varchar(250) DEFAULT NULL,
   `updated_at` date DEFAULT NULL,
-  `cantidadMesas` int DEFAULT NULL
+  `cantidadMesas` int DEFAULT NULL,
+  `avatar` varchar(250) DEFAULT NULL,
+  `lat` float DEFAULT NULL,
+  `lng` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `zona` (
