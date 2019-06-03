@@ -63,4 +63,15 @@ class Model_usuario extends MY_Model
         }
         return "Nickname no disponible";
     }
+
+    public function emailDisponible($data){
+        $sql = "SELECT email
+                FROM usuario 
+                WHERE email = ?";
+        $query = $this->_database->query($sql, array($data['email']))->result_array();
+        if(sizeof($query) == 0){
+            return "Ok";
+        }
+        return "No Ok";
+    }
 }

@@ -99,7 +99,7 @@
             margin: 5px;
         }
 
-        p{
+        p {
             float: left;
         }
     </style>
@@ -113,7 +113,7 @@
             reader.readAsDataURL(event.target.files[0]);
         };
     </script>
-<!--
+    <!--
     <script>
         $(document).ready(function() {
 
@@ -143,7 +143,7 @@
         });
     </script> 
     !-->
-    
+
 </head>
 
 <body>
@@ -167,8 +167,9 @@
                 <input class="form-control" type="date" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="text" name="email" placeholder="Email">
+                <input id="mail" class="form-control" type="text" name="email" placeholder="Email">
             </div>
+            <p id="emailOK"></p>
             <div class="col-6 form-group">
                 <input class="form-control" type="password" name="password" placeholder="Contraseña">
             </div>
@@ -194,22 +195,45 @@
 </body>
 
 <script>
-        $("#disponible").keyup(function() {
-                var nick = $("#disponible").val();
-                var url = "usuario/nick_disponible"
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url() ?>" + url,
-                    dataType: 'html',
-                    data: {nombre: nick},
-                    success: function(data) {
-                        data = JSON.parse(data);
-                        $("#prueba").text(data['body']);
-                        console.log(data['body']);
-                    }
-                });
-            })
-            .keyup();
-    </script>
+    $("#disponible").keyup(function() {
+            var nick = $("#disponible").val();
+            var url = "usuario/nick_disponible"
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() ?>" + url,
+                dataType: 'html',
+                data: {
+                    nombre: nick
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    $("#prueba").text(data['body']);
+                    console.log(data['body']);
+                }
+            });
+        })
+        .keyup();
+</script>
+
+<script>
+    $("#mail").keyup(function() {
+            var email = $("#mail").val();
+            var url = "usuario/email_disponible"
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() ?>" + url,
+                dataType: 'html',
+                data: {
+                    nombre: email
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    $("#emailOK").text(data['body']);
+                    console.log(data['body']);
+                }
+            });
+        })
+        .keyup();
+</script>
 
 </html>
