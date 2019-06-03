@@ -14,38 +14,19 @@ class usuario extends CI_Controller {
 		$this->load->model('model_imagen');
 		$this->load->model('model_servicio');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user)){
+		$this->nav = array(
+			"nav" => array(
+				array( "href" => "home", "texto" => "Inicio", "class" => "" ),
+				array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
+			)
+		);
+		if (!is_null($user)){
 			$this->nav = array(
-				"nav" => array(
-					array( "href" => "", "texto" => "Home", "class" => "" )
-				)
+				"img" => $user['avatar'],
+				"id" => $user['id']
 			);
-		} else {
-			if (is_null($user['rut'])) {
-				$lImg = $this->model_usuario->getImgpefil($user["id"]);
-				if (!is_null($lImg)&& sizeof($lImg) > 0){
-					$lImg = $lImg[0]["img"];
-				} else {
-					$lImg = null;
-				}
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "home", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => $lImg,
-					"id" => $user['id']
-				);
-			} else {
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "", "texto" => "Home", "class" => "active" )
-					),
-					"img" => null,
-					"id" => $user['id'],
-					"rut" => $user['rut']
-				);
-			}
+			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+			if(!is_null($user['id'])) $this->nav["nav"][] = array( "href" => "login/logout", "texto" => "Salir", "class" => "" );
 		}
 	}
 
@@ -55,15 +36,10 @@ class usuario extends CI_Controller {
 	public function perfil($id){
 
 		$user = $this->model_usuario->get($id);
-		$lImg = $this->model_usuario->getImgpefil($id);
-		if (!is_null($lImg) && sizeof($lImg) > 0){
-			$lImg = $lImg[0]["img"];
-		} else {
-			$lImg = null;
-		}
+
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
-			"img" => $lImg
+			"img" => $user->avatar
 		);
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('perfil-cliente', $data);

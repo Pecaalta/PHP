@@ -14,34 +14,19 @@ class Registro extends CI_Controller {
 		$this->load->model('model_usuario');
 		$this->load->model('model_imagen');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user)){
+		$this->nav = array(
+			"nav" => array(
+				array( "href" => "home", "texto" => "Inicio", "class" => "" ),
+				array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
+			)
+		);
+		if (!is_null($user)){
 			$this->nav = array(
-				"nav" => array(
-					array( "href" => "", "texto" => "Home", "class" => "active" )
-				)
+				"img" => $user['avatar'],
+				"id" => $user['id']
 			);
-		} else {
-			if (is_null($user['rut'])) {
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "home", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => null,
-					"id" => $user['id']
-				);
-			} else {
-				$lImg = $this->model_usuario->getImgpefil($user["id"]);
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login", "texto" => "Entrar", "class" => "" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => $lImg[0]["img"],
-					"rut" => $user['rut']
-				);
-			}
+			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+			if(!is_null($user['id'])) $this->nav["nav"][] = array( "href" => "login/logout", "texto" => "Salir", "class" => "" );
 		}
 	}
 
@@ -61,12 +46,13 @@ class Registro extends CI_Controller {
 	 */
 	public function restaurante(){
 		$msg = $this->session->userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$user = $this->session->userdata('user');
+		$lZone = $this->model_usuario->listaZona();
 		if (is_null($user)){
-			$this->load->view('registro/registro-restaurante', array("msg" => $msg));
-		} else if(!$user["end_perfil"]) {
-			$this->load->view('main/navbar', $this->nav);
-			$this->load->view('registro/registro-restaurante_upload_Img', array("msg" => $msg));
+			$this->load->view('registro/registro-restaurante', array("msg" => $msg, "zonas" => $lZone));
+		} else {
+			redirect('/home');
 		}
 	}
 
@@ -79,6 +65,7 @@ class Registro extends CI_Controller {
 			redirect('/home');
 		}
 		$msg = $this->session->userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$this->load->view('registro/registro-cliente', array("msg" => $msg));
 	}
 
@@ -94,20 +81,27 @@ class Registro extends CI_Controller {
 			"telefono" => $this->input->post('telefono'),
 			"email" => $this->input->post('email'),
 			"apellido" => $this->input->post('apellido'),
+			"password" => $this->input->post('password'),
 			"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
 			"end_perfil" => false,
+			"avatar" => false,
 			"is_active" => false
 		);
-		$data["id"] = $this->model_usuario->insert($data);
 
-		$config['upload_path']          = './uploads/';
-		$config['allowed_types']        = 'gif|jpg|png';
-		$config['max_size']             = 100;
-		$config['max_width']            = 1024;
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
 		$this->load->library('upload');
-
+		$this->upload->initialize($config);
+		if ( ! $this->upload->do_upload('img')){
+			$this->session->set_userdata('msg_error', $this->upload->display_errors());
+		}else{
+			$data["avatar"] = $this->upload->data()["client_name"];
+		}
+		$data["id"] = $this->model_usuario->insert($data);
 		$this->session->set_userdata('user',$data);
 		redirect(current_url());
+		
+
 	}
 
 	public function post_cliente(){
@@ -121,25 +115,50 @@ class Registro extends CI_Controller {
 			"email" => $this->input->post('email'),
 			"apellido" => $this->input->post('apellido'),
 			"password" => $this->input->post('password'),
+			"lat" => $this->input->post('lat'),
+			"lng" => $this->input->post('lng'),
 			"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
 			"end_perfil" => false,
+			"avatar" => false,
 			"is_active" => false
 		);
-		$data["id"] = $this->model_usuario->insert($data);
+		$msjError = array();
+		if ($data["password"] != $this->input->post('repassword')) {
+			$msjError[] = "Error la confirmacion de pasword no es correcta";
+			redirect(current_url());
+		} else if ($data["nickname"] == "") {
+			$msjError[] = "El nickname es nesesario";
+			redirect(current_url());
+		} else {
+			$config['upload_path'] = './uploads/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$this->load->library('upload');
+			$this->upload->initialize($config);
+			if ( ! $this->upload->do_upload('img')){
+				$msjError[] = $this->upload->display_errors();
+			}else{
+				$data["avatar"] = $this->upload->data()["client_name"];
+			}
+			$data["id"] = $this->model_usuario->insert($data);
+			$this->session->set_userdata('user',$data);
+			redirect("/home");
+		}
+		$this->session->set_userdata('msg_error', join(", ",$msjError) );
+	}
 
+	public function uploadImg(){
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
+        $config['max_size'] = 20000;
 		$this->load->library('upload');
 		$this->upload->initialize($config);
 		if ( ! $this->upload->do_upload('img')){
 			$this->session->set_userdata('msg_error', $this->upload->display_errors());
 		}else{
-			$data["id_img"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $data["id"]));
+			$data["avatar"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $usuario_id));
 		}
-		$this->session->set_userdata('user',$data);
-         redirect("/home");
-	}
 
+	}
 public function editar_cliente(){
 
 	$user = json_decode(json_encode($this->session->userdata('user')), true);

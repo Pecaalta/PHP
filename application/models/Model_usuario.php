@@ -3,11 +3,11 @@
 class Model_usuario extends MY_Model
 {
     public $table = 'Usuario';
-    public $primary_key = 'id';
-    public $fillable = array(
-        "nickname", "nombre", "rut", "direccion", "zona", "telefono", "email", "apellido", "fecha_de_nacimiento", "end_perfil", "is_active", "password", "descripcionRestaurante", "updated_at", "cantidadMesas"
-    );
-    public $protected = array();
+	public $primary_key = 'id'; 
+	public $fillable = array(
+		"nickname","nombre","rut","avatar","lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at","cantiadMesas"
+    ); 
+	public $protected = array();
     function __construct()
     {
         parent::__construct();
@@ -32,8 +32,8 @@ class Model_usuario extends MY_Model
         return $result;
     }
 
-    public function isExist($nick)
-    {
+    
+    public function isExist($nick){    
         $result = $this->_database->select("imagen.*")
             ->from('usuario')
             ->where('nickname', $nick)
@@ -68,5 +68,20 @@ class Model_usuario extends MY_Model
 
     //De aca para abajo va todo lo realcionado con el usuario tipo RESTAURANTE
 
+public function listaZona()
+    {
+        return $this->_database->select("id, nombre")
+        ->from('zona')
+        ->where('is_active', 1)
+        ->get()->result_array();
+    }
+    public function listaCategorias()
+    {
+        
+        return $this->_database->select("id, nombre")
+        ->from('Categoria')
+        ->where('is_active', 1)
+        ->get()->result_array();
+    }
     
 }

@@ -6,49 +6,30 @@ class Servicio extends CI_Controller {
 	private $nav;
 
     public function __construct(){
-		parent::__construct();
-		$this->load->library('session');
-		$this->load->library('form_validation');
-		$this->load->helper('url');
-		$this->load->helper('form');
+			parent::__construct();
+			$this->load->library('session');
+			$this->load->library('form_validation');
+			$this->load->helper('url');
+			$this->load->helper('form');
 
-		$this->load->model('model_usuario');
-		$this->load->model('model_imagen');
-		$this->load->model('model_servicio');
-		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user)){
+			$this->load->model('model_usuario');
+			$this->load->model('model_imagen');
+			$this->load->model('model_servicio');
+			$user = json_decode(json_encode($this->session->userdata('user')), true);
 			$this->nav = array(
 				"nav" => array(
-					array( "href" => "", "texto" => "Home", "class" => "" )
+					array( "href" => "home", "texto" => "Inicio", "class" => "" ),
+					array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
 				)
 			);
-		} else {
-			if (is_null($user['rut'])) {
-				$lImg = $this->model_usuario->getImgpefil($user["id"]);
-				if (!is_null($lImg)&& sizeof($lImg) > 0){
-					$lImg = $lImg[0]["img"];
-				} else {
-					$lImg = null;
-				}
+			if (!is_null($user)){
 				$this->nav = array(
-					"nav" => array(
-						array( "href" => "home", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => $lImg,
+					"img" => $user['avatar'],
 					"id" => $user['id']
 				);
-			} else {
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "", "texto" => "Home", "class" => "active" )
-					),
-					"img" => null,
-					"id" => $user['id'],
-					"rut" => $user['rut']
-				);
+				if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+				if(!is_null($user['id'])) $this->nav["nav"][] = array( "href" => "login/logout", "texto" => "Salir", "class" => "" );
 			}
-		}
     }
 
     private function controlAcceso($id){

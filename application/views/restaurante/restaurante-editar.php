@@ -12,7 +12,7 @@
     }
 </style>
 
-<div class="container contenedor text-center">
+<div class="container contenedor text-center  z-depth-1">
     <ul>
         <li>
             <a href="<?php echo base_url().'restaurante/editarDatos/'.$id; ?>">Editar datos del restaurante</a>

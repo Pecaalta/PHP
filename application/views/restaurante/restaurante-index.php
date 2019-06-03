@@ -22,7 +22,7 @@
     }
 </style>
 
-<div class="container contenedor text-center">
+<div class="container contenedor text-center  z-depth-1">
   <h1 class="display-4"><?php echo $user["nickname"]?></h1>
   <br>
   <!-- Nav pills -->
