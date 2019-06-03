@@ -75,6 +75,22 @@ class Model_usuario extends MY_Model
         return "No Ok";
     }
 
+    public function listaZona()
+    {
+        return $this->_database->select("id, nombre")
+        ->from('zona')
+        ->where('is_active', 1)
+        ->get()->result_array();
+    }
+    public function listaCategorias()
+    {
+        
+        return $this->_database->select("id, nombre")
+        ->from('Categoria')
+        ->where('is_active', 1)
+        ->get()->result_array();
+    }
+
 
 
     //De aca para abajo va todo lo realcionado con el usuario tipo RESTAURANTE
