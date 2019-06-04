@@ -21,12 +21,10 @@ class usuario extends CI_Controller {
 			)
 		);
 		if (!is_null($user)){
-			$this->nav = array(
-				"img" => $user['avatar'],
-				"id" => $user['id']
-			);
+			if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
+			else $this->nav["img"] = null;
 			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
-			if(!is_null($user['id'])) $this->nav["nav"][] = array( "href" => "login/logout", "texto" => "Salir", "class" => "" );
+			if(!is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 	}
 
@@ -78,6 +76,32 @@ class usuario extends CI_Controller {
 		$this->load->view('editar-password', $data);
 	}
 
+	public function nick_disponible(){
 
+		$data = array(
+			"nickname" => $this->input->post('nombre')
+		);
+		header('Content-Type: application/json');
+		try {
+			$exist = $this->model_usuario->nickDisponible2($data);
+			echo json_encode( array('status' => true , "body" => $exist ) );
+		} catch (\Throwable $th) {
+			echo json_encode( array('status' => false , "body" => $th ) );
+		}
+	}
+
+	public function email_disponible(){
+
+		$data = array(
+			"email" => $this->input->post('nombre')
+		);
+		header('Content-Type: application/json');
+		try {
+			$exist = $this->model_usuario->emailDisponible($data);
+			echo json_encode( array('status' => true , "body" => $exist ) );
+		} catch (\Throwable $th) {
+			echo json_encode( array('status' => false , "body" => $th ) );
+		}
+	}
 
 }

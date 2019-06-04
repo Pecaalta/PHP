@@ -183,9 +183,7 @@
             data: {nombre: nombreSer},
             success: function (data) {
                 data = JSON.parse(data);
-                console.log(data['body']);
-                
-                $( "#prueba" ).text( data);
+                $( "#prueba" ).text( data['body'] );
             }
         });
        

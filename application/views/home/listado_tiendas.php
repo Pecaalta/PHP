@@ -13,6 +13,13 @@
 	border-radius: 4px;
     overflow: hidden;
 }
+.view {
+    height: 400px;
+}
+.card a{
+    height: 200px;
+	overflow: hidden;
+}
 </style>
 <div class="container">
 	<div id="carousel-example-2" class="mt-3 mb-5 z-depth-1 carousel slide carousel-fade" data-ride="carousel">
@@ -28,7 +35,7 @@
 			<?php foreach ($top as $item):?>
 				<div class="carousel-item <?php if( isset($item['class'])) echo $item['class'] ?>">
 					<div class="view">
-						<img class="d-block w-100" src="<?php echo $item['imagen'] ?>" srcset="https://mdbootstrap.com/img/Photos/Others/gradient1.jpg"
+						<img class="d-block w-100" src="<?php echo base_url() . $item['imagen'] ?>"
 							alt="First slide">
 						<div class="mask rgba-black-light"></div>
 					</div>
@@ -69,7 +76,7 @@
 			<div class="col-xs-12 col-sm-6 col-md-4 mb-5">
 				<a href="<?php echo base_url() . $item['href'] ?>">
 					<div class="card">
-						<img class="card-img-top" src="<?php echo $item['imagen'] ?>" srcset="https://mdbootstrap.com/img/Photos/Others/gradient1.jpg" alt="Card image cap"/>
+						<img class="card-img-top" src="<?php echo base_url() . $item['imagen'] ?>"/>
 						<div class="card-body text-center">
 							<h4 class="text-center font-weight-bold card-title mb--5"><a><?php echo ($item["nombre"] != '')? $item["nombre"] : 'Sin titulo' ?></a></h4>
 							<p class="text-center card-text mb-0"><?php echo $item["nombre_restaurante"] ?></p>
