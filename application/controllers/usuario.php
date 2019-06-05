@@ -93,7 +93,7 @@ class usuario extends CI_Controller {
 	public function email_disponible(){
 
 		$data = array(
-			"email" => $this->input->post('nombre')
+			"email" => $this->input->post('email')
 		);
 		header('Content-Type: application/json');
 		try {

@@ -163,7 +163,8 @@
                 <input class="form-control" type="date" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="text" name="email" placeholder="Email">
+                <input class="form-control" type="text" name="email" placeholder="Email" id="mail">
+                <p id="emailOK"></p>
             </div>
             <div class="col-6 form-group">
                 <input class="form-control" type="password" name="password" placeholder="Contraseña">
@@ -207,5 +208,26 @@
             })
             .keyup();
     </script>
+
+<script>
+    $("#mail").keyup(function() {
+            var email = $("#mail").val();
+            var url = "usuario/email_disponible"
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() ?>" + url,
+                dataType: 'html',
+                data: {
+                    email: email
+                },
+                success: function(data) {
+                    data = JSON.parse(data);
+                    $("#emailOK").text(data['body']);
+                    console.log(data['body']);
+                }
+            });
+        })
+        .keyup();
+</script>
 
 </html>

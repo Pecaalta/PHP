@@ -138,6 +138,39 @@ class Registro extends CI_Controller {
 				$data["avatar"] = $this->upload->data()["client_name"];
 			}
 			$data["id"] = $this->model_usuario->insert($data);
+
+			$this->load->library('email');
+			//Indicamos el protocolo a utilizar
+			$config['protocol'] = 'ssmtp';
+			//El servidor de correo que utilizaremos
+			$config['smtp_host'] = 'ssl: //ssmtp.googlemail.com';
+			//Nuestro usuario
+			$config['smtp_user'] = 'contacto.reserbar@gmail.com';
+			//Nuestra contraseña
+			$config['smtp_pass'] = 'reserbar123';
+			//El puerto que utilizará el servidor smtp
+			$config['smtp_port'] = '587';
+			//El juego de caracteres a utilizar
+			$config['charset'] = 'utf-8';
+			//Permitimos que se puedan cortar palabras
+			$config['wordwrap'] = TRUE;
+			//El email debe ser valido 
+			$config['validate'] = true;
+
+			$config['mailtype'] = 'html';
+			$this->email->initialize($config);
+			$this->email->from('contacto.reserbar@gmail.com', 'ReserBAR');
+			$this->email->to($this->input->post('email'));
+			$this->email->subject('Registro de Usuario en ReserBAR');
+			$this->email->message('<h2><b>' . $data['nickname'] . ', te damos la bienvenida a ReserBAR! ' . '</b></h2>' .
+				'Te has registrado con los siguientes
+			datos: <br><br><b> Nombre:</b> ' . $data['nombre'] . '<br> <b>Apellido:</b> ' . $data['apellido'] 
+			. '<br> <b>Fecha de Nacimiento:</b> ' . $data['fecha_de_nacimiento'] . '<br><br>' . 'Ya puedes comenzar a buscar 
+			restaurantes y servicios donde deleitar el paladar. <br> Gracias por elegirnos. <br> El equipo de ReserBAR. ');
+
+			$this->email->send();
+
+
 			$this->session->set_userdata('user',$data);
 			redirect("/home");
 		}

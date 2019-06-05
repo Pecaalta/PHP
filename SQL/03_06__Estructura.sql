@@ -42,7 +42,6 @@ CREATE TABLE `restaurante_imagen` (
   `img` varchar(250) NOT NULL,
   `id_restaurante` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_restaurante` (`id_restaurante`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `servicio` (

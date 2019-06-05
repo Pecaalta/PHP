@@ -3,7 +3,7 @@
         background: url("<?php echo base_url(); ?>/public/img/perfil.jpg");
     }
 
-    img {
+    section img {
         max-width: 100%;
         margin-top: 15px;
     }
@@ -72,7 +72,7 @@
     <div id="perfil" class="col-lg-6 col-md-8">
         <div class="card testimonial-card">
             <div class="avatar mx-auto white">
-                <img width="210px" height="210px;" src="<?php echo base_url() . '/uploads/' . $img; ?>" class="rounded-circle z-depth-0" />
+                <img width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-0" />
                 <div id="botones">
                     <div id="divedit">
                         <a href=<?php echo base_url() . 'usuario/editar/' . $id; ?>>

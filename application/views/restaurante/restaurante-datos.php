@@ -6,6 +6,7 @@
         background: white;
         border-radius: 3px;
         margin-top: 15px;
+        padding-top: 15px;
     }
     .servicios{
         padding: 10px;

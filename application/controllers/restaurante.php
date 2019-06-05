@@ -43,13 +43,21 @@ class Restaurante extends CI_Controller {
 		$user = $this->model_usuario->get($id);
 		$lImg = $this->model_usuario->getImgpefil($id);
 		$servicios = $this->model_servicio->serviciosDisponibles($id);
-		if (!is_null($lImg) && sizeof($lImg) > 0){
-			$lImg = $lImg[0]["img"];
-		} else {
-			$lImg = null;
+		
+		$carusel = array();
+		for ($i=0; $i < sizeof($lImg) ; $i++) { 
+			$carusel[] = array(
+				"class" => "",
+				"img" => $img["img"],
+				"index" => $i
+			);
 		}
+		if (sizeof($lImg) > 0) {
+			$carusel[0]["class"] = "active";
+		} 
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
+			"carusel" => $carusel, 
 			"img" => $lImg,
 			"servicio" => $servicios
 		);

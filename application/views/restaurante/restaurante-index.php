@@ -6,6 +6,7 @@
         background: white;
         border-radius: 3px;
         margin-top: 15px;
+        padding: 20px;
     }
     .servicios{
         padding: 10px;
@@ -21,6 +22,40 @@
         display:inline;
     }
 </style>
+	<div id="carousel-example-2" class="mt-3 mb-5 z-depth-1 carousel slide carousel-fade" data-ride="carousel">
+		<!--Indicators-->
+		<ol class="carousel-indicators">
+			<?php foreach ($carusel as $item):?>
+				<li data-target="#carousel-example-2" data-slide-to="<?php echo $item['index'] ?>" class="<?php if( isset($item['class'])) echo $item['class'] ?>"></li>
+			<?php endforeach;?>
+		</ol>
+		<!--/.Indicators-->
+		<!--Slides-->
+		<div class="carousel-inner" role="listbox">
+			<?php foreach ($carusel as $item):?>
+				<div class="carousel-item <?php if( isset($item['class'])) echo $item['class'] ?>">
+					<div class="view">
+						<img class="d-block w-100" src="<?php echo base_url() . $item['img'] ?>"
+							alt="First slide">
+					</div>
+				</div>
+			<?php endforeach;?>
+		</div>
+		<!--/.Slides-->
+		<!--Controls-->
+		<a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
+			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+			<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
+			<span class="carousel-control-next-icon" aria-hidden="true"></span>
+			<span class="sr-only">Next</span>
+		</a>
+		<!--/.Controls-->
+	</div>
+
+
+
 
 <div class="container contenedor text-center  z-depth-1">
   <h1 class="display-4"><?php echo $user["nickname"]?></h1>
@@ -57,11 +92,13 @@
 
         <div class="row text-center text-lg-left">
 
+        <?php foreach($img as $item):?>
             <div class="col-lg-3 col-md-4 col-6">
-                <a href="#" class="d-block mb-4 h-100">
-                    <img class="img-fluid img-thumbnail" src="https://source.unsplash.com/pWkk7iiCoDM/400x300" alt="">
-                </a>
+                    <a href="#" class="d-block mb-4 h-100">
+                        <img class="img-fluid img-thumbnail" src="<?php echo base_url() . $item['img']; ?>" alt="">
+                    </a>
             </div>
+        <?php endforeach;?>
         </div>
 
         </div>

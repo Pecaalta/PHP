@@ -103,7 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li class="nav-item avatar dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url() . '/uploads/' . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
+                <img src="<?php echo base_url() . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
                     alt="avatar image">
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
