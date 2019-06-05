@@ -8,7 +8,6 @@
                         </a>
                     </div>
 
-                    <div id="collapseOne<?php echo $item->id ?>" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
                         <div class="card-body" id="block_container">
                             <div id="bloc1">
                                 <img src="<?php echo base_url() . '/uploads/servicios/' . $item->imagen; ?>" height="150" width="150"  alt="avatar image">
@@ -26,7 +25,7 @@
                                 </ul>
                             </div>
                         </div>
-                    </div>
+
                 </div>
         <?php endforeach;?>
       </div>

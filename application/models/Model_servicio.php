@@ -217,7 +217,7 @@ class Model_servicio extends MY_Model
         $sql = "SELECT *
                 FROM servicio
                 WHERE id = ?";
-        $query = $this->_database->query($sql, array($data['id']))->result_array();
+        $query = $this->_database->query($sql, array($data))->result();
         return $query;
     }
 }

@@ -73,7 +73,7 @@
             <?php if($item->is_active):?>
                 <div class="card">
                     <div class="card-header" role="tab" id="headingOne1">
-                        <a href="<?php echo base_url().'restaurante/info_servicio/'. $item->$id; ?>" aria-expanded="true" aria-controls="collapseOne1">
+                        <a href="<?php echo base_url().'restaurante/info_servicio/'. $item->id; ?>" aria-expanded="true" aria-controls="collapseOne1">
                             <input id="nombre" type="text" value="<?php echo $item->nombre; ?>" readonly><i class="fas fa-angle-down rotate-icon"></i>
                         </a>
                     </div>

@@ -178,10 +178,9 @@ class Restaurante extends CI_Controller
 
 	public function info_servicio($id)
 	{
-
 		$servicio = $this->model_servicio->infoServicio($id);
 
 		$this->load->view('main/navbar', $this->nav);
-		$this->load->view('restaurante/verServicio',  $servicio);
+		$this->load->view('restaurante/verServicio', array('servicio' => $servicio ) );
 	}
 }
