@@ -124,7 +124,7 @@ class Registro extends CI_Controller {
 		);
 		$msjError = array();
 		if ($data["password"] != $this->input->post('repassword')) {
-			$msjError[] = "Error la confirmacion de pasword no es correcta";
+			$msjError[] = "Error la confirmacion de password no es correcta";
 			redirect(current_url());
 		} else if ($data["nickname"] == "") {
 			$msjError[] = "El nickname es nesesario";
