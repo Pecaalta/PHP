@@ -216,8 +216,8 @@ class Model_servicio extends MY_Model
     public function infoServicio($data){
         $sql = "SELECT *
                 FROM servicio
-                WHERE nombre = ? AND id_restaurante = ?";
-        $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
+                WHERE id = ?";
+        $query = $this->_database->query($sql, array($data['id']))->result_array();
         return $query;
     }
 }

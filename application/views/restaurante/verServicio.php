@@ -1,6 +1,6 @@
 <h3>Informacion Servicio:</h3>
       <div>
-        <?php foreach($servicio->result() as $item):?>
+        <?php foreach($servicio as $item):?>
                 <div class="card">
                     <div class="card-header" role="tab" id="headingOne1">
                         <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne<?php echo $item->id ?>" aria-expanded="true" aria-controls="collapseOne1">
