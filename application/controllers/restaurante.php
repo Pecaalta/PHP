@@ -44,20 +44,8 @@ class Restaurante extends CI_Controller {
 		$lImg = $this->model_usuario->getImgpefil($id);
 		$servicios = $this->model_servicio->serviciosDisponibles($id);
 		
-		$carusel = array();
-		for ($i=0; $i < sizeof($lImg) ; $i++) { 
-			$carusel[] = array(
-				"class" => "",
-				"img" => $img["img"],
-				"index" => $i
-			);
-		}
-		if (sizeof($lImg) > 0) {
-			$carusel[0]["class"] = "active";
-		} 
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
-			"carusel" => $carusel, 
 			"img" => $lImg,
 			"servicio" => $servicios
 		);
@@ -71,6 +59,20 @@ class Restaurante extends CI_Controller {
 	public function principal($id){
 
 		$data = $this->infoGeneral($id);
+		
+		$carusel = array();
+		for ($i=0; $i < sizeof($data["img"]) ; $i++) { 
+			$carusel[] = array(
+				"class" => "",
+				"img" => $data["img"][$i]["img"],
+				"index" => $i
+			);
+		}
+		if (sizeof($data["img"]) > 0) {
+			$carusel[0]["class"] = "active";
+		} 
+		$data["carusel"] = $carusel;
+
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('restaurante/restaurante-index', $data);
 	}
@@ -84,14 +86,114 @@ class Restaurante extends CI_Controller {
 		}
 	}
 
+	public function imagenes($id){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+		if($this->controlAcceso($id)){
+			if (isset($_FILES['img'])) {
+				$avatar = $this->uploadImg($id);
+				if($avatar != null) {
+					$data = array(
+						"img" => $avatar,
+						"id_restaurante" => $id
+					);
+					$this->model_imagen->insert($data);
+				}
+			}
+			$data = $this->infoGeneral($id);
+			$this->load->view('main/navbar', $this->nav);
+			$this->load->view('restaurante/restaurante_upload_Img', $data);
+		}
+	}
+
+	public function imagenesdelete($id){
+		
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$data = $this->model_imagen->get($id);
+		$user_id = $data->id_restaurante;
+		$data->is_active = false;
+		$this->model_imagen->update($data, $id);
+		redirect("restaurante/imagenes/".$user_id);
+	}
+
+
+
 	public function editarDatos($id){
 		if($this->controlAcceso($id)){
+			$user = json_decode(json_encode($this->session->userdata('user')), true);
+			if ($id == $user['id']) {
+				if ( $this->input->post('actpassword') == $user['password']) {
+					$data = array(
+						"id" => $id,
+						"nickname" => $this->input->post('nickname'),
+						"nombre" => $this->input->post('nombre'),
+						"rut" => $this->input->post('rut'),
+						"direccion" => $this->input->post('direccion'),
+						"zona" => $this->input->post('zona'),
+						"telefono" => $this->input->post('telefono'),
+						"email" => $this->input->post('email'),
+						"apellido" => $this->input->post('apellido'),
+						"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
+						"lat" => $this->input->post('lat'),
+						"lng" => $this->input->post('lng')
+					);
+					if ($this->input->post('password') == $this->input->post('repassword') ){
+						$data["password"] = $this->input->post('password');
+					}				
+					if (isset($_FILES['img'])){
+	
+
+							$config['upload_path'] = './uploads/';
+							$config['allowed_types'] = 'gif|jpg|png';
+							$this->load->library('upload');
+							$this->upload->initialize($config);
+							if ( ! $this->upload->do_upload('img')){
+								$this->session->set_userdata('msg_error', $this->upload->display_errors());
+							}else{
+								$upload_data = $this->upload->data();
+							
+								$config['image_library'] = 'gd2';
+								$config['source_image'] = $upload_data['full_path'];
+								$config['maintain_ratio'] = TRUE;
+								$config['width']     = 200;
+								$config['height']   = 200;
+								$this->load->library('image_lib', $config); 
+								$this->image_lib->resize();
+	
+								$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];
+								 
+							}
+
+						
+						
+					}
+					$this->model_usuario->update($data,"id");
+					$this->session->set_userdata('user',$data);
+				} else {
+					$this->session->set_userdata('msg_error', "la contraseña no coincide");
+				}
+			} else {
+				$this->session->set_userdata('msg_error', "No estas autorizado");
+			}
 			$data = $this->infoGeneral($id);
 			$this->load->view('main/navbar', $this->nav);
 			$this->load->view('restaurante/restaurante-datos', $data);
 		}
 	}
 
+	public function uploadImg($id){
+
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$this->load->library('upload');
+		$this->upload->initialize($config);
+		if ( ! $this->upload->do_upload('img')){
+			$this->session->set_userdata('msg_error', $this->upload->display_errors());
+		}else{
+			return './uploads/' . $this->upload->data()["client_name"];
+		}
+		return null;
+	}
 
 
 	/**

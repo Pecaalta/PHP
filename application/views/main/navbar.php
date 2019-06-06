@@ -113,7 +113,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php endif;?>
                     <?php if (isset($rut)):?>
                         <a class="dropdown-item" href="<?php echo base_url().'restaurante/principal/'.$id; ?>">Mi local</a>
-                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/editar/'.$id; ?>">Editar mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/editarDatos/'.$id; ?>">Editar mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/servicios/'.$id; ?>">Gestionar servicios</a>
                     <?php endif;?>
                     <a class="dropdown-item" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
                 </div>

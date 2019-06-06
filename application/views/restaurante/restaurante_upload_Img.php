@@ -78,16 +78,15 @@
 
         .table {
             width:100%;
-            max-width: 500px;
-            margin: 10px auto;
+            margin: 15px ;
             border: 1px solid #ced4da;
         }
         .table td {
             vertical-align: middle;
         }
         .view-list {
-            width: 80px;
-            height: 80px;
+            width: 200px;
+            height: 200px;
             border-radius: 3px;
         }
         .delete {
@@ -107,16 +106,24 @@
           };
         </script>
 <div class="container">
-    <form action="<?php echo base_url(); ?>restaurante/do_upload" method="post" class="box m-t-50px row z-depth-1">
+    
+    <form action="" method="post" class="box m-t-50px row z-depth-1" enctype='multipart/form-data'>
         <div class="col-12 form-group">
-            <img class="logo-form" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
-            <h3>Restaurante</h3>
+            <h1>Gestion de imagenes</h1>
         </div>
+        <table class="table" >
+            <?php foreach($img as $item):?>
+                <tr>
+                    <td width="100px"><img class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" ></td>
+                    <td width="50px" class="text-center" ><a class="delete btn btn-primary" href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>">x</a></td>
+                </tr>
+            <?php endforeach;?>
+        </table>
         <div class="col-12">
             <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                 <div id="drag_upload_file">
                   <i class="fas fa-cloud-upload-alt"></i>
-                  <input type="file" name="userfile" id="selectfile" accept="image/*" onchange="loadFile(event)">
+                  <input type="file" name="img" id="selectfile" accept="image/*" onchange="loadFile(event)">
                   <img id="output" src="" alt="">
                 </div>
             </div>
@@ -124,27 +131,10 @@
         <div class="col-12">
             <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Agregar">
         </div>
-        <table class="table" >
-            <tr>
-                <td width="100px"><img class="view-list z-depth-1" src="http://www.aerocivil.gov.co/Style%20Library/Aerocivil/img/img-juego01.jpg" ></td>
-                <td>sadsad</td>
-                <td width="50px" ><button class="delete btn btn-primary">x</button></td>
-            </tr>
-            <tr>
-                <td width="100px"><img class="view-list z-depth-1" src="http://www.aerocivil.gov.co/Style%20Library/Aerocivil/img/img-juego01.jpg" ></td>
-                <td>sadsad</td>
-                <td width="50px" ><button class="delete btn btn-primary">x</button></td>
-            </tr>
-            <tr>
-                <td width="100px"><img class="view-list z-depth-1" src="http://www.aerocivil.gov.co/Style%20Library/Aerocivil/img/img-juego01.jpg" ></td>
-                <td>sadsad</td>
-                <td width="50px" ><button class="delete btn btn-primary">x</button></td>
-            </tr>
-        </table>
+    </form>
 
         <div class="col-12">
             <p class="error"><?php echo $msg; ?></p>
         </div>
-    </form>
 </body>
 </html>

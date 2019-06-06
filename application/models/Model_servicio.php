@@ -14,7 +14,7 @@ class Model_servicio extends MY_Model
     }
 
     public function serviciosDisponibles($id){
-        $sql = "select * from servicio where id_restaurante = ?";
+        $sql = "select *, SUBSTRING(descripcion,1,80) as text_corto from servicio where id_restaurante = ?";
         $query = $this->_database->query($sql, array($id));
         return $query;
     }

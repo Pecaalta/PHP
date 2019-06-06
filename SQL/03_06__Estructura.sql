@@ -41,7 +41,7 @@ CREATE TABLE `restaurante_imagen` (
   `is_active` tinyint(1) NOT NULL DEFAULT '1',
   `img` varchar(250) NOT NULL,
   `id_restaurante` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE `servicio` (
@@ -94,6 +94,4 @@ ALTER TABLE `restaurante_categoria`
   ADD CONSTRAINT `restaurante_categoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`),
   ADD CONSTRAINT `restaurante_categoria_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 
-ALTER TABLE `restaurante_imagen`
-  ADD CONSTRAINT `restaurante_imagen_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 COMMIT;

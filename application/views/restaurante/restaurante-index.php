@@ -1,12 +1,11 @@
 <style>
     body{
-        background: url("http://backgrounddownload.com/wp-content/uploads/2018/09/food-wallpaper-background-8.jpg");
     }
     .contenedor{
         background: white;
         border-radius: 3px;
-        margin-top: 15px;
         padding: 20px;
+        padding-top: 170px;
     }
     .servicios{
         padding: 10px;
@@ -21,8 +20,76 @@
     #bloc1, #bloc2 {
         display:inline;
     }
+    .carousel-item {
+        height: 300px;
+    }
+    .carousel-item .view{
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+    }
+    .carousel-item .view img{
+        width: 100%;
+        height: auto;
+    }
+    .mask-blanco{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+        background: rgba(255,255,255,0.7);
+        background: -moz-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 94%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0.7)), color-stop(57%, rgba(255,255,255,0.96)), color-stop(88%, rgba(255,255,255,1)), color-stop(94%, rgba(255,255,255,1)));
+        background: -webkit-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 94%);
+        background: -o-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 94%);
+        background: -ms-linear-gradient(top, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 94%);
+        background: linear-gradient(to bottom, rgba(255,255,255,0.7) 0%, rgba(255,255,255,1) 94%);
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ffffff', GradientType=0 );
+
+    }
+    .z-index-1 {
+        z-index: 1;
+    }
+    #carousel-example-2 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100%;
+    }
+
+    .border-radius-3px {
+        border-radius: 3px;
+    }
+    .logo-restaurante {
+        border-radius: 50%;
+        width: 300px;
+        height: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        margin: 50px auto -150px;
+        background: #fff;
+        overflow: hidden;
+    }
+    .logo-restaurante img {
+        min-height: 100%;
+    }
+    .descripcion {
+        color: #666;
+    }
+    .costo {
+        font-size: 1.5rem;
+        color: rgb(33, 150, 243);;
+        font-weight: 900;
+    }
 </style>
-	<div id="carousel-example-2" class="mt-3 mb-5 z-depth-1 carousel slide carousel-fade" data-ride="carousel">
+	<div id="carousel-example-2" class="z-index-1 carousel slide carousel-fade" data-ride="carousel">
+        <div class="mask-blanco"></div>
 		<!--Indicators-->
 		<ol class="carousel-indicators">
 			<?php foreach ($carusel as $item):?>
@@ -35,109 +102,80 @@
 			<?php foreach ($carusel as $item):?>
 				<div class="carousel-item <?php if( isset($item['class'])) echo $item['class'] ?>">
 					<div class="view">
-						<img class="d-block w-100" src="<?php echo base_url() . $item['img'] ?>"
+						<img class="d-block " src="<?php echo base_url() . $item['img'] ?>"
 							alt="First slide">
 					</div>
 				</div>
 			<?php endforeach;?>
 		</div>
-		<!--/.Slides-->
-		<!--Controls-->
-		<a class="carousel-control-prev" href="#carousel-example-2" role="button" data-slide="prev">
-			<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="carousel-control-next" href="#carousel-example-2" role="button" data-slide="next">
-			<span class="carousel-control-next-icon" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-		<!--/.Controls-->
+
 	</div>
 
 
+    <div class="logo-restaurante z-depth-1">
+        <img  src="<?php echo base_url() . $user['avatar'] ?>" alt="">
 
+    </div>
 
 <div class="container contenedor text-center  z-depth-1">
-  <h1 class="display-4"><?php echo $user["nickname"]?></h1>
+  <h1><?php echo $user["nickname"]?></h1>
+  <p class="descripcion"><?php echo $user["descripcionRestaurante"] ?></p>
   <br>
   <!-- Nav pills -->
   <div class="center-block d-flex align-items-center justify-content-center">
-    <ul class="nav nav-pills" role="tablist">
-        <li class="nav-item">
-        <a class="nav-link active" data-toggle="pill" href="#home">Descripción</a>
+    <ul class="nav nav-pills mb-4" role="tablist">
+        <li class="nav-item ">
+            <a class="nav-link active" data-toggle="pill" href="#menu1">Imágenes</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" href="#menu1">Imágenes</a>
+            <a class="nav-link" data-toggle="pill" href="#menu2">Servicios</a>
         </li>
         <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" href="#menu2">Servicios</a>
-        </li>
-        <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" href="#menu3">Reserva</a>
+            <a class="nav-link" data-toggle="pill" href="#menu3">Reserva</a>
         </li>
     </ul>
   </div>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div id="home" class="container tab-pane active text-center servicios"><br>
-      <p><strong><?php echo $user["descripcionRestaurante"] ?></strong></p>
-    </div>
-    <div id="menu1" class="container tab-pane fade"><br>
-      <div class="container">
-
-        <h1 class="font-weight-light text-center text-lg-left mt-4 mb-0">Galería de imágenes</h1>
-
-        <hr class="mt-2 mb-5">
-
+    <div id="menu1" class="container tab-pane active">
         <div class="row text-center text-lg-left">
-
-        <?php foreach($img as $item):?>
-            <div class="col-lg-3 col-md-4 col-6">
+            <?php foreach($img as $item):?>
+                <div class="col-lg-3 col-md-4 col-6">
                     <a href="#" class="d-block mb-4 h-100">
-                        <img class="img-fluid img-thumbnail" src="<?php echo base_url() . $item['img']; ?>" alt="">
+                        <img class="img-fluid z-depth-1 border-radius-3px" src="<?php echo base_url() . $item['img']; ?>" alt="">
                     </a>
-            </div>
-        <?php endforeach;?>
-        </div>
-
+                </div>
+            <?php endforeach;?>
         </div>
     </div>
-    <div id="menu2" class="container tab-pane fade ancho"><br>
-      <h3>Nuestras comidas disponibles:</h3>
-      <div class="accordion md-accordion servicios" id="accordionEx" role="tablist" aria-multiselectable="true">
-        <?php foreach($servicio->result() as $item):?>
-            <?php if($item->is_active):?>
-                <div class="card">
-                    <div class="card-header" role="tab" id="headingOne1">
-                        <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne<?php echo $item->id ?>" aria-expanded="true" aria-controls="collapseOne1">
-                            <h5 class="mb-0"><?php echo $item->nombre; ?> <i class="fas fa-angle-down rotate-icon"></i></h5>
-                        </a>
-                    </div>
-
-                    <div id="collapseOne<?php echo $item->id ?>" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
-                        <div class="card-body" id="block_container">
-                            <div id="bloc1">
-                                <img src="<?php echo base_url() . '/uploads/servicios/' . $item->imagen; ?>" height="150" width="150"  alt="avatar image">
+    <div id="menu2" class="container tab-pane fade">
+        <h3>Nuestras comidas disponibles:</h3>
+        <div class="row">
+            <?php foreach($servicio->result() as $item):?>
+                <?php if($item->is_active):?>
+                    <div class=" col-sm-6 col-md-4">
+                        <div class="card">
+                            <div class="view overlay">
+                                <img class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
+                                <a href="#!">
+                                    <div class="mask rgba-white-slight"></div>
+                                </a>
                             </div>
-                            <div id="bloc2">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <div class="md-v-line"></div><i class="fas fa-info mr-4 pr-3"></i>
-                                        <?php echo $item->descripcion; ?>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="md-v-line"></div><i class="fas fa-dollar-sign mr-4 pr-3"></i>
-                                        <?php echo $item->precio; ?>
-                                    </li>
-                                </ul>
+                            <div class="card-body">
+                                <h4 class="card-title"><?php echo $item->nombre; ?> </h4>
+                                <p class="card-text"><?php echo $item->text_corto; ?></p>
+                                <span class="costo">$<?php echo $item->precio; ?></span>
+                                
+                            </div>
+                            <div class="card-footer">
+                                <a href="#" class="btn btn-primary">Ver</a>
                             </div>
                         </div>
                     </div>
-                </div>
-            <?php endif;?>
-        <?php endforeach;?>
-      </div>
+                <?php endif;?>
+            <?php endforeach;?>
+        </div>
     </div>
     <div id="menu3" class="container tab-pane fade"><br>
       <h3>Haz tu reserva en este restaurante</h3>

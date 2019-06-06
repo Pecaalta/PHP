@@ -6,7 +6,7 @@ class Model_usuario extends MY_Model
     public $primary_key = 'id';
 	public $protected = array();
     public $fillable = array(
-        "nickname", "nombre","avatar","lat", "rut", "direccion", "zona", "telefono", "email", "apellido", "fecha_de_nacimiento", "end_perfil", "is_active", "password", "descripcionRestaurante", "updated_at", "cantidadMesas"
+        "id", "nickname", "nombre","avatar","lat","lng", "rut", "direccion", "zona", "telefono", "email", "apellido", "fecha_de_nacimiento", "end_perfil", "is_active", "password", "descripcionRestaurante", "updated_at", "cantidadMesas"
     );
     
     function __construct()
@@ -29,6 +29,7 @@ class Model_usuario extends MY_Model
         $result = $this->_database->select("*")
             ->from('restaurante_imagen')
             ->where('id_restaurante', $id)
+            ->where('is_active', 1)
             ->get()->result_array();
         return $result;
     }
