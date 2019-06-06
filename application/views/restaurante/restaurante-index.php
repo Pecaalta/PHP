@@ -20,6 +20,9 @@
     #bloc1, #bloc2 {
         display:inline;
     }
+    li{
+        list-style: none;
+    }
 </style>
 
 <div class="container contenedor text-center  z-depth-1">
@@ -74,7 +77,7 @@
                 <div class="card">
                     <div class="card-header" role="tab" id="headingOne1">
                         <a href="<?php echo base_url().'restaurante/info_servicio/'. $item->id; ?>" aria-expanded="true" aria-controls="collapseOne1">
-                            <input id="nombre" type="text" value="<?php echo $item->nombre; ?>" readonly><i class="fas fa-angle-down rotate-icon"></i>
+                            <li><?php echo $item->nombre . ' '; ?><i class="fas fa-angle-down rotate-icon"></i></li>
                         </a>
                     </div>
                 </div>
