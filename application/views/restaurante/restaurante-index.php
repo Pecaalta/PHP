@@ -104,7 +104,7 @@
     </div>
     <div id="menu3" class="container tab-pane fade"><br>
       <h3>Haz tu reserva en este restaurante</h3>
-      <a href="<?php echo base_url().'reserva/realizarReserva/'.$id; ?>">Realizar reserva</a>
+      <a href="<?php echo base_url().'reserva/realizarReserva/'.$user['id']; ?>">Realizar reserva</a>
     </div>
   </div>
 </div>

@@ -82,7 +82,12 @@ class Reserva extends CI_Controller {
 
     public function realizarReserva($id_restaurante){
         $user = json_decode(json_encode($this->session->userdata('user')), true);
-        if ($this->controlAcceso($user['id'])){
+        if (!is_null($user)){
+			$data = array(
+				"id_usuario" => $user['id'],
+				"id_restaurante" => $id_restaurante
+			);
+			$this->model_reserva->instanciarPreReserva($data);
             $data = $this->infoGeneral($user['id'], $id_restaurante);
             $this->load->view('main/navbar', $this->nav);
 			$this->load->view('reserva/realizarReserva', $data);
@@ -90,20 +95,123 @@ class Reserva extends CI_Controller {
     }
 
     public function fechaDisponible(){
-        $user = json_decode(json_encode($this->session->userdata('user')), true);
-		$data = array(
-			"fecha" => $this->input->post('fechaIndicada'),
-			"hora" => $this->input->post('horaIndicada'),
-			"id_restaurante" => $this->input->post('id_restaurante')
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		//if($apertura <= $horaReserva and $clausura >= $horaReserva){
+
+			$data = array(
+				"fecha" => str_replace( 'T', ' ', $this->input->post('fechaIndicada')),
+				"restaurante" => $userRestaurante,
+				"idUsuario" => $user['id']
+			);
+			$array = array(
+				"respuesta" => $this->model_reserva->disponibilidadMesa($data)
+			);
+
+			$this->load->view('componentes/reserva/fecha', $array);
+	}
+
+	public function infoServicio(){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		$array = array(
+			"servicio" => $this->model_servicio->serviciosDisponibles($userRestaurante->id),
+			"nombreServicio" => $this->input->post('nombreServicio')
 		);
-		header('Content-Type: application/json');
-		try {
-            $exist = $this->model_reserva->prueba($data);
-            $tipo = gettype($exist);
-			echo json_encode( array('status' => true , "body" => $exist ) );
-		} catch (\Throwable $th) {
-			echo json_encode( array('status' => false , "body" => $th ) );
+		
+		$this->load->view('componentes/reserva/infoServicio', $array);
+	}
+
+	public function agregarComida(){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		$data = array(
+			"idUsuario" => $user["id"],
+			"idRestaurante" => $userRestaurante->id,
+			"idServicio" => $this->input->post('idServicio'),
+			"cantidad" => $this->input->post('cantidad')
+		);
+
+		//Agrego la comida
+		$array = array(
+			"respuesta" => $this->model_reserva->agregarComida($data)
+		);
+		$this->load->view('componentes/reserva/informarComida', $array);
+	}
+
+	public function actualizarCarrito(){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		$data = array(
+			"idUsuario" => $user["id"],
+			"idRestaurante" => $userRestaurante->id,
+			"idServicio" => $this->input->post('idServicio')
+		);
+
+		//Actualizo la vista de las comidas que lleva agregadas
+		$array = array(
+			"carrito" => $this->model_reserva->carritoComidas($data)
+		);
+		$this->load->view('componentes/reserva/comidasAgregadas', $array);
+	}
+	
+	public function eliminarComida(){
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+		$data = array(
+			"idUsuario" => $user["id"],
+			"idServicio" => $this->input->post('idServicio')
+		);
+
+		$this->model_reserva->eliminarComida($data);
+	}
+
+	public function datosPago()
+	{
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$data = array(
+			"cantidadPersonas" => $this->input->post('cantidadPersonas'),
+			"tarjeta" => $this->input->post('tarjeta'),
+			"titularTarjeta" => $this->input->post('titularTarjeta'),
+			"cvc" => $this->input->post('cvc'),
+			"idUsuario" => $user['id']
+		);
+		$errores = "";
+		if(($data["cantidadPersonas"]) <= 0){
+			$errores = $errores."La cantidad de personas deben ser al menos 1\n";
 		}
-    }
+		if(strlen($data["tarjeta"]) < 16){
+			$errores = $errores."La tarjeta debe se tener al menos 16 digitos\n";
+		}
+		if($data["titularTarjeta"] == ""){
+			$errores = $errores."Debe brindar el nombre del titular de la tarjeta \n";
+		}
+		if(strlen($data["cvc"]) != 3){
+			$errores = $errores."El codigo CVC debe tener 3 digitos \n";
+		}
+		if($errores != ""){
+			echo $errores;
+		}else{
+			$this->model_reserva->datosPago($data);
+			echo "Todo bien huevon";
+		}
+	}
+
+	public function finalizarReserva()
+	{
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$data = array(
+			"idUsuario" => $user['id']
+		);
+		if($this->model_reserva->validacionFinalUltimate($data)){
+			echo "Putin te tiene en su gloria, esto funciono :)";
+		}else{
+			echo "Error, la fecha y hora que seleccionaste ya no estan disponibles, por favor elige otra";
+		}
+	}
 
 }    
