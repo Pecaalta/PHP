@@ -30,6 +30,15 @@
     margin: 0 0rem 0 0.75rem;
 	cursor: pointer;
 }
+.card-img-veiw img{
+	min-width: 100%;
+	min-height: 100%
+}
+.card-img-veiw{
+    height: 200px;
+	overflow: hidden;
+}
+
 </style>
 <div class="container">
 	<div class="row">
@@ -99,7 +108,9 @@
 					<div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-5">
 						<a href="<?php echo base_url() . $item['href'] ?>">
 							<div class="card">
-								<img class="card-img-top" src="<?php echo $item['imagen'] ?>" srcset="https://mdbootstrap.com/img/Photos/Others/gradient1.jpg" alt="Card image cap"/>
+								<div class="card-img-veiw">
+									<img class="card-img-top" src="<?php echo base_url() . $item['imagen'] ?>"/>
+								</div>
 								<div class="card-body text-center">
 									<h4 class="text-center font-weight-bold card-title mb--5"><a><?php echo ($item["nombre"] != '')? $item["nombre"] : 'Sin titulo' ?></a></h4>
 									<p class="text-center card-text mb-0"><?php echo $item["nombre_restaurante"] ?></p>

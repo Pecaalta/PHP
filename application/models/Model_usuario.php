@@ -5,9 +5,10 @@ class Model_usuario extends MY_Model
     public $table = 'Usuario';
 	public $primary_key = 'id'; 
 	public $fillable = array(
-		"nickname","nombre","rut","avatar","lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at","cantiadMesas","apertura","clausura","tiempoReserva"
+		"id","nickname","nombre","rut","avatar","lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at","cantiadMesas","apertura","clausura","tiempoReserva"
     ); 
 	public $protected = array();
+    
     function __construct()
     {
         parent::__construct();
@@ -25,13 +26,20 @@ class Model_usuario extends MY_Model
 
     public function getImgpefil($id)
     {
-        $result = $this->_database->select("imagen.*")
-            ->from('imagen')
-            ->where('usuario_id', $id)
+        $result = $this->_database->select("*")
+            ->from('restaurante_imagen')
+            ->where('id_restaurante', $id)
+            ->where('is_active', 1)
             ->get()->result_array();
         return $result;
     }
-
+    
+    
+    
+    
+    
+    
+    
     
     public function isExist($nick){    
         $result = $this->_database->select("imagen.*")
@@ -79,7 +87,7 @@ class Model_usuario extends MY_Model
 
     //De aca para abajo va todo lo realcionado con el usuario tipo RESTAURANTE
 
-public function listaZona()
+    public function listaZona()
     {
         return $this->_database->select("id, nombre")
         ->from('zona')

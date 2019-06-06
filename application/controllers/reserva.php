@@ -16,38 +16,17 @@ class Reserva extends CI_Controller {
 		$this->load->model('model_servicio');
 		$this->load->model('model_reserva');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user)){
-			$this->nav = array(
-				"nav" => array(
-					array( "href" => "", "texto" => "Home", "class" => "" )
-				)
-			);
-		} else {
-			if (is_null($user['rut'])) {
-				$lImg = $this->model_usuario->getImgpefil($user["id"]);
-				if (!is_null($lImg)&& sizeof($lImg) > 0){
-					$lImg = $lImg[0]["img"];
-				} else {
-					$lImg = null;
-				}
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "home", "texto" => "Home", "class" => "active" ),
-						array( "href" => "login/logout", "texto" => "Salir", "class" => "" )
-					),
-					"img" => $lImg,
-					"id" => $user['id']
-				);
-			} else {
-				$this->nav = array(
-					"nav" => array(
-						array( "href" => "", "texto" => "Home", "class" => "active" )
-					),
-					"img" => null,
-					"id" => $user['id'],
-					"rut" => $user['rut']
-				);
-			}
+		$this->nav = array(
+			"nav" => array(
+				array( "href" => "home", "texto" => "Inicio", "class" => "" ),
+				array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
+			)
+		);
+		if (!is_null($user)){
+			if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
+			else $this->nav["img"] = null;
+			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+			if(!is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 	}
 

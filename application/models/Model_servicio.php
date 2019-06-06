@@ -14,7 +14,7 @@ class Model_servicio extends MY_Model
     }
 
     public function serviciosDisponibles($id){
-        $sql = "select * from servicio where id_restaurante = ?";
+        $sql = "select *, SUBSTRING(descripcion,1,80) as text_corto from servicio where id_restaurante = ?";
         $query = $this->_database->query($sql, array($id));
         return $query;
     }
@@ -200,6 +200,7 @@ class Model_servicio extends MY_Model
             where Servicio.is_active = 1 and usuario.is_active = 1 and  usuario.lat is not null and usuario.lng is not NULL 
             $sqlwhere
         ";
+
         return $this->_database->query($sql)->result_array(); 
     }
 
@@ -210,6 +211,6 @@ class Model_servicio extends MY_Model
                 FROM servicio 
                 WHERE nombre = ? AND id_restaurante = ?";
         $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
-        return sizeof($query) == 0;
+        return sizeof($query) == 0 ? "Disponible" : "Ya tienes un servicio con ese nombre";
     }
 }

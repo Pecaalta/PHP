@@ -19,12 +19,10 @@ class home extends CI_Controller {
 			)
 		);
 		if (!is_null($user)){
-			$this->nav = array(
-				"img" => $user['avatar'],
-				"id" => $user['id']
-			);
+			if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
+			else $this->nav["img"] = null;
 			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
-			if(!is_null($user['id'])) $this->nav["nav"][] = array( "href" => "login/logout", "texto" => "Salir", "class" => "" );
+			if(!is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 
     }

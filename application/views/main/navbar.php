@@ -19,14 +19,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
-  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-  crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
-  integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-  crossorigin=""></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+    integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+    crossorigin=""></script>
 
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
@@ -103,7 +103,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li class="nav-item avatar dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url() . '/uploads/' . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
+                <img src="<?php echo base_url() . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
                     alt="avatar image">
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"
@@ -113,7 +113,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php endif;?>
                     <?php if (isset($rut)):?>
                         <a class="dropdown-item" href="<?php echo base_url().'restaurante/principal/'.$id; ?>">Mi local</a>
-                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/editar/'.$id; ?>">Editar mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/editarDatos/'.$id; ?>">Editar mi local</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'restaurante/servicios/'.$id; ?>">Gestionar servicios</a>
                     <?php endif;?>
                     <a class="dropdown-item" href="<?php echo base_url().'login/logout'; ?>">Salir</a>
                 </div>
