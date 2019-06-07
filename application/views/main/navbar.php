@@ -40,6 +40,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .h-36{
             height: 36px;
         }
+        .dropdown-menu {
+            border: none;
+            padding: 5px;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,.16),0 2px 10px 0 rgba(0,0,0,.12)!important;
+        }
+        .dropdown-item {
+            color: #555!important;
+        }
+        .dropdown-item:hover {
+            border-radius: 5px;
+            background-color: #4285f4!important;
+            box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
+            color: #fff!important;
+        }
+
     </style>
     <script>
         $(document).ready(function(){
@@ -103,7 +118,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             <li class="nav-item avatar dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-55" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
-                <img src="<?php echo base_url() . $img; ?>" class="w-36 h-36 rounded-circle z-depth-0"
+                <img src="<?php echo base_url() . $img; ?>" class="w-36 h-36 rounded-circle z-depth-1"
                     alt="avatar image">
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary"

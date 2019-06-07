@@ -240,8 +240,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 
 INSERT INTO `usuario` (`id`, `is_active`, `nickname`, `password`, `nombre`, `email`, `rut`, `direccion`, `zona`, `telefono`, `apellido`, `fecha_de_nacimiento`, `end_perfil`, `created_at`, `descripcionRestaurante`, `updated_at`, `cantidadMesas`, `avatar`, `lat`, `lng`, `tiempoReserva`, `apertura`, `clausura`) VALUES
-(1, 0, 'lucas', '1', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(2, 1, 'RussiaFood', '1', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
+(1, 0, 'admin', '123', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
+(2, 1, 'tienda', '123', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
 (3, 0, 'rararaa', '1', 'pepapig', 'asdad@sdc', '656', 'asda', '65asd', '515', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (4, 0, 'batlalalal', '', 'asda', 'asds@asf', '656', 'asdasd', 'asds', '5656', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (5, 0, 'batman', '1', 'batman', 'asd@das', NULL, NULL, NULL, NULL, 'lala', '1111-11-11', 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
