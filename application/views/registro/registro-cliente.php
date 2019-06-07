@@ -151,10 +151,10 @@
             </div>
             <div class="col-4 form-group">
                 <input id="disponible" class="form-control" type="text" name="nickname" placeholder="Nickname">
+                <p id="prueba"></p>
             </div>
             <div class="col-4 form-group">
                 <input class="form-control" type="text" name="nombre" placeholder="Nombre">
-                <p id="prueba"></p>
             </div>
             <div class="col-4 form-group">
                 <input class="form-control" type="text" name="apellido" placeholder="Apellido">
