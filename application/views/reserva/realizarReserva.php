@@ -239,7 +239,6 @@
                 var precio = $("#precio" + idSer).html();
                 var precioTotal = $("#precioTotal").html();
                 precioTotal = (precioTotal - precio);
-                alert(precioTotal);
                 $('#' + idfila).remove();
                 $('#precioTotal').html(precioTotal);
             }

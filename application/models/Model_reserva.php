@@ -160,7 +160,6 @@ class Model_reserva extends MY_Model
         $carrito = $this->_database->query($sql, array(
                                                         $data['idUsuario']
                                                         ))->result_array();
-                                                        var_dump($carrito); 
         return $carrito;                                                
     }
 

@@ -1,5 +1,6 @@
 <style>
     body{
+        background: url("https://images.alphacoders.com/289/289223.jpg");
     }
     .contenedor{
         background: white;
