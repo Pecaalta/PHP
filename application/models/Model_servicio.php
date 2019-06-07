@@ -213,4 +213,12 @@ class Model_servicio extends MY_Model
         $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
         return sizeof($query) == 0 ? "Disponible" : "Ya tienes un servicio con ese nombre";
     }
+
+    public function infoServicio($data){
+        $sql = "SELECT *
+                FROM servicio
+                WHERE id = ?";
+        $query = $this->_database->query($sql, array($data))->result();
+        return $query;
+    }
 }
