@@ -31,7 +31,7 @@ class login extends CI_Controller {
 			->where('nickname', $this->input->post('nickname'))
 			->where('password', $this->input->post('password'))
 			->get();
-		if (!is_null($usuario)) {
+		if (!is_null($usuario) && sizeof($usuario) > 0 ) {
 			$this->session->set_userdata('user',$usuario);
 			redirect('/home');
 		} else {
