@@ -106,7 +106,10 @@ class Reserva extends CI_Controller {
 	public function agregarComida(){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
-
+		$array = array(
+			"carrito" => $this->model_reserva->carritoComidas($user["id"])
+		);
+		var_dump($array);
 		$data = array(
 			"idUsuario" => $user["id"],
 			"idRestaurante" => $userRestaurante->id,
@@ -114,27 +117,16 @@ class Reserva extends CI_Controller {
 			"cantidad" => $this->input->post('cantidad')
 		);
 
-		//Agrego la comida
-		$array = array(
-			"respuesta" => $this->model_reserva->agregarComida($data)
-		);
-		$this->load->view('componentes/reserva/informarComida', $array);
+		echo $this->model_reserva->agregarComida($data);
 	}
 
 	public function actualizarCarrito(){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
-
-		$data = array(
-			"idUsuario" => $user["id"],
-			"idRestaurante" => $userRestaurante->id,
-			"idServicio" => $this->input->post('idServicio')
-		);
-
 		//Actualizo la vista de las comidas que lleva agregadas
 		$array = array(
-			"carrito" => $this->model_reserva->carritoComidas($data)
+			"carrito" => $this->model_reserva->carritoComidas($user["id"])
 		);
+		var_dump($array);
 		$this->load->view('componentes/reserva/comidasAgregadas', $array);
 	}
 	

@@ -155,13 +155,9 @@ class Model_reserva extends MY_Model
                 FROM reservas
                 left JOIN reservas_servicio ON reservas_servicio.id_reserva = reservas.id
                 left JOIN servicio ON servicio.id = reservas_servicio.id_servicio
-                WHERE reservas.id_usuario = ?
+                WHERE reservas.id_usuario = $data
                 AND reservas.is_active = 'false'";
-        $carrito = $this->_database->query($sql, array(
-                                                        $data['idUsuario']
-                                                        ))->result_array();
-                                                        var_dump($carrito); 
-        return $carrito;                                                
+        return $this->_database->query($sql)->result_array();
     }
 
     public function eliminarComida($data)
