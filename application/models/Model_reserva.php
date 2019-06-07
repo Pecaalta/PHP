@@ -153,13 +153,14 @@ class Model_reserva extends MY_Model
     {
         $sql = "SELECT servicio.*,reservas_servicio.* 
                 FROM reservas
-                JOIN reservas_servicio ON reservas_servicio.id_reserva = reservas.id
-                JOIN servicio ON servicio.id = reservas_servicio.id_servicio
+                left JOIN reservas_servicio ON reservas_servicio.id_reserva = reservas.id
+                left JOIN servicio ON servicio.id = reservas_servicio.id_servicio
                 WHERE reservas.id_usuario = ?
                 AND reservas.is_active = 'false'";
         $carrito = $this->_database->query($sql, array(
                                                         $data['idUsuario']
-                                                        ))->result_array(); 
+                                                        ))->result_array();
+                                                        var_dump($carrito); 
         return $carrito;                                                
     }
 
