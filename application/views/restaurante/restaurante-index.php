@@ -137,6 +137,28 @@
     </ul>
   </div>
 
+  <!-- CONFIGURACION LINKS -->
+  <?php
+
+       $this->load->helper('url');
+       $currentURL = current_url();
+  //     $url=$currentURL;
+
+     $url=urlencode('http://www.facebook.com/pages/Dressfinity-LLC/208406062583392 ');
+   ?>
+
+  <!-- FACEBOOK -->
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.3"></script>
+  <div class="fb-share-button" data-href="<?php echo $url ?>"
+  data-layout="button" data-size="large"><a target="_blank"
+  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse"
+  class="fb-xfbml-parse-ignore">Compartir</a></div>
+
+  <!-- TWITTER -->
+  <a href="<?php echo $url ?>" class="twitter-share-button" data-size="large" data-lang="es" data-show-count="false">Tweet</a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
   <!-- Tab panes -->
   <div class="tab-content">
     <div id="menu1" class="container tab-pane active">
@@ -167,7 +189,7 @@
                                 <h4 class="card-title"><?php echo $item->nombre; ?> </h4>
                                 <p class="card-text"><?php echo $item->text_corto; ?></p>
                                 <span class="costo">$<?php echo $item->precio; ?></span>
-                                
+
                             </div>
                             <div class="card-footer">
                                 <a href="<?php echo base_url().'restaurante/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>
