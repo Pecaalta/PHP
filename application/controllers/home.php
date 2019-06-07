@@ -10,8 +10,8 @@ class home extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->library('session');	
 		$this->load->model('model_usuario');
-
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
 		$this->nav = array(
 			"nav" => array(
 				array( "href" => "home", "texto" => "Inicio", "class" => "" ),
