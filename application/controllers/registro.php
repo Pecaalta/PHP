@@ -93,7 +93,7 @@ class Registro extends CI_Controller {
 		if ( ! $this->upload->do_upload('img')){
 			$this->session->set_userdata('msg_error', $this->upload->display_errors());
 		}else{
-			$data["avatar"] = $this->upload->data()["client_name"];
+			$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];
 		}
 		$data["id"] = $this->model_usuario->insert($data);
 		$this->session->set_userdata('user',$data);
@@ -118,7 +118,7 @@ class Registro extends CI_Controller {
 			"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
 			"end_perfil" => false,
 			"avatar" => false,
-			"is_active" => false
+			"is_active" => true
 		);
 		$msjError = array();
 		if ($data["password"] != $this->input->post('repassword')) {
@@ -135,7 +135,7 @@ class Registro extends CI_Controller {
 			if ( ! $this->upload->do_upload('img')){
 				$msjError[] = $this->upload->display_errors();
 			}else{
-				$data["avatar"] = $this->upload->data()["client_name"];
+				$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];
 			}
 			$data["id"] = $this->model_usuario->insert($data);
 
@@ -205,7 +205,6 @@ public function editar_cliente(){
 		"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento')
 	);
 	$this->model_usuario->where('id', $user['id']);
-	$data["id"] = $this->model_usuario->update($data);
 
 	$config['upload_path'] = './uploads/';
 	$config['allowed_types'] = 'gif|jpg|png';
@@ -214,8 +213,10 @@ public function editar_cliente(){
 	if ( ! $this->upload->do_upload('img')){
 		$this->session->set_userdata('msg_error', $this->upload->display_errors());
 	}else{
-		$data["id_img"] = $this->model_imagen->insert(array("img" => $this->upload->data()["client_name"],"usuario_id" => $data["id"]));
+		$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];
 	}
+	$data["id"] = $this->model_usuario->update($data);
+
 	$this->session->unset_userdata('user');
 	$usuario = $this->model_usuario
 			->where('nickname', $user['nickname'])

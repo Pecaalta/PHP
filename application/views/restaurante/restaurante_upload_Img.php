@@ -27,12 +27,12 @@
             margin: 10px auto 30px;
             display: block;
         }
-        h3 {
+        h1 {
             text-align: center;
             margin-bottom: 50px;    
-            font-size: 20px;
             color: #666;
             text-transform: uppercase;
+            margin: 30px 0 10px 0;
         }
 
 
@@ -76,17 +76,24 @@
             margin: 5px;
         }
 
-        .table {
-            width:100%;
-            margin: 15px ;
-            border: 1px solid #ced4da;
+        .cerrar {
+            position: absolute;
+            top: 5px;
+            left: 5px;
         }
-        .table td {
-            vertical-align: middle;
+        .box {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .view {
+            position: relative;
+            margin: .5rem;
+            overflow: visible;
         }
         .view-list {
             width: 200px;
-            height: 200px;
             border-radius: 3px;
         }
         .delete {
@@ -111,14 +118,14 @@
         <div class="col-12 form-group">
             <h1>Gestion de imagenes</h1>
         </div>
-        <table class="table" >
+        <div class="box" >
             <?php foreach($img as $item):?>
-                <tr>
-                    <td width="100px"><img class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" ></td>
-                    <td width="50px" class="text-center" ><a class="delete btn btn-primary" href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>">x</a></td>
-                </tr>
+                <div class="view">
+                    <img class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" >
+                    <a class="delete cerrar btn btn-primary" href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>">x</a>
+                </div class="col-sm-6 col-md-4">
             <?php endforeach;?>
-        </table>
+        </div>
         <div class="col-12">
             <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                 <div id="drag_upload_file">
@@ -134,7 +141,7 @@
     </form>
 
         <div class="col-12">
-            <p class="error"><?php echo $msg; ?></p>
+            <p class="error"><?php echo $error; ?></p>
         </div>
 </body>
 </html>

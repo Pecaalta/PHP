@@ -31,12 +31,12 @@ class login extends CI_Controller {
 			->where('nickname', $this->input->post('nickname'))
 			->where('password', $this->input->post('password'))
 			->get();
-		if (!is_null($usuario) && sizeof($usuario) > 0 ) {
-			$this->session->set_userdata('user',$usuario);
-			redirect('/home');
-		} else {
+		if ($usuario == false) {
 			$this->session->set_userdata('msg_error', "No se encontro el usaurio, algun dato puede estar mal");
 			redirect('/login');
+		} else {
+			$this->session->set_userdata('user',$usuario);
+			redirect('/home');
 		}
 	}
 

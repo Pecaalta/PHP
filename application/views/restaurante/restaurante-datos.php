@@ -137,9 +137,11 @@ crossorigin=""></script>
 <div class="container contenedor text-center  z-depth-1">
     <form class="row" action="" method="post" enctype='multipart/form-data' id="frm_actualizarDatos">
    
+        <div class="col-12">
+            <?php echo $error ?>
+        </div>
         <div class="col-sm-12 col-md-8">
             <div class="row">
-
                 <div class="col-12 form-group">
                     <input class="form-control" type="password" value="" name="actpassword" placeholder="Contraseña actual" require>
                 </div>

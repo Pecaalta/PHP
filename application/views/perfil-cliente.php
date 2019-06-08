@@ -72,7 +72,7 @@
     <div id="perfil" class="col-lg-6 col-md-8">
         <div class="card testimonial-card">
             <div class="avatar mx-auto white">
-                <img width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-0" />
+                <img onerror="javascript:imgError(this)" width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-0" />
                 <div id="botones">
                     <div id="divedit">
                         <a href=<?php echo base_url() . 'usuario/editar/' . $id; ?>>

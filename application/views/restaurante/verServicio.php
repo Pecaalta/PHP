@@ -8,7 +8,7 @@
         font-weight: bold;
     }
 
-    img{
+    .container img{
         border-radius: 4px;
         margin-right: 20px;
     }

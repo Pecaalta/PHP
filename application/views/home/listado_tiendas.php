@@ -35,7 +35,7 @@
 			<?php foreach ($top as $item):?>
 				<div class="carousel-item <?php if( isset($item['class'])) echo $item['class'] ?>">
 					<div class="view">
-						<img class="d-block w-100" src="<?php echo base_url() . $item['imagen'] ?>"
+						<img onerror="javascript:imgError(this)" class="d-block w-100" src="<?php echo base_url() . $item['imagen'] ?>"
 							alt="First slide">
 						<div class="mask rgba-black-light"></div>
 					</div>
@@ -60,41 +60,8 @@
 		<!--/.Controls-->
 	</div>
 
+	<?php echo $tienda ?>
 
-
-
-
-
-
-
-
-
-
-
-	<div class="row">
-		<?php foreach ($tienda as $item):?>
-			<div class="col-xs-12 col-sm-6 col-md-4 mb-5">
-				<a href="<?php echo base_url() . $item['href'] ?>">
-					<div class="card">
-						<img class="card-img-top" src="<?php echo base_url() . $item['imagen'] ?>"/>
-						<div class="card-body text-center">
-							<h4 class="text-center font-weight-bold card-title mb--5"><a><?php echo ($item["nombre"] != '')? $item["nombre"] : 'Sin titulo' ?></a></h4>
-							<p class="text-center card-text mb-0"><?php echo $item["nombre_restaurante"] ?></p>
-						</div>
-					</div>
-				</a>
-			</div>
-		<?php endforeach;?>
-	</div>
-	<div class="row">
-		<div class="col-12">
-			<nav aria-label="Page navigation example">
-				<ul class="pagination pagination-circle pg-blue justify-content-center">
-					<?php if (isset($page)) echo $page; ?>
-				</ul>
-			</nav>
-		</div>
-	</div>
 </div>
 
 </body>

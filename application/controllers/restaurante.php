@@ -24,10 +24,10 @@ class Restaurante extends CI_Controller
 			)
 		);
 		if (!is_null($user)){
-			if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
+			if(isset($user['avatar']) && !is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
 			else $this->nav["img"] = null;
-			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
-			if(!is_null($user['id'])) $this->nav["id"] = $user['id'];
+			if(isset($user['rut']) && !is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+			if(isset($user['id']) &&!is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 	}
 
@@ -107,6 +107,8 @@ class Restaurante extends CI_Controller
 				}
 			}
 			$data = $this->infoGeneral($id);
+			$data["error"] = $this->session->userdata('msg_error');
+			$this->session->unset_userdata('msg_error');
 			$this->load->view('main/navbar', $this->nav);
 			$this->load->view('restaurante/restaurante_upload_Img', $data);
 		}
@@ -128,61 +130,60 @@ class Restaurante extends CI_Controller
 		if($this->controlAcceso($id)){
 			$user = json_decode(json_encode($this->session->userdata('user')), true);
 			if ($id == $user['id']) {
-				if ( $this->input->post('actpassword') == $user['password']) {
-					$data = array(
-						"id" => $id,
-						"nickname" => $this->input->post('nickname'),
-						"nombre" => $this->input->post('nombre'),
-						"rut" => $this->input->post('rut'),
-						"direccion" => $this->input->post('direccion'),
-						"zona" => $this->input->post('zona'),
-						"telefono" => $this->input->post('telefono'),
-						"email" => $this->input->post('email'),
-						"apellido" => $this->input->post('apellido'),
-						"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
-						"lat" => $this->input->post('lat'),
-						"lng" => $this->input->post('lng')
-					);
-					if ($this->input->post('password') == $this->input->post('repassword') ){
-						$data["password"] = $this->input->post('password');
-					}				
-					if (isset($_FILES['img'])){
-	
-
-							$config['upload_path'] = './uploads/';
-							$config['allowed_types'] = 'gif|jpg|png';
-							$this->load->library('upload');
-							$this->upload->initialize($config);
-							if ( ! $this->upload->do_upload('img')){
-								$this->session->set_userdata('msg_error', $this->upload->display_errors());
-							}else{
-								$upload_data = $this->upload->data();
-							
-								$config['image_library'] = 'gd2';
-								$config['source_image'] = $upload_data['full_path'];
-								$config['maintain_ratio'] = TRUE;
-								$config['width']     = 200;
-								$config['height']   = 200;
-								$this->load->library('image_lib', $config); 
-								$this->image_lib->resize();
-	
-								$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];
-								 
-							}
-
-						
-						
+				if (!empty($this->input->post())) {
+					if (!isset($user['password']) || $this->input->post('actpassword') == $user['password']) {
+						$data = array(
+							"id" => $id,
+							"nickname" => $this->input->post('nickname'),
+							"nombre" => $this->input->post('nombre'),
+							"rut" => $this->input->post('rut'),
+							"direccion" => $this->input->post('direccion'),
+							"zona" => $this->input->post('zona'),
+							"telefono" => $this->input->post('telefono'),
+							"email" => $this->input->post('email'),
+							"apellido" => $this->input->post('apellido'),
+							"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
+							"lat" => $this->input->post('lat'),
+							"lng" => $this->input->post('lng')
+						);
+						if ($this->input->post('password') != "" && $this->input->post('password') == $this->input->post('repassword') ){
+							$data["password"] = $this->input->post('password');
+						}				
+						if (isset($_FILES['img'])){
+								$config['upload_path'] = './uploads/';
+								$config['allowed_types'] = 'gif|jpg|png';
+								$this->load->library('upload');
+								$this->upload->initialize($config);
+								if ( ! $this->upload->do_upload('img')){
+									$this->session->set_userdata('msg_error', $this->upload->display_errors());
+								}else{
+									$upload_data = $this->upload->data();
+								
+									$config['image_library'] = 'gd2';
+									$config['source_image'] = $upload_data['full_path'];
+									$config['maintain_ratio'] = TRUE;
+									$config['width']     = 200;
+									$config['height']   = 200;
+									$this->load->library('image_lib', $config); 
+									$this->image_lib->resize();
+		
+									$data["avatar"] = './uploads/' . $this->upload->data()["client_name"];	 
+								}
+						}
+						$this->model_usuario->update($data,"id");
+						$this->session->set_userdata('user',$data);
+					} else {
+						$this->session->set_userdata('msg_error', "la contraseña no coincide");
 					}
-					$this->model_usuario->update($data,"id");
-					$this->session->set_userdata('user',$data);
-				} else {
-					$this->session->set_userdata('msg_error', "la contraseña no coincide");
+
 				}
 			} else {
 				$this->session->set_userdata('msg_error', "No estas autorizado");
 			}
 			$data = $this->infoGeneral($id);
 			$this->load->view('main/navbar', $this->nav);
+			$data["error"] = $this->session->userdata('msg_error');
+			$this->session->unset_userdata('msg_error');
 			$this->load->view('restaurante/restaurante-datos', $data);
 		}
 	}
@@ -250,9 +251,10 @@ class Restaurante extends CI_Controller
 		$this->load->library('upload');
 		$this->upload->initialize($config);
 		$this->upload->do_upload('img');
-		$data["imagen"] = $this->upload->data()["client_name"];
+		$data["imagen"] = './uploads/servicios/'.$this->upload->data()["client_name"];
 
 		$data["id"] = $this->model_servicio->insertar($data);
+
 		redirect("/restaurante/servicios/" . $user["id"]);
 	}
 

@@ -1,6 +1,7 @@
 <style>
     body{
-        background: url("https://images.alphacoders.com/289/289223.jpg");
+        background: <?php echo sizeof($carusel) == 0 ? "url('https://images.alphacoders.com/289/289223.jpg')" : '#fff' ?>;
+
     }
     .contenedor{
         background: white;
@@ -114,7 +115,7 @@
 
 
     <div class="logo-restaurante z-depth-1">
-        <img  src="<?php echo base_url() . $user['avatar'] ?>" alt="">
+        <img  onerror="javascript:imgError(this)" src="<?php echo base_url() . $user['avatar'] ?>" alt="">
 
     </div>
 
@@ -144,7 +145,7 @@
             <?php foreach($img as $item):?>
                 <div class="col-lg-3 col-md-4 col-6">
                     <a href="#" class="d-block mb-4 h-100">
-                        <img class="img-fluid z-depth-1 border-radius-3px" src="<?php echo base_url() . $item['img']; ?>" alt="">
+                        <img onerror="javascript:imgError(this)" class="img-fluid z-depth-1 border-radius-3px" src="<?php echo base_url() . $item['img']; ?>" alt="">
                     </a>
                 </div>
             <?php endforeach;?>
@@ -156,17 +157,17 @@
             <?php foreach($servicio->result() as $item):?>
                 <?php if($item->is_active):?>
                     <div class=" col-sm-6 col-md-4">
-                        <div class="card">
+                        <div class="card mb-4">
                             <div class="view overlay">
-                                <img class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
+                                <img onerror="javascript:imgError(this)" class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
                                 <a href="#!">
                                     <div class="mask rgba-white-slight"></div>
                                 </a>
                             </div>
                             <div class="card-body">
-                                <h4 class="card-title"><?php echo $item->nombre; ?> </h4>
-                                <p class="card-text"><?php echo $item->text_corto; ?></p>
-                                <span class="costo">$<?php echo $item->precio; ?></span>
+                                <h4 class="card-title"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?> </h4>
+                                <p class="card-text"><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
+                                <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
                                 
                             </div>
                             <div class="card-footer">

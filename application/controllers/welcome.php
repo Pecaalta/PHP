@@ -28,7 +28,7 @@ class welcome extends CI_Controller {
 				$this->load->view('componentes/item',$key);
 			}
 		}else {
-			$this->load->view('componentes/item', array('href' => '#', 'name' => 'No se encontraron explora en home'));
+			$this->load->view('componentes/item', array('href' => '#', 'name' => 'No se encontraron'));
 		}
 	}
 	

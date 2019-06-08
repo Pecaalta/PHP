@@ -51,7 +51,7 @@ class Model_servicio extends MY_Model
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
+            select distinct CONCAT('Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -61,16 +61,15 @@ class Model_servicio extends MY_Model
         return $this->_database->query($sql)->result_array(); 
     }
     public function alltiendaCount($date, $offset, $limit){
-        if ($offset == null || $offset < 0) $offset = 0;
-        if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select COUNT(*) as COUNT from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
-            where Servicio.is_active
+            where Servicio.is_active and usuario.is_active
+            group by Servicio.id
         ";
         $list = $this->_database->query($sql)->result_array(); 
-        if (sizeof($list) > 0) return $list[0]['COUNT'];
+        if ($list != null) return sizeof($list);
         else return 0;
     }
 
@@ -129,7 +128,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -161,7 +160,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -192,7 +191,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/principal/', Servicio.id_restaurante )  as text, usuario.lat, usuario.lng 
+            select distinct CONCAT('".base_url()."/Restaurante/principal/', usuario.id )  as href, usuario.lat, usuario.lng, CONCAT('".base_url()."', usuario.avatar ) as avatar, usuario.nickname  
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
