@@ -86,6 +86,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         .navbar-dark {
             background: #333;
         }
+
+        #imgModal .modal-content {
+        background: #000;
+
+        }
     </style>
     <script>
         function imgError(img) {
@@ -183,15 +188,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Imagen</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
+
         <img id="imgaengrande" class="z-depth-1 border-radius-3px" onerror="javascript:imgError(this)" width="100%" name="imgaengrande" src="" alt="">
-      </div>
     </div>
   </div>
 </div>

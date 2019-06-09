@@ -79,7 +79,7 @@
         overflow: hidden;
     }
     .logo-restaurante img {
-        min-height: 100%;
+        height: 100%;
     }
     .descripcion {
         color: #666;
