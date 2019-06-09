@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-12">
             <nav aria-label="Page navigation example">
-                <ul class="pagination pagination-circle pg-blue justify-content-center">
+                <ul class="pagination pg-blue justify-content-center">
                     <?php if (isset($page)) echo $page; ?>
                 </ul>
             </nav>

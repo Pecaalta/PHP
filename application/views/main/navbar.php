@@ -7,7 +7,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ReserBar</title>
+    <link rel="apple-touch-icon" sizes="57x57" href="<?php echo base_url(); ?>/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="<?php echo base_url(); ?>/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="<?php echo base_url(); ?>/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="<?php echo base_url(); ?>/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="<?php echo base_url(); ?>/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="<?php echo base_url(); ?>/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="<?php echo base_url(); ?>/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="<?php echo base_url(); ?>/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url(); ?>/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="<?php echo base_url(); ?>/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url(); ?>/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="<?php echo base_url(); ?>/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo base_url(); ?>/favicon/favicon-16x16.png">
+    <link rel="manifest" href="<?php echo base_url(); ?>/favicon/manifest.json">
+
+    <meta property="title" content="ReserBar">
+    <meta property="description" content="Reserva la mejor comida!!">
+    <meta property="image" content="<?php echo base_url(); ?>/public/img/thumbnail.png">
+    <meta property="url" content="<?php echo base_url(); ?>">
+
+    <meta property="og:title" content="ReserBar">
+    <meta property="og:description" content="Reserva la mejor comida!!">
+    <meta property="og:image" content="<?php echo base_url(); ?>/public/img/thumbnail.png">
+    <meta property="og:url" content="<?php echo base_url(); ?>">
     
+    <meta name="twitter:title" content="ReserBar">
+    <meta name="twitter:description" content="Reserva la mejor comida!!">
+    <meta name="twitter:image" content="<?php echo base_url(); ?>/public/img/thumbnail.png">
+    <meta name="twitter:card" content="<?php echo base_url(); ?>/public/img/thumbnail.png">
+
+    <meta name="msapplication-TileColor" content="#333">
+    <meta name="msapplication-TileImage" content="<?php echo base_url(); ?>/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#333">
+
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
@@ -91,6 +124,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         background: #000;
 
         }
+        @media only screen and (max-width: 600px) {
+            *:not(nav) .nav-item {
+                width: 100%;
+                display: block
+            }
+            #navbarDropdownMenuLink-55 {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .form-inline {
+                justify-content: center;
+            }
+            .navbar .nav-flex-icons {
+                flex-direction: column-reverse;
+            }
+        }
     </style>
     <script>
         function imgError(img) {
@@ -127,7 +177,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark ">
   <a class="navbar-brand" href="#">
-    <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
+    <img class="logo" src="<?php echo base_url(); ?>/public/img/logo_nav.png" alt="" srcset="">
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent-555"
     aria-controls="navbarSupportedContent-555" aria-expanded="false" aria-label="Toggle navigation">

@@ -134,7 +134,7 @@
 			<?php foreach ($carusel as $item):?>
 				<div class="carousel-item <?php if( isset($item['class'])) echo $item['class'] ?>">
 					<div class="view">
-						<img class="d-block " src="<?php echo base_url() . $item['img'] ?>"
+						<img onerror="javascript:imgError(this)"  class="d-block " src="<?php echo base_url() . $item['img'] ?>"
 							alt="First slide">
 					</div>
 				</div>

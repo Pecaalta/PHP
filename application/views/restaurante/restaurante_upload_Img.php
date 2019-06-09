@@ -79,7 +79,7 @@
         .cerrar {
             position: absolute;
             top: 5px;
-            left: 5px;
+            right: 5px;
         }
         .box {
             margin: 10px 0;
@@ -91,6 +91,7 @@
             position: relative;
             margin: .5rem;
             overflow: visible;
+            cursor: pointer;
         }
         .view-list {
             width: 200px;
@@ -100,6 +101,11 @@
             padding: 5px;
             width: 30px;
             height: 30px;
+            opacity: 0;
+            transition: all .5s;
+        }
+        .view:hover .delete {
+            opacity: 1;
         }
     </style>
         <script>
@@ -116,18 +122,8 @@
     
     <form action="" method="post" class="box m-t-50px row z-depth-1" enctype='multipart/form-data'>
         <div class="col-12 form-group">
-            <h1>Gestion de imagenes</h1>
-        </div>
-        <div class="box" >
-            <?php foreach($img as $item):?>
-                <div class="view">
-                    <img 
-                    data-toggle="modal" data-target="#imgModal" 
-                    onclick="imgaengrande.src = '<?php echo base_url() .   $item['img']; ?>'"
-                    onerror="javascript:imgError(this)" class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" >
-                    <a class="delete cerrar btn btn-primary" href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>">x</a>
-                </div class="col-sm-6 col-md-4">
-            <?php endforeach;?>
+            <h1><?php echo $user["nickname"]?></h1>
+            <h3 class="text-center">Gestión de imagenes</h3>
         </div>
         <div class="col-12">
             <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
@@ -140,6 +136,17 @@
         </div>
         <div class="col-12">
             <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Agregar">
+        </div>
+        <div class="box" >
+            <?php foreach($img as $item):?>
+                <div class="view">
+                    <img 
+                    data-toggle="modal" data-target="#imgModal" 
+                    onclick="imgaengrande.src = '<?php echo base_url() .   $item['img']; ?>'"
+                    onerror="javascript:imgError(this)" class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" >
+                    <a class="delete cerrar btn btn-danger " href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>"><i class="fas fa-times"></i></a>
+                </div class="col-sm-6 col-md-4">
+            <?php endforeach;?>
         </div>
     </form>
 

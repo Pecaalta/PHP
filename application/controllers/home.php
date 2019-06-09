@@ -71,7 +71,7 @@ class home extends CI_Controller {
 	
 		$data = array(
 			"top" => $this->carusel(),
-			"tienda" =>  $this->elementos(true),
+			"tienda" =>  $this->elementos(true, base_url()."/home/"),
 		);
 		$this->load->view('home/listado_tiendas',$data);
 	}
@@ -99,9 +99,11 @@ class home extends CI_Controller {
 	private function carusel() {
 		$this->load->model('model_servicio');
 		$top = $this->model_servicio->toptienda();
-		$top[0]["class"] = "active";
-		for ($i=0; $i < sizeof($top); $i++) { 
-			$top[$i]["index"] = $i;
+		if(sizeof($top) > 0) {
+			$top[0]["class"] = "active";
+			for ($i=0; $i < sizeof($top); $i++) { 
+				$top[$i]["index"] = $i;
+			}
 		}
 		return $top;
 	}
@@ -110,7 +112,7 @@ class home extends CI_Controller {
 	 * Retorna html de elementos
 	 * @param $isAll boolean true significa quiero todo sin filtros
 	 */
-	private function elementos($isAll)
+	private function elementos($isAll,$base_url = null)
 	{
 		$this->load->model('model_servicio');
 		$this->load->library('pagination');
@@ -122,8 +124,8 @@ class home extends CI_Controller {
 		$categoria = $this->input->get("categoria");
 		$minimo = $this->input->get("minimo");
 		$maximo = $this->input->get("maximo");
-		  
-		$base_url = base_url()."/home/buscar";
+		
+		if($base_url == null)$base_url = base_url()."/home/buscar";
 
 		if ($page == null) $page = 0;
 		if ($limit == null) $limit = 9;
@@ -155,15 +157,30 @@ class home extends CI_Controller {
 		$config['display_pages'] = true;
 		$config['page_query_string'] = true;
 		$config['first_link'] = 'Primera';
+		$config['first_tag_open'] = '<li class="page-item">';
+		$config['first_tag_close'] = '</li>';
 		$config['last_link'] = 'Ultima';
+		$config['last_tag_open'] = '<li class="page-item">';
+		$config['last_tag_close'] = '</li>';
 		$config['attributes'] = array('class' => 'page-link');
 		$config['cur_tag_open'] = '<li class="page-item active"><a class="page-link">';
 		$config['cur_tag_close'] = '</a></li>';
 		$config['num_tag_open'] = '<li class="page-item">';
 		$config['num_tag_close'] = '</li>';
+		$config['next_tag_open'] = '<li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_tag_open'] = '<li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
 		$this->pagination->initialize($config); 
 
 		return $this->load->view('componentes/cards_home',array("tienda" => $lTiendas,"page" => $this->pagination->create_links(), "filter"=> $filter), true);
 		
 	}
 }
+
+
+
+
+
+
+

@@ -79,17 +79,6 @@ CREATE TABLE IF NOT EXISTS `reservas` (
 --
 -- Dumping data for table `reservas`
 --
-
-INSERT INTO `reservas` (`id`, `is_active`, `fecha_emicion`, `personas`, `precio`, `evalacion`, `id_restaurante`, `id_usuario`, `fecha_total`, `tarjeta`, `titularTarjeta`, `cvc`) VALUES
-(1, 1, '2019-06-03 00:00:00', 4, '652', 3, 2, 1, '2019-06-04 20:00:00', NULL, NULL, NULL),
-(2, 1, '2019-06-03 00:00:00', 3, '452', 3, 2, 5, '2019-06-03 22:30:00', NULL, NULL, NULL),
-(3, 1, '2019-06-01 00:00:00', 1, '320', 5, 2, 7, '2019-06-05 01:00:00', NULL, NULL, NULL),
-(4, 1, '2019-06-03 00:00:00', 6, '2454', 5, 2, 6, '2019-06-04 21:00:00', NULL, NULL, NULL),
-(6, 1, '2019-05-09 00:00:00', 3, '452', 1, 2, 6, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(7, 1, '2019-06-01 00:00:00', 4, '961', 3, 2, 5, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(220, 1, '2019-06-06 20:22:25', 1, '36', NULL, 2, 1, '2019-06-06 21:00:00', 2147483647, 'Lucas', 123),
-(221, 0, NULL, NULL, NULL, NULL, 2, 1, NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -238,15 +227,6 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 --
 -- Dumping data for table `usuario`
 --
-
-INSERT INTO `usuario` (`id`, `is_active`, `nickname`, `password`, `nombre`, `email`, `rut`, `direccion`, `zona`, `telefono`, `apellido`, `fecha_de_nacimiento`, `end_perfil`, `created_at`, `descripcionRestaurante`, `updated_at`, `cantidadMesas`, `avatar`, `lat`, `lng`, `tiempoReserva`, `apertura`, `clausura`) VALUES
-(1, 0, 'admin', '123', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(2, 1, 'tienda', '123', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
-(3, 0, 'rararaa', '1', 'pepapig', 'asdad@sdc', '656', 'asda', '65asd', '515', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(4, 0, 'batlalalal', '', 'asda', 'asds@asf', '656', 'asdasd', 'asds', '5656', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(5, 0, 'batman', '1', 'batman', 'asd@das', NULL, NULL, NULL, NULL, 'lala', '1111-11-11', 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(6, 0, 'superman', '5', 'superhombre35', 'superman@kripton.kr', NULL, NULL, NULL, NULL, 'deacero23', '1111-11-11', 0, '2019-05-30', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(7, 0, 'pepe', '1', 'pepe', 'pepe@gmail.com', NULL, NULL, NULL, NULL, 'jaja', '1965-11-11', 0, '2019-06-03', NULL, NULL, NULL, '0', NULL, NULL, '02:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
