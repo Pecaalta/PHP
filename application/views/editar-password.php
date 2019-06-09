@@ -25,7 +25,7 @@
             background: #fff;
         }
 
-        .logo {
+        .container .logo {
             display: block;
             width: 200px;
             max-width: 100%;

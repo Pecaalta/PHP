@@ -266,11 +266,17 @@ class Restaurante extends CI_Controller
 			"nombre" => $this->input->post('nombre'),
 			"descripcion" => $this->input->post('descripcion'),
 			"precio" => $this->input->post('precio'),
-			"id" => $this->input->post('id'),
-			"imagen" => null
+			"id" => $this->input->post('id')
 		);
-
-		$data["id"] = $this->model_servicio->modificar($data);
+		if (isset($_FILES['img']) && $_FILES['img']['name'] != '' ){
+			$config['upload_path'] = './uploads/servicios/';
+			$config['allowed_types'] = 'gif|jpg|png';
+			$this->load->library('upload');
+			$this->upload->initialize($config);
+			$this->upload->do_upload('img');
+			$data["imagen"] = './uploads/servicios/'.$this->upload->data()["client_name"];
+		}
+		$data["id"] = $this->model_servicio->update($data, 'id');
 		redirect("/restaurante/servicios/" . $user["id"]);
 	}
 

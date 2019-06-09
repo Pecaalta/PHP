@@ -39,6 +39,7 @@
         margin: auto;
         margin-top: 2px;
         background-color: #ebecf0;
+        padding: 0.7rem 0.5rem;
         font-weight: 700;
         border-radius: 3px;
         font-size: 12px;
@@ -49,6 +50,7 @@
         margin: auto;
         margin-top: 2px;
         background-color: #ebecf0;
+        padding: 0.7rem 0.5rem;
         font-weight: 700;
         border-radius: 3px;
         font-size: 12px;
@@ -67,13 +69,26 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
+    #perfil .avatar {
+        width: 300px;
+    }
+    #perfil .avatar img{
+        margin-top: -105px;
+    }
+
+    #perfil {
+        margin-top: 105px;
+    }
 </style>
 <section class="text-center my-5 p-1">
     <div id="perfil" class="col-lg-6 col-md-8">
         <div class="card testimonial-card">
             <div class="avatar mx-auto white">
-                <img onerror="javascript:imgError(this)" width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-0" />
-                <div id="botones">
+                <img 
+                    data-toggle="modal" data-target="#imgModal" 
+                    onclick="imgaengrande.src = '<?php echo base_url() .  $img; ?>'"
+                    onerror="javascript:imgError(this)"  width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-1"0 />
+                <div class="mt-3" id="botones">
                     <div id="divedit">
                         <a href=<?php echo base_url() . 'usuario/editar/' . $id; ?>>
                             <i id="editar" class="fas fa-pencil-alt"></i> Editar Perfil

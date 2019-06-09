@@ -5,8 +5,9 @@ class Model_servicio extends MY_Model
     public $table = 'Servicio';
 	public $primary_key = 'id'; 
 	public $fillable = array(
-		"nombre","is_active","descripcion","precio","id_restaurante","imagen","updated_at"
+		"nombre","is_active","descripcion","precio","id_restaurante","imagen","updated_at", 'id'
     ); 
+    public $timestamps = false;
 	public $protected = array();
     function __construct()
     {

@@ -89,6 +89,36 @@
         color: rgb(33, 150, 243);;
         font-weight: 900;
     }
+    .msgNoElement {
+        text-align: center;
+        padding: 20px;
+        max-width: 800px;
+        margin: auto;
+        display: block;
+    }
+    .msgNoElement img {
+        opacity: 0.2;
+    }
+    .p-15 {
+        padding: 15px;
+    }
+    
+    .card .view{
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+
+    }
+    .card .view img{
+        width: 100%;
+        height: auto;
+    }
+    
+    .card h4 {
+        margin-bottom: 0!important;
+    }
 </style>
 	<div id="carousel-example-2" class="z-index-1 carousel slide carousel-fade" data-ride="carousel">
         <div class="mask-blanco"></div>
@@ -115,7 +145,10 @@
 
 
     <div class="logo-restaurante z-depth-1">
-        <img  onerror="javascript:imgError(this)" src="<?php echo base_url() . $user['avatar'] ?>" alt="">
+        <img  
+        data-toggle="modal" data-target="#imgModal" 
+        onclick="imgaengrande.src = '<?php echo base_url() . $user['avatar']; ?>'"
+        onerror="javascript:imgError(this)" src="<?php echo base_url() . $user['avatar'] ?>" alt="">
 
     </div>
 
@@ -127,13 +160,13 @@
   <div class="center-block d-flex align-items-center justify-content-center">
     <ul class="nav nav-pills mb-4" role="tablist">
         <li class="nav-item ">
-            <a class="nav-link active" data-toggle="pill" href="#menu1">Imágenes</a>
+            <a class="nav-link btn btn-primary active" data-toggle="pill" href="#menu1">Imágenes</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="pill" href="#menu2">Servicios</a>
+            <a class="nav-link btn btn-primary" data-toggle="pill" href="#menu2">Servicios</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-toggle="pill" href="#menu3">Reserva</a>
+            <a class="nav-link btn btn-primary" data-toggle="pill" href="#menu3">Reserva</a>
         </li>
     </ul>
   </div>
@@ -141,45 +174,69 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div id="menu1" class="container tab-pane active">
-        <div class="row text-center text-lg-left">
-            <?php foreach($img as $item):?>
-                <div class="col-lg-3 col-md-4 col-6">
-                    <a href="#" class="d-block mb-4 h-100">
-                        <img onerror="javascript:imgError(this)" class="img-fluid z-depth-1 border-radius-3px" src="<?php echo base_url() . $item['img']; ?>" alt="">
-                    </a>
+        <?php if (sizeof($img) == 0):?>
+            <div class="row">
+                <div class="msgNoElement">
+                    <h3>Parese que no hay imagenes</h3>
+                    <img src="<?php echo base_url()?>/asset/img/cesta_vacia.png" alt="" srcset="">
                 </div>
-            <?php endforeach;?>
-        </div>
+            </div>
+        <?php endif;?>
+        <?php if (sizeof($img) != 0):?>
+            <div class="row text-center text-lg-left">
+                <?php foreach($img as $item):?>
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <a href="#" class="d-block mb-4 h-100">
+                            <img 
+                            data-toggle="modal" data-target="#imgModal" 
+                            onclick="imgaengrande.src = '<?php echo base_url() . $item['img']; ?>'"
+                            onerror="javascript:imgError(this)" class="img-fluid z-depth-1 border-radius-3px" src="<?php echo base_url() . $item['img']; ?>" alt="">
+                        </a>
+                    </div>
+                <?php endforeach;?>
+            </div>
+        <?php endif;?>
     </div>
     <div id="menu2" class="container tab-pane fade">
+        <?php if (sizeof($servicio->result()) == 0):?>
+            <div class="row">
+                <div class="msgNoElement">
+                    <h3 >Parese que no tiene ningun Servicio aun </h3>
+                    <img src="<?php echo base_url()?>/asset/img/ambre.png" alt="" srcset="">
+                </div>
+            </div>
+        <?php endif;?>
+        <?php if (sizeof($servicio->result()) != 0):?>
         <h3>Nuestras comidas disponibles:</h3>
-        <div class="row">
-            <?php foreach($servicio->result() as $item):?>
-                <?php if($item->is_active):?>
-                    <div class=" col-sm-6 col-md-4">
-                        <div class="card mb-4">
-                            <div class="view overlay">
-                                <img onerror="javascript:imgError(this)" class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
-                                <a href="#!">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <h4 class="card-title"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?> </h4>
-                                <p class="card-text"><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
-                                <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
-                                
-                            </div>
-                            <div class="card-footer">
-                                <a href="<?php echo base_url().'restaurante/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>
+            <div class="row">
+                <?php foreach($servicio->result() as $item):?>
+                    <?php if($item->is_active):?>
+                        <div class=" col-sm-6 col-md-4">
+                            <div class="card mb-4">
+                                <div class="view overlay">
+                                    <img 
+                                        data-toggle="modal" data-target="#imgModal" 
+                                        onclick="imgaengrande.src = '<?php echo base_url() .  $item->imagen; ?>'"
+                                        onerror="javascript:imgError(this)" 
+                                        class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?> </h4>
+                                    <p class="card-text"><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
+                                    <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
+                                    
+                                </div>
+                                <div class="card-footer">
+                                    <a href="<?php echo base_url().'restaurante/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                <?php endif;?>
-            <?php endforeach;?>
-        </div>
+                    <?php endif;?>
+                <?php endforeach;?>
+            </div>
+        <?php endif;?>
     </div>
-    <div id="menu3" class="container tab-pane fade"><br>
+    <div id="menu3" class="container tab-pane fade p-15"><br>
       <h3>Haz tu reserva en este restaurante</h3>
       <a href="<?php echo base_url().'reserva/realizarReserva/'.$user['id']; ?>">Realizar reserva</a>
     </div>

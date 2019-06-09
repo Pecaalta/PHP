@@ -121,7 +121,10 @@
         <div class="box" >
             <?php foreach($img as $item):?>
                 <div class="view">
-                    <img class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" >
+                    <img 
+                    data-toggle="modal" data-target="#imgModal" 
+                    onclick="imgaengrande.src = '<?php echo base_url() .   $item['img']; ?>'"
+                    onerror="javascript:imgError(this)" class="view-list z-depth-1" src="<?php echo base_url() . $item['img']; ?>" >
                     <a class="delete cerrar btn btn-primary" href="<?php echo base_url() ."Restaurante/imagenesdelete/" . $item['id']; ?>">x</a>
                 </div class="col-sm-6 col-md-4">
             <?php endforeach;?>
