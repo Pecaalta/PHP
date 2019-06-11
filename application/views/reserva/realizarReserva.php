@@ -126,12 +126,15 @@
         <fieldset class="servicios">
             <div id="cuadroHorario" class="container">
                 <div class="row">
-                    <div class="col-md-5">Selecciona la fecha y la hora de tu reserva: </div>
+                    <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
                 </div>
                 <div class="row">
                     <div class="col-md-5"><input type="datetime-local" id="fecha" name="fecha">
                         <p id="fechaAviso"></p>
                     </div>
+
+                    <div  class="col-md-4" id="calendar"></div>
+                
                     <div class="col-md-3"><a href="#" id="comprobarDisponibilidad">Comprobar disponibilidad</a>
                         <div id="prueba">
 
@@ -182,9 +185,17 @@
     </form>
 </div>
 
-
+<script>
+    $('#calendar').datepicker({
+        inline: true,
+        firstDay: 1,
+        showOtherMonths: true,
+        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+    });
+</script>
 
 <script>
+
     $("#comprobarDisponibilidad").click(function() {
         var fechaIndicada = $("#fecha").val();
         var id_restaurante = "<?php echo $userRestaurante->id ?>";
@@ -356,4 +367,6 @@
                 .html(percent + "%");
         }
     });
+
+    
 </script>
