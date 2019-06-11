@@ -68,7 +68,51 @@
                         <div id="prueba2" class="col-sm-2 col-md-2">
                         </div>
                         <div id="carritoComidas" class="col-sm-3 col-md-6">
+                            <table class="table" id="carrito">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%">
+                                            Eliminar
+                                        </th>
+                                        <th>
+                                            Comida
+                                        </th>
+                                        <th>
+                                            Cantidad
+                                        </th>
+                                        <th>
+                                            Precio(unidad)
+                                        </th>
+                                        <th>
+                                            Precio(acumulado)
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                </tbody>
+                            </table>  
+                            <table class="table" style="background-color: rgb(230, 233, 239)">
+                                <tfoot>
+                                    <tr>
+                                        <td>
+                                            
+                                        </td>
+                                        <td>
+                                            TOTAL
+                                        </td>
+                                        <td>
 
+                                        </td>
+                                        <td>
+
+                                        </td>
+                                        <td id="precioTotal">
+                                            0
+                                        </td>
+                                    </tr>
+                                </tfoot>  
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -185,6 +229,8 @@
     $(document).on('click', '#enviaComida', function() {
         var idSer = document.getElementById('idComida').value;
         var cantidad = document.getElementById('cantidad').value;
+        var precio = document.getElementById('precioComida').innerText;
+        var nombre = document.getElementById('nombreComida').innerText;
         if (cantidad > 0) {
             var id_restaurante = "<?php echo $userRestaurante->id ?>";
             var url = "reserva/agregarComida"
@@ -201,29 +247,31 @@
                     $('#prueba2').html(data);
                 }
             });
-            actualizarElCondenadoCarrito(idSer, id_restaurante);
+            $('#carrito > tbody:last-child').append(`<tr id="eliminarFila` + idSer + `">
+                <td>
+                    <a href="#" onclick="eliminarServicio(` + idSer + `)"><i class="far fa-times-circle"></i></a>
+                </td>
+                <td>`
+                    + nombre + `
+                </td>
+                <td>`
+                    + cantidad + `
+                </td>
+                <td id="precioUnidad` + idSer +`">`
+                   + precio +`
+                </td>
+                <td id="precio` + idSer + `">`
+                    + precio*cantidad + `
+                </td>
+            </tr>
+            `);;
+            var precioTotal = document.getElementById('precioTotal').innerHTML;
+            precioTotal = (parseFloat(precioTotal) + precio*cantidad);
+            $('#precioTotal').html(precioTotal);
         } else {
             $('#errorCantidad').html("<p style='color: red'>La cantidad debe ser de al menos 1 unidad</p>");
         }
     });
-
-
-    function actualizarElCondenadoCarrito(idSer, id_restaurante) {
-
-        var url = "reserva/actualizarCarrito"
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url() ?>" + url,
-            data: {
-                idServicio: idSer,
-                id_restaurante: id_restaurante
-            },
-            dataType: "html",
-            success: function(data) {
-                $('#carritoComidas').html(data);
-            }
-        });
-    }
 
     function eliminarServicio(idSer) {
         var url = "reserva/eliminarComida"

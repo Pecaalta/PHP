@@ -112,7 +112,6 @@ class Reserva extends CI_Controller {
 		$array = array(
 			"carrito" => $this->model_reserva->carritoComidas($user["id"])
 		);
-		var_dump($array);
 		$data = array(
 			"idUsuario" => $user["id"],
 			"idRestaurante" => $userRestaurante->id,
@@ -121,16 +120,6 @@ class Reserva extends CI_Controller {
 		);
 
 		echo $this->model_reserva->agregarComida($data);
-	}
-
-	public function actualizarCarrito(){
-		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		//Actualizo la vista de las comidas que lleva agregadas
-		$array = array(
-			"carrito" => $this->model_reserva->carritoComidas($user["id"])
-		);
-		var_dump($array);
-		$this->load->view('componentes/reserva/comidasAgregadas', $array);
 	}
 	
 	public function eliminarComida(){
