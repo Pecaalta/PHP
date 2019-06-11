@@ -101,20 +101,11 @@
             margin: 5px;
         }
     </style>
-    <script>
-        var loadFile = function(event) {
-            var reader = new FileReader();
-            reader.onload = function() {
-                var output = document.getElementById('output');
-                output.src = reader.result;
-            };
-            reader.readAsDataURL(event.target.files[0]);
-        };
-    </script>
 </head>
 
 <body>
     <div class="container">
+        <div class="alert alert-success" id="message" style="display: none;"> </div>
         <form onSubmit="return Validar()" action="<?php echo base_url(); ?>registro/editar_pass" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
@@ -133,9 +124,44 @@
                 <p class="error"><?php echo $msg; ?></p>
             </div> -->
             <div class="col-12">
-                <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Guardar cambios">
+                <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Guardar cambios" id="btn">
             </div>
         </form>
+
+        <script>
+            $(function(){
+                $( "#btn" ).click(function(event)
+                {
+                    event.preventDefault();
+                    var passVieja= $("#oldpassword").val();
+                    var passNueva= $("#password").val();
+                    var passNuevaConfirm= $("#repassword").val();
+
+                    $.ajax(
+                        {
+                            type:"post",
+                            url: "<?php echo base_url(); ?>registro/verificar_pass",
+                            data:{
+                              oldpassword: passVieja,
+                              password: passNueva,
+                              repassword: passNuevaConfirm
+                            },
+                            success:function(response)
+                            {
+                                console.log(response);
+                                $("#message").html(response);
+                                $('#cartmessage').show();
+                            }
+                            error: function()
+                            {
+                                alert("Algo ha salido mal");
+                            }
+                        }
+                    );
+                });
+            });
+        </script>
+
 </body>
 
 </html>
