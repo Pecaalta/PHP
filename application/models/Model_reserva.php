@@ -149,7 +149,7 @@ class Model_reserva extends MY_Model
         }     
     }
 
-    public function carritoComidas($data)
+    public function carritoComidas($idUsuario)
     {
         $sql = "SELECT id
                 FROM reservas
@@ -157,7 +157,7 @@ class Model_reserva extends MY_Model
                 AND is_active = 'false'
                 ";
         $idReserva = $this->_database->query($sql, array(
-                                                        $data['idUsuario']
+                                                        $idUsuario
                                                         ))->row(); 
         $sql = "SELECT *
                 FROM reservas_servicio
