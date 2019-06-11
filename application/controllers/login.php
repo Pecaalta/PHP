@@ -17,6 +17,7 @@ class login extends CI_Controller {
 	
 	public function index() {
 		$msg = $this->session->userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$this->load->view('login', array("msg" => $msg));
 	}
 
@@ -28,17 +29,22 @@ class login extends CI_Controller {
 	}
 
 	public function login() {
-		$this->session->set_userdata('msg_error', "");
-		$usuario = $this->model_usuario
-			->where('nickname', $this->input->post('nickname'))
-			->where('password', $this->input->post('password'))
-			->get();
-		if ($usuario == false) {
-			$this->session->set_userdata('msg_error', "No se encontro el usaurio, algun dato puede estar mal");
+		$this->session->unset_userdata('msg_error');
+		if ($this->input->post('nickname') == "") {
+			$this->session->set_userdata('msg_error', "Falta el campo del nick");
 			redirect('/login');
-		} else {
-			$this->session->set_userdata('user',$usuario);
-			redirect('/home');
+		}else if ($this->input->post('nickname') == "") {
+			$this->session->set_userdata('msg_error', "Falta una contraseña");
+			redirect('/login');
+		}else{
+			$usuario = $this->model_usuario->login($this->input->post('nickname'),$this->input->post('password'));		
+			if ($usuario["status"]) {
+				$this->session->set_userdata('user',$usuario["msg"]);
+				redirect('/home');
+			} else {
+				$this->session->set_userdata('msg_error', $usuario["msg"]);
+				redirect('/login');
+			}
 		}
 	}
 

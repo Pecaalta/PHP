@@ -98,6 +98,12 @@
             text-align: center;
             margin: 5px;
         }
+        .msj {
+            font-size: 0.75rem;
+            position: absolute;
+            top: -1rem;
+            left: 1.3rem;
+        }
     </style>
     <script>
         var loadFile = function(event) {
@@ -111,33 +117,39 @@
     </script>
 </head>
 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>registro/editar_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+        <form onSubmit="return Validar()"  action="<?php echo base_url(); ?>registro/editar_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
                 <h3>Modificar usuario</h3>
             </div>
             <div class="col-4 form-group">
-                <input class="form-control" type="text" name="nickname" value="<?php echo $user["nickname"] ?>" placeholder="Nickname" disabled>
+                <p id="prueba" class="msj"></p>
+                <input type="hidden" value="<?php echo isset($user['nickname']) ? $user["nickname"] : ''; ?>" id="nicknameActual">
+                <input class="form-control" type="text" id="disponible" name="nickname" value="<?php echo $user["nickname"] ?>" placeholder="Nickname" disabled>
             </div>
             <div class="col-4 form-group">
-                <input class="form-control" type="text" name="nombre" value="<?php echo $user["nombre"] ?>" placeholder="Nombre">
+                <input class="form-control" type="text" id="nombre" name="nombre" value="<?php echo $user["nombre"] ?>" placeholder="Nombre">
             </div>
             <div class="col-4 form-group">
-                <input class="form-control" type="text" name="apellido" value="<?php echo $user["apellido"] ?>" placeholder="Apellido">
+                <input class="form-control" type="text" id="apellido" name="apellido" value="<?php echo $user["apellido"] ?>" placeholder="Apellido">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="date" name="fecha_de_nacimiento" value="<?php echo $user["fecha_de_nacimiento"] ?>" placeholder="Fecha de nacimiento">
+                <input class="form-control" type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" value="<?php echo $user["fecha_de_nacimiento"] ?>" placeholder="Fecha de nacimiento">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="text" name="email" value="<?php echo $user["email"] ?>" placeholder="Email">
+                <p id="emailOK" class="msj"></p>
+                <input type="hidden" value="<?php echo isset($user['email']) ? $user['email'] : ''; ?>" id="mailActual">
+                <input class="form-control" type="text" id="email" name="email" value="<?php echo $user["email"] ?>" placeholder="Email">
             </div>
             <div class="col-12">
                 <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                     <div id="drag_upload_file">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)">
+                        <input type="file" id="selectfile" id="img" name="img" accept="image/*" onchange="loadFile(event)">
                         <img id="output" src="" alt="">
                     </div>
                 </div>
@@ -151,4 +163,98 @@
         </form>
 </body>
 
+<script>
+    var nick_disponible = true;
+    var email_disponible = true;
+
+    $("#email").keyup(function() {
+        if($("#mailActual").val().trim() == "" || $("#mailActual").val().trim() != $("#email").val().trim()) {
+            check(
+                "usuario/email_disponible", 
+                { email: $("#email").val().trim()},
+                $("#emailOK") ,
+                (e) => { email_disponible = e; }
+            );
+        } else {
+            email_disponible = true;
+        }
+    });
+    
+    $("#nickname").keyup(function() {
+        if(
+            $("#nicknameActual").val().trim() == "" || 
+            $("#nicknameActual").val().trim() != $("#nickname").val().trim()
+        ) {
+            check(
+                "usuario/nick_disponible", 
+                { nombre: $("#nickname").val()},
+                $("#prueba"),
+                (e) => { nick_disponible = e; }
+            );
+        } else {
+            nick_disponible = true;
+        }
+    });
+
+    function check(url,data, input, colback) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>" + url,
+            dataType: 'html',
+            data: data,
+            success: function(data) {
+                data = JSON.parse(data);
+                input.text(data['body']);
+                colback(data['boolean']);
+            }
+        });
+    }
+
+
+    function Validar() {
+        
+        if ($("#disponible").val().trim() == "") {
+            toastr.error("Error no hay ningun nicknombre");
+            return false;
+        }
+        if (!nick_disponible) {
+            toastr.error("Error, el nick no esta disponible");
+            return false;
+        }
+        if ($("#nombre").val().trim() == "") {
+            toastr.error("Error falta el nombre");
+            return false;
+        }
+        if ($("#apellido").val().trim() == "") {
+            toastr.error("Error falta el apellido");
+            return false;
+        }
+        if ($("#fecha_de_nacimiento").val().trim() == "") {
+            toastr.error("Error la fecha de naciminto");
+            return false;
+        }
+        let fecha_de_nacimiento = new Date($("#fecha_de_nacimiento").val().trim());
+        if (fecha_de_nacimiento.getTime() > (new Date()).getTime()) {
+            toastr.error("Error  la fecha de naciminto");
+            return false;
+        }
+        if ($("#email").val().trim() == "") {
+            toastr.error("Error el email");
+            return false;
+        }
+        if (($("#email").val().trim()).indexOf("@") == -1) {
+            toastr.error("Error Formato incorecto");
+            return false;
+        }
+        if (!email_disponible) {
+            toastr.error("Error, el email no esta disponible");
+            return false;
+        }
+        if ($("#img").val().trim() == "") {
+            toastr.error("Error no as cargado ninguna imagen");
+            return false;
+        }
+        return true;
+    }
+</script>
 </html>

@@ -18,7 +18,11 @@
     crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
     integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
-    crossorigin=""></script>
+    crossorigin=""></script>  
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <style>
         html, body {
             width: 100%;
@@ -122,6 +126,12 @@
             overflow: hidden;
             border-radius: 3px;
         }
+        .msj {
+            font-size: 0.75rem;
+            position: absolute;
+            top: -1rem;
+            left: 1.3rem;
+        }
     </style>
         <script>
           var loadFile = function(event) {
@@ -138,33 +148,35 @@
 </head>
 <body>
 <div class="container">
-    <form action="<?php echo base_url(); ?>registro/post_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+    <form onSubmit="return Validar()" action="<?php echo base_url(); ?>registro/post_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
         <div class="col-12 form-group">
             <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
             <h3>Restaurante</h3>
         </div>
-        <div class="col-4 form-group">
-            <input class="form-control" type="text" name="nickname" placeholder="Nickname" require>
+        <div class="col-sm-12 col-md-4 form-group">
+            <p id="prueba" class="msj"></p>
+            <input id="disponible" class="form-control" type="text" name="nickname" placeholder="Nickname">
         </div>
-        <div class="col-4 form-group">
-            <input class="form-control" type="text" name="nombre" placeholder="Nombre" require>
+        <div class="col-sm-12 col-md-4 form-group">
+            <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre" require>
         </div>
-        <div class="col-4 form-group">
-            <input class="form-control" name="rut" type="text" placeholder="RUT" require>
-        </div>
-
-        <div class="col-6 form-group">
-            <input class="form-control" name="telefono" type="text" placeholder="Teléfono" require>
-        </div>
-        <div class="col-6 form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email" require>
+        <div class="col-sm-12 col-md-4 form-group">
+            <input class="form-control" id="rut" name="rut" type="text" placeholder="RUT" require>
         </div>
 
-        <div class="col-8 form-group">
-            <input class="form-control" name="direccion" type="text" placeholder="Dirección" require>
+        <div class="col-sm-12 col-md-6 form-group">
+            <input class="form-control" id="telefono" name="telefono" type="text" placeholder="Teléfono" require>
         </div>
-        <div class="col-4 form-group">
-            <select class="form-control" name="zona" require>
+        <div class="col-sm-12 col-md-6 form-group">
+            <p id="emailOK" class="msj"></p>
+            <input class="form-control" type="text" id="email" id="email" name="email" placeholder="Email" id="mail">
+        </div>
+
+        <div class="col-sm-12 col-md-8 form-group">
+            <input class="form-control" id="direccion" name="direccion" type="text" placeholder="Dirección" require>
+        </div>
+        <div class="col-sm-12 col-md-4 form-group">
+            <select class="form-control" id="zona" name="zona" require>
                 <option value="" selected disabled>Zona</option>
                 <?php foreach ($zonas as $zona):?>
                     <option value="<?php echo $zona['id']; ?>"><?php echo $zona['nombre']; ?></option>
@@ -172,11 +184,11 @@
             </select>
         </div>
 
-        <div class="col-6 form-group">
-            <input class="form-control" type="password" name="password" placeholder="Contraseña" require>
+        <div class="col-sm-12 col-md-6 form-group">
+            <input class="form-control" type="password" id="password" name="password" placeholder="Contraseña" require>
         </div>
-        <div class="col-6 form-group">
-            <input class="form-control" type="password" name="repassword" placeholder="Repetir Contraseña" require>
+        <div class="col-sm-12 col-md-6 form-group">
+            <input class="form-control" type="password" id="repassword" name="repassword" placeholder="Repetir Contraseña" require>
         </div>
         
 
@@ -184,7 +196,7 @@
             <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                 <div id="drag_upload_file">
                   <i class="fas fa-cloud-upload-alt"></i>
-                  <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)" require>
+                  <input type="file" id="selectfile" id="img" name="img" accept="image/*" onchange="loadFile(event)" require>
                   <img id="output" src="" alt="">
                 </div>
             </div>
@@ -213,31 +225,141 @@
 
 
 <script>
+    var nick_disponible = false;
+    var email_disponible = false;
 
-var mymap = L.map('mapid').locate({setView: true, maxZoom: 16}).setView([51.505, -0.09], 13);
+    $("#email").keyup(function() {
+        check(
+            "usuario/email_disponible", 
+            { email: $("#email").val()},
+            $("#emailOK") ,
+            (e) => { email_disponible = e; }
+        );
+    });
+    
+    $("#disponible").keyup(function() {
+        check(
+            "usuario/nick_disponible", 
+            { nombre: $("#disponible").val()},
+            $("#prueba"),
+            (e) => { nick_disponible = e; }
+        );
+    });
+    
+    function check(url,data, input, colback) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>" + url,
+            dataType: 'html',
+            data: data,
+            success: function(data) {
+                data = JSON.parse(data);
+                input.text(data['body']);
+                colback(data['boolean']);
+            }
+        });
+    }
 
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		id: 'mapbox.streets'
-	}).addTo(mymap);
-	var restaurante = null;
-	var popup = L.popup();
+    function Validar() {
+        
+        if (!email_disponible) {
+            toastr.error("Error, el email no esta disponible");
+            return false;
+        }
+        if (!nick_disponible) {
+            toastr.error("Error, el nick no esta disponible");
+            return false;
+        }
+        if ($("#disponible").val().trim() == "") {
+            toastr.error("Error, falta el nick");
+            return false;
+        }
+        if ($("#nombre").val().trim() == "") {
+            toastr.error("Error, falta el nombre");
+            return false;
+        }
+        if ($("#rut").val().trim() == "") {
+            toastr.error("Error, falta el rut");
+            return false;
+        }
+        if ($("#telefono").val().trim() == "") {
+            toastr.error("Error, falta el telefono");
+            return false;
+        }
+        if ($("#email").val().trim() == "") {
+            toastr.error("Error, falta el mail");
+            return false;
+        }
+        if (($("#email").val()).indexOf("@") == -1) {
+            toastr.error("Error Formato incorecto");
+            return false;
+        }
+        if ($("#direccion").val().trim() == "") {
+            toastr.error("Error, falta la direccion");
+            return false;
+        }
+        if ($("#zona").val() == null) {
+            toastr.error("Error, no a seleccionado una zona");
+            return false;
+        }
+        if ($("#password").val().trim() == "") {
+            toastr.error("Error, no hay un password");
+            return false;
+        }
+        if ($("#repassword").val().trim() == "") {
+            toastr.error("Error, el password no coincide");
+            return false;
+        }
+        if ($("#repassword").val().trim() != $("#password").val().trim() ) {
+            toastr.error("Error, el password no coincide");
+            return false;
+        }
+        if ($("#output").attr("src") == "") {
+            toastr.error("Error, no hay imagen cargada");
+            return false;
+        }
+        if ($("#lat").val().trim() == "" && $("#lng").val().trim() == "") {
+            toastr.error("Error, falta coordenadas");
+            return false;
+        }
+        if ($("#lat").val().trim() == "") {
+            toastr.error("Error, falta latitud");
+            return false;
+        }
+        if ($("#lng").val().trim() == "") {
+            toastr.error("Error, falta longitud");
+            return false;
+        }
 
-	function onMapClick(e) {
-        document.getElementById('lat').value = e.latlng.lat; 
-        document.getElementById('lng').value = e.latlng.lng; 
+        return true;
+    }
 
-		if(restaurante == null) {
-            popup
-                .setLatLng(e.latlng)
-                .setContent("Aqui estaria tu restaurante ")
-                .openOn(mymap);
-			restaurante = L.marker(e.latlng).addTo(mymap);
-		} else {
-			restaurante.setLatLng(e.latlng); 
-		}
-	}
+	function cargaMapa() {
+        var mymap = L.map('mapid').locate({setView: true, maxZoom: 16}).setView([51.505, -0.09], 13);
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+            maxZoom: 18,
+            id: 'mapbox.streets'
+        }).addTo(mymap);
+        var restaurante = null;
+        var popup = L.popup();
+        mymap.on('click', function (e) {
+            document.getElementById('lat').value = e.latlng.lat; 
+            document.getElementById('lng').value = e.latlng.lng; 
 
-	mymap.on('click', onMapClick);
+            if(restaurante == null) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("Aqui estaria tu restaurante ")
+                    .openOn(mymap);
+                restaurante = L.marker(e.latlng).addTo(mymap);
+            } else {
+                restaurante.setLatLng(e.latlng); 
+            }
+        });
+    }
+
+	
+
+    cargaMapa();
 
 </script>

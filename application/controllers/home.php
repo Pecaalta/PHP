@@ -11,12 +11,15 @@ class home extends CI_Controller {
 		$this->load->library('session');	
 		$this->load->model('model_usuario');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$msg_error = $this->session->set_userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 
 		$this->nav = array(
 			"nav" => array(
 				array( "href" => "home", "texto" => "Inicio", "class" => "" ),
 				array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
-			)
+			),
+			"msg_error" => $msg_error
 		);
 		if (!is_null($user)){
 			if(isset($user['avatar']) && !is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];

@@ -10,6 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <style>
         html,
         body {
@@ -113,19 +115,19 @@
 
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>registro/editar_pass" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+        <form onSubmit="return Validar()" action="<?php echo base_url(); ?>registro/editar_pass" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
                 <h3>Modificar contraseña</h3>
             </div>
             <div class="col-12 form-group">
-                <input class="form-control" type="password" name="oldpassword" placeholder="Contraseña actual">
+                <input class="form-control" type="password" id="oldpassword" name="oldpassword" placeholder="Contraseña actual">
             </div>
             <div class="col-12 form-group">
-                <input class="form-control" type="password" name="password" placeholder="Nueva contraseña">
+                <input class="form-control" type="password" id="password" name="password" placeholder="Nueva contraseña">
             </div>
             <div class="col-12 form-group">
-                <input class="form-control" type="password" name="repassword" placeholder="Repetir contraseña">
+                <input class="form-control" type="password" id="repassword" name="repassword" placeholder="Repetir contraseña">
             </div>
            <!-- <div class="col-12">
                 <p class="error"><?php echo $msg; ?></p>
@@ -137,3 +139,25 @@
 </body>
 
 </html>
+<script>
+
+    function Validar() {
+        if ($("#oldpassword").val().trim() == "") {
+            toastr.error("Error, falsta la contraseña actual");
+            return false;
+        }
+        if ($("#password").val().trim() == "") {
+            toastr.error("Error no hay contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() == "") {
+            toastr.error("Error no hay repeticion contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() != $("#password").val().trim() ) {
+            toastr.error("Error no coincide la contraseña");
+            return false;
+        }
+        return true;
+    }
+</script>

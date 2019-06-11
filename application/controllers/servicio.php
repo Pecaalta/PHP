@@ -16,11 +16,14 @@ class Servicio extends CI_Controller {
 			$this->load->model('model_imagen');
 			$this->load->model('model_servicio');
 			$user = json_decode(json_encode($this->session->userdata('user')), true);
+			$msg_error = $this->session->set_userdata('msg_error');
+			$this->session->unset_userdata('msg_error');
 			$this->nav = array(
 				"nav" => array(
 					array( "href" => "home", "texto" => "Inicio", "class" => "" ),
 					array( "href" => "home/buscar", "texto" => "Servicios", "class" => "" )
-				)
+				),
+				"msg_error" => $msg_error
 			);
 			if (!is_null($user)){
 				if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];

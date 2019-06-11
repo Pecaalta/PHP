@@ -37,6 +37,25 @@ class Model_usuario extends MY_Model
     
     
     
+
+	public function login($nickname, $password) {
+		$usuario = $this->model_usuario
+			->where('nickname', $nickname)
+            ->get();
+        $status = false;
+		if ($usuario === false) {
+			$msg = "No se encontro el usaurio";
+		} else if ($usuario->password != $password){    
+            $msg = "La contraseña no coincide";
+		} else {
+            $msg = $usuario;
+            $status = true;
+        }
+        return array(
+            "msg" => $msg,
+            "status" => $status
+        );
+	}
     
     
     
@@ -66,10 +85,7 @@ class Model_usuario extends MY_Model
                 FROM usuario 
                 WHERE nickname = ?";
         $query = $this->_database->query($sql, array($data['nickname']))->result_array();
-        if(sizeof($query) == 0){
-            return "Disponible";
-        }
-        return "Ya tienes un servicio con ese nombre";
+        return (sizeof($query) == 0);
     }
 
     public function emailDisponible($data){
@@ -77,10 +93,7 @@ class Model_usuario extends MY_Model
                 FROM usuario 
                 WHERE email = ?";
         $query = $this->_database->query($sql, array($data['email']))->result_array();
-        if(sizeof($query) == 0){
-            return "Ok";
-        }
-        return "No Ok";
+        return (sizeof($query) == 0);
     }
 
 

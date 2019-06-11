@@ -13,9 +13,25 @@
 	border-radius: 4px;
     overflow: hidden;
 }
+
+.leaflet-popup-content {
+	margin: 13px 9px;
+}
+.leaflet-popup-content-wrapper {
+	overflow: hidden;
+	border-radius: 8px;
+	box-shadow: 0 7px 16px 0 rgba(0,0,0,.2), 0 1px 3px 0 rgba(0,0,0,.1);
+
+}
+.leaflet-popup-content-wrapper h4 {
+	color: #333;
+	font-size: 1.2rem;
+	margin: 1rem;
+	text-transform: capitalize;
+}
 .img {
 	border-radius: 7px;
-	margin: 15px 5px;
+	margin: 0px 5px;
 	width: 150px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,.16), 0 2px 10px 0 rgba(0,0,0,.12);
 }
@@ -137,9 +153,21 @@ $(document).ready(function(){
 		</div>
 	</div>
 </div>
+<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+		<div class="toast-header">
+		  <img src="..." class="rounded mr-2" alt="...">
+		  <strong class="mr-auto">Bootstrap</strong>
+		  <small class="text-muted">11 mins ago</small>
+		  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<div class="toast-body">
+		  Hello, world! This is a toast message.
+		</div>
+	  </div>
 <script>
 	var mymap = L.map('mapid').locate({setView: true, maxZoom: 16}).setView([51.505, -0.09], 13);
-
 
 	L.tileLayer(
 		'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', 

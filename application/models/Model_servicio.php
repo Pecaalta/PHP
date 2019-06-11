@@ -15,7 +15,7 @@ class Model_servicio extends MY_Model
     }
 
     public function serviciosDisponibles($id){
-        $sql = "select *, SUBSTRING(descripcion,1,80) as text_corto from servicio where id_restaurante = ?";
+        $sql = "select *, SUBSTRING(descripcion,1,80) as text_corto from Servicio where id_restaurante = ?";
         $query = $this->_database->query($sql, array($id));
         return $query;
     }
@@ -38,7 +38,7 @@ class Model_servicio extends MY_Model
 
     public function toptienda(){
         $sql = "
-            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion) as evalacion  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evalacion  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -52,7 +52,8 @@ class Model_servicio extends MY_Model
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select distinct CONCAT('Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
+            select distinct CONCAT('Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
+            from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -63,7 +64,7 @@ class Model_servicio extends MY_Model
     }
     public function alltiendaCount($date, $offset, $limit){
         $sql = "
-            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion))  from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -129,7 +130,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -161,7 +162,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, avg(reservas.evalacion)  
+            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion 
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -208,7 +209,7 @@ class Model_servicio extends MY_Model
 
     public function existeNombreServicio($data){
         $sql = "SELECT nombre
-                FROM servicio 
+                FROM Servicio 
                 WHERE nombre = ? AND id_restaurante = ?";
         $query = $this->_database->query($sql, array($data['nombre'],$data['id_restaurante']))->result_array();
         return sizeof($query) == 0 ? "Disponible" : "Ya tienes un servicio con ese nombre";
@@ -216,7 +217,7 @@ class Model_servicio extends MY_Model
 
     public function infoServicio($data){
         $sql = "SELECT *
-                FROM servicio
+                FROM Servicio
                 WHERE id = ?";
         $query = $this->_database->query($sql, array($data))->result();
         return $query;

@@ -120,6 +120,12 @@ crossorigin=""></script>
         overflow: hidden;
         border-radius: 3px;
     }
+    .msj {
+        font-size: 0.75rem;
+        position: absolute;
+        top: -1rem;
+        left: 1.3rem;
+    }
 </style>
     <script>
       var loadFile = function(event) {
@@ -135,7 +141,7 @@ crossorigin=""></script>
     </script>
 
 <div class="container contenedor text-center  z-depth-1">
-    <form class="row" action="" method="post" enctype='multipart/form-data' id="frm_actualizarDatos">
+    <form onSubmit="return Validar()" class="row" action="" method="post" enctype='multipart/form-data' id="frm_actualizarDatos">
    
         <div class="col-12">
             <?php echo $error ?>
@@ -143,33 +149,37 @@ crossorigin=""></script>
         <div class="col-sm-12 col-md-8">
             <div class="row">
                 <div class="col-12 form-group">
-                    <input class="form-control" type="password" value="" name="actpassword" placeholder="Contraseña actual" require>
+                    <input class="form-control" type="password" value="" id="actpassword" name="actpassword" placeholder="Contraseña actual" require>
                 </div>
                 <div class="col-4 form-group">
-                    <input class="form-control" type="text" value="<?php echo isset($user['nickname']) ? $user['nickname'] : ''; ?>" name="nickname" placeholder="Nickname" require>
+                    <p id="prueba" class="msj"></p>
+                    <input class="form-control" type="text" value="<?php echo isset($user['nickname']) ? $user['nickname'] : ''; ?>" id="nickname" name="nickname" placeholder="Nickname" require>
+                    <input type="hidden" value="<?php echo isset($user['nickname']) ? $user['nickname'] : ''; ?>" id="nicknameActual">
                 </div>
                 <div class="col-4 form-group">
-                    <input class="form-control" type="text" value="<?php echo isset($user['nombre']) ? $user['nombre'] : ''; ?>" name="nombre" placeholder="Nombre" require>
+                    <input class="form-control" type="text" value="<?php echo isset($user['nombre']) ? $user['nombre'] : ''; ?>" id="nombre" name="nombre" placeholder="Nombre" require>
                 </div>
                 <div class="col-4 form-group">
-                    <input class="form-control" value="<?php echo isset($user['rut']) ? $user['rut'] : ''; ?>" name="rut" type="text" placeholder="RUT" require>
+                    <input class="form-control" value="<?php echo isset($user['rut']) ? $user['rut'] : ''; ?>" id="rut" name="rut" type="text" placeholder="RUT" require>
                 </div>
 
                 <div class="col-6 form-group">
-                    <input class="form-control" value="<?php echo isset($user['telefono']) ? $user['telefono'] : ''; ?>" name="telefono" type="text" placeholder="Teléfono" require>
+                    <input class="form-control" value="<?php echo isset($user['telefono']) ? $user['telefono'] : ''; ?>" id="telefono" name="telefono" type="text" placeholder="Teléfono" require>
                 </div>
                 <div class="col-6 form-group">
-                    <input class="form-control" type="email" value="<?php echo isset($user['email']) ? $user['email'] : ''; ?>" name="email" placeholder="Email" require>
+                    <p id="emailOK" class="msj"></p>
+                    <input type="hidden" value="<?php echo isset($user['email']) ? $user['email'] : ''; ?>" id="mailActual">
+                    <input class="form-control" type="email" value="<?php echo isset($user['email']) ? $user['email'] : ''; ?>" id="email" name="email" placeholder="Email" require>
                 </div>
 
                 <div class="col-8 form-group">
-                    <input class="form-control" value="<?php echo isset($user['direccion']) ? $user['direccion'] : ''; ?>" name="direccion" type="text" placeholder="Dirección" require>
+                    <input class="form-control" value="<?php echo isset($user['direccion']) ? $user['direccion'] : ''; ?>" id="direccion" name="direccion" type="text" placeholder="Dirección" require>
                 </div>
                 <div class="col-4 form-group">
-                    <select class="form-control" value="<?php echo isset($user['zona']) ? $user['zona'] : ''; ?>" name="zona" require>
-                        <option value="" selected disabled>Zona</option>
+                    <select class="form-control" value="<?php echo isset($user['zona']) ? $user['zona'] : ''; ?>" id="zona" name="zona" require>
+                        <option value="" disabled>Zona</option>
                         <?php foreach ($zonas as $zona):?>
-                            <option value="<?php echo $zona['id']; ?>"><?php echo $zona['nombre']; ?></option>
+                            <option value="<?php echo $zona['id']; ?>" <?php echo $zona['id'] == $user['zona'] ? "selected" : ""; ?> ><?php echo $zona['nombre']; ?></option>
                         <?php endforeach;?>
                     </select>
                 </div>
@@ -232,4 +242,117 @@ crossorigin=""></script>
 
 	mymap.on('click', onMapClick);
 
+</script>
+
+<script>
+    var nick_disponible = true;
+    var email_disponible = true;
+
+    $("#email").keyup(function() {
+        if($("#mailActual").val() == "" || $("#mailActual").val() != $("#email").val()) {
+            check(
+                "usuario/email_disponible", 
+                { email: $("#email").val()},
+                $("#emailOK") ,
+                (e) => { email_disponible = e; }
+            );
+        } else {
+            email_disponible = true;
+        }
+    });
+    
+    $("#nickname").keyup(function() {
+        if($("#nicknameActual").val() == "" || $("#nicknameActual").val() != $("#nickname").val()) {
+            check(
+                "usuario/nick_disponible", 
+                { nombre: $("#nickname").val()},
+                $("#prueba"),
+                (e) => { nick_disponible = e; }
+            );
+        } else {
+            nick_disponible = true;
+        }
+    });
+    
+    function check(url,data, input, colback) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>" + url,
+            dataType: 'html',
+            data: data,
+            success: function(data) {
+                data = JSON.parse(data);
+                input.text(data['body']);
+                colback(data['boolean']);
+            }
+        });
+    }
+
+
+    function Validar() {
+
+
+        if ($("#actpassword").val().trim() == "") {
+            toastr.error("Error, no se encontro su contraseña actual");
+            return false;
+        }
+        if ($("#nickname").val().trim() == "") {
+            toastr.error("Error no hay ningun nicknombre");
+            return false;
+        }
+        if (!nick_disponible) {
+            toastr.error("Error, el nick no esta disponible");
+            return false;
+        }
+        if ($("#nombre").val().trim() == "") {
+            toastr.error("Error falta el nombre");
+            return false;
+        }
+        if ($("#rut").val().trim() == "") {
+            toastr.error("Error falta el rut");
+            return false;
+        }
+        if ($("#telefono").val().trim() == "") {
+            toastr.error("Error falta el telefono");
+            return false;
+        }
+        if ($("#email").val().trim() == "") {
+            toastr.error("Error el email");
+            return false;
+        }
+        if (($("#email").val().trim()).indexOf("@") == -1) {
+            toastr.error("Error Formato incorecto");
+            return false;
+        }
+        if (!email_disponible) {
+            toastr.error("Error, el email no esta disponible");
+            return false;
+        }
+        if ($("#direccion").val().trim() == "") {
+            toastr.error("Error falta el direccion");
+            return false;
+        }
+        if ($("#zona").val().trim() == null) {
+            toastr.error("Error falta la zona");
+            return false;
+        }
+        if ($("#img").val().trim() == "") {
+            toastr.error("Error no as cargado ninguna imagen");
+            return false;
+        }
+        if ($("#password").val().trim() == "") {
+            toastr.error("Error no hay contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() == "") {
+            toastr.error("Error no hay repeticion contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() != $("#password").val().trim() ) {
+            toastr.error("Error no coincide la contraseña");
+            return false;
+        }
+
+        return true;
+    }
 </script>

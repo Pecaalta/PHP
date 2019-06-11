@@ -17,11 +17,14 @@ class Restaurante extends CI_Controller
 		$this->load->model('model_imagen');
 		$this->load->model('model_servicio');
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$msg_error = $this->session->set_userdata('msg_error');
+		$this->session->unset_userdata('msg_error');
 		$this->nav = array(
 			"nav" => array(
 				array("href" => "home", "texto" => "Inicio", "class" => ""),
 				array("href" => "home/buscar", "texto" => "Servicios", "class" => "")
-			)
+			),
+			"msg_error" => $msg_error
 		);
 		if (!is_null($user)){
 			if(isset($user['avatar']) && !is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
@@ -96,7 +99,7 @@ class Restaurante extends CI_Controller
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 
 		if($this->controlAcceso($id)){
-			if (isset($_FILES['img'])) {
+			if (isset($_FILES['img']) && $_FILES['img']['name'] != '') {
 				$avatar = $this->uploadImg($id);
 				if($avatar != null) {
 					$data = array(
@@ -149,7 +152,7 @@ class Restaurante extends CI_Controller
 						if ($this->input->post('password') != "" && $this->input->post('password') == $this->input->post('repassword') ){
 							$data["password"] = $this->input->post('password');
 						}				
-						if (isset($_FILES['img'])){
+						if (isset($_FILES['img']) && $_FILES['img']['name'] != ''){
 								$config['upload_path'] = './uploads/';
 								$config['allowed_types'] = 'gif|jpg|png';
 								$this->load->library('upload');
@@ -181,6 +184,8 @@ class Restaurante extends CI_Controller
 				$this->session->set_userdata('msg_error', "No estas autorizado");
 			}
 			$data = $this->infoGeneral($id);
+			
+			$data["zonas"] = $this->model_usuario->listaZona(); 
 			$this->load->view('main/navbar', $this->nav);
 			$data["error"] = $this->session->userdata('msg_error');
 			$this->session->unset_userdata('msg_error');

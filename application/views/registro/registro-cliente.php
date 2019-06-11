@@ -3,13 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <style>
         html,
         body {
@@ -98,6 +102,13 @@
             text-align: center;
             margin: 5px;
         }
+
+        .msj {
+            font-size: 0.75rem;
+            position: absolute;
+            top: -1rem;
+            left: 1.3rem;
+        }
     </style>
     <script>
         var loadFile = function(event) {
@@ -144,39 +155,39 @@
 
 <body>
     <div class="container">
-        <form action="<?php echo base_url(); ?>registro/post_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
+        <form onSubmit="return Validar()" action="<?php echo base_url(); ?>registro/post_cliente" method="post" enctype='multipart/form-data' class="box m-t-50px row z-depth-1">
             <div class="col-12 form-group">
                 <img class="logo" src="<?php echo base_url(); ?>/public/img/logo.png" alt="" srcset="">
                 <h3>Cliente</h3>
             </div>
             <div class="col-4 form-group">
+                <p id="prueba" class="msj"></p>
                 <input id="disponible" class="form-control" type="text" name="nickname" placeholder="Nickname">
-                <p id="prueba"></p>
             </div>
             <div class="col-4 form-group">
-                <input class="form-control" type="text" name="nombre" placeholder="Nombre">
+                <input class="form-control" type="text" id="nombre" name="nombre" placeholder="Nombre">
             </div>
             <div class="col-4 form-group">
-                <input class="form-control" type="text" name="apellido" placeholder="Apellido">
+                <input class="form-control" type="text" id="apellido" name="apellido" placeholder="Apellido">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="date" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento">
+                <input class="form-control" type="date" id="fecha_de_nacimiento" name="fecha_de_nacimiento" placeholder="Fecha de nacimiento">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="text" name="email" placeholder="Email" id="mail">
-                <p id="emailOK"></p>
+                <p id="emailOK" class="msj"></p>
+                <input class="form-control" type="text" id="email" name="email" placeholder="Email" id="mail">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="password" name="password" placeholder="Contraseña">
+                <input class="form-control" type="password" id="password" name="password" placeholder="Contraseña">
             </div>
             <div class="col-6 form-group">
-                <input class="form-control" type="password" name="repassword" placeholder="Repetir Contraseña">
+                <input class="form-control" type="password" id="repassword" name="repassword" placeholder="Repetir Contraseña">
             </div>
             <div class="col-12">
                 <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                     <div id="drag_upload_file">
                         <i class="fas fa-cloud-upload-alt"></i>
-                        <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event)">
+                        <input type="file" id="selectfile" id="img" name="img" accept="image/*" onchange="loadFile(event)">
                         <img id="output" src="" alt="">
                     </div>
                 </div>
@@ -189,45 +200,99 @@
             </div>
         </form>
 </body>
-
 <script>
-        $("#disponible").keyup(function() {
-                var nick = $("#disponible").val();
-                var url = "usuario/nick_disponible"
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo base_url() ?>" + url,
-                    dataType: 'html',
-                    data: {nombre: nick},
-                    success: function(data) {
-                        data = JSON.parse(data);
-                        $("#prueba").text(data['body']);
-                        console.log(data['body']);
-                    }
-                });
-            })
-            .keyup();
-    </script>
+    var nick_disponible = false;
+    var email_disponible = false;
 
-<script>
-    $("#mail").keyup(function() {
-            var email = $("#mail").val();
-            var url = "usuario/email_disponible"
-            $.ajax({
-                type: "POST",
-                url: "<?php echo base_url() ?>" + url,
-                dataType: 'html',
-                data: {
-                    email: email
-                },
-                success: function(data) {
-                    data = JSON.parse(data);
-                    $("#emailOK").text(data['body']);
-                    console.log(data['body']);
-                }
-            });
-        })
-        .keyup();
+    $("#email").keyup(function() {
+        check(
+            "usuario/email_disponible", 
+            { email: $("#email").val()},
+            $("#emailOK") ,
+            (e) => { email_disponible = e; }
+        );
+    });
+    
+    $("#disponible").keyup(function() {
+        check(
+            "usuario/nick_disponible", 
+            { nombre: $("#disponible").val()},
+            $("#prueba"),
+            (e) => { nick_disponible = e; }
+        );
+    });
+    
+    function check(url,data, input, colback) {
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url() ?>" + url,
+            dataType: 'html',
+            data: data,
+            success: function(data) {
+                data = JSON.parse(data);
+                input.text(data['body']);
+                colback(data['boolean']);
+            }
+        });
+    }
+
+
+    function Validar() {
+        if ($("#disponible").val() == "") {
+            toastr.error("Error no hay ningun nicknombre");
+            return false;
+        }
+        if (!nick_disponible) {
+            toastr.error("Error, el nick no esta disponible");
+            return false;
+        }
+        if ($("#nombre").val().trim() == "") {
+            toastr.error("Error falta el nombre");
+            return false;
+        }
+        if ($("#apellido").val().trim() == "") {
+            toastr.error("Error falta el apellido");
+            return false;
+        }
+        if ($("#fecha_de_nacimiento").val().trim() == "") {
+            toastr.error("Error la fecha de naciminto");
+            return false;
+        }
+        let fecha_de_nacimiento = new Date($("#fecha_de_nacimiento").val());
+        if (fecha_de_nacimiento.getTime() > (new Date()).getTime()) {
+            toastr.error("Error  la fecha de naciminto");
+            return false;
+        }
+        if ($("#email").val().trim() == "") {
+            toastr.error("Error el email");
+            return false;
+        }
+        if (($("#email").val()).indexOf("@") == -1) {
+            toastr.error("Error Formato incorecto");
+            return false;
+        }
+        if (!email_disponible) {
+            toastr.error("Error, el email no esta disponible");
+            return false;
+        }
+        if ($("#password").val().trim() == "") {
+            toastr.error("Error no hay contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() == "") {
+            toastr.error("Error no hay repeticion contraseña");
+            return false;
+        }
+        if ($("#repassword").val().trim() != $("#password").val().trim() ) {
+            toastr.error("Error no coincide la contraseña");
+            return false;
+        }
+        if ($("#output").attr("src") == "") {
+            toastr.error("Error, no hay imagen cargada");
+            return false;
+        }
+        return true;
+    }
 </script>
 
 </html>

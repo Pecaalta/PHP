@@ -68,6 +68,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
         crossorigin=""
     ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <?php 
+		if($msg_error != '') {
+            echo "toastr.info('".$msg_error."');";
+        }
+    ?>
 
     <style>
         nav .logo {
@@ -124,7 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         background: #000;
 
         }
-        @media only screen and (max-width: 600px) {
+        @media only screen and (max-width: 990px) {
             *:not(nav) .nav-item {
                 width: 100%;
                 display: block
