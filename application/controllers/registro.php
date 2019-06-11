@@ -252,15 +252,15 @@ public function verificar_pass(){
 
 	$user = json_decode(json_encode($this->session->userdata('user')), true);
 
-	var passVieja= $this->input->post('oldpassword');
-	var passNueva= $this->input->post('password');
-	var passNuevaConfirm= $this->input->post('repassword');
+	$passVieja = $this->input->post('oldpassword');
+	$passNueva = $this->input->post('password');
+	$passNuevaConfirm = $this->input->post('repassword');
 
-	if(passVieja != $user['password']){
+	if($passVieja != $user['password']){
 		echo "La contraseña actual no es correcta";
 	}
 	else{
-		if(passNueva != passNuevaConfirm){
+		if($passNueva != $passNuevaConfirm){
 			echo "Las contraseñas deben coincidir";
 		}
 		else{
