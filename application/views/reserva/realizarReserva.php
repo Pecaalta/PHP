@@ -129,7 +129,15 @@
                     <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5"><input type="datetime-local" id="fecha" name="fecha">
+                    <div class="col-md-5">
+                        <input type="date" id="fecha" name="fecha">
+                        <div class="form-group">
+                        <label for=""></label>
+                        <select class="form-control" name="turno" id="turno">
+                            <option>Dia</option>
+                            <option>Noche</option>
+                        </select>
+                    </div>
                         <p id="fechaAviso"></p>
                     </div>
 
@@ -198,6 +206,7 @@
 
     $("#comprobarDisponibilidad").click(function() {
         var fechaIndicada = $("#fecha").val();
+        var turnoIndicado = $("#turno").val();
         var id_restaurante = "<?php echo $userRestaurante->id ?>";
         var url = "reserva/fechaDisponible"
         $.ajax({
@@ -206,6 +215,7 @@
             dataType: 'html',
             data: {
                 fechaIndicada: fechaIndicada,
+                turnoIndicado: turnoIndicado,
                 id_restaurante: id_restaurante
             },
             success: function(data) {

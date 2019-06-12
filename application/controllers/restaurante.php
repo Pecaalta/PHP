@@ -296,11 +296,5 @@ class Restaurante extends CI_Controller
 		redirect("/restaurante/servicios/" . $user["id"]);
 	}
 
-	public function info_servicio($id)
-	{
-		$servicio = $this->model_servicio->infoServicio($id);
-
-		$this->load->view('main/navbar', $this->nav);
-		$this->load->view('restaurante/verServicio', array('servicio' => $servicio ) );
-	}
+	
 }

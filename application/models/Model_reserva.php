@@ -44,47 +44,26 @@ class Model_reserva extends MY_Model
     public function disponibilidadMesa($data){
         $sql = "SELECT *
                 FROM reservas r
-                WHERE r.fecha_total BETWEEN SUBTIME(?, SUBTIME(?, '0:1:0')) AND ?
+                WHERE r.fecha_total = ?
+                AND r.turno = ?
                 AND r.id_restaurante = ?
-                AND r.is_active = 'true'
                 ";         
-        $cantidadDeReservasPrevias = $this->_database->query($sql,array(
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->tiempoReserva,
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->id
-                                                                        ))->result_array();
-        $sql = "SELECT *
-                FROM reservas r
-                WHERE r.fecha_total BETWEEN ? AND ADDTIME(?, SUBTIME(?, '0:1:0'))
-                AND r.id_restaurante = ?
-                AND r.is_active = 'true'
-                ";         
-        $cantidadDeReservasPosteriores = $this->_database->query($sql,array(
-                                                                        $data['fecha'],
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->tiempoReserva,
-                                                                        $data['restaurante']->id
-                                                                        ))->result_array();
+        $cantidadDeReservas = $this->_database->query($sql,array(
+                                                                $data['fecha'],
+                                                                $data['turno'],
+                                                                $data['restaurante']->id
+                                                                ))->result_array();
 
-
-        if(count($cantidadDeReservasPrevias) < $data['restaurante']->cantidadMesas
-        and count($cantidadDeReservasPosteriores) < $data['restaurante']->cantidadMesas){
+        if(count($cantidadDeReservas) < $data['restaurante']->cantidadMesas){
             $sql = "UPDATE reservas
-                    SET fecha_total = ?
+                    SET fecha_total = ?, turno = ?
                     WHERE id_usuario = ?
                     AND is_active = 'false'";
-            $this->_database->query($sql,array($data['fecha'],$data['idUsuario']));        
+            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['idUsuario']));        
 
-            return "Mesas disponibles |
-                    previas: ".count($cantidadDeReservasPrevias)." 
-                    posteriores:".count($cantidadDeReservasPosteriores)." 
-                    id_restaurante: ".$data['restaurante']->id;
+            return "Mesas disponibles";
         }
-        return "No hay mesas disponibles a esta hora 
-                previas: ".count($cantidadDeReservasPrevias)." 
-                posteriores:".count($cantidadDeReservasPosteriores)." 
-                id_restaurante: ".$data['restaurante']->id;
+        return "No hay mesas disponibles en el horario seleccionado";
     }
     
     public function prueba($data){
@@ -235,45 +214,16 @@ class Model_reserva extends MY_Model
                 ";
         $restaurante = $this->_database->query($sql, array(
                                                         $reserva->id_restaurante
-                                                        ))->row(); 
-
-        $sql = "SELECT *
-        FROM reservas r
-        WHERE r.fecha_total BETWEEN SUBTIME(?, SUBTIME(?, '0:1:0')) AND ?
-        AND r.id_restaurante = ?
-        AND r.is_active = 'true'
-        ";                                                             
-        $cantidadDeReservasPrevias = $this->_database->query($sql,array(
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->tiempoReserva,
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->id
-                                                                        ))->result_array();
-
-        $sql = "SELECT *
-                FROM reservas r
-                WHERE r.fecha_total BETWEEN ? AND ADDTIME(?, SUBTIME(?, '0:1:0'))
-                AND r.id_restaurante = ?
-                AND r.is_active = 'true'
-                ";         
-        $cantidadDeReservasPosteriores = $this->_database->query($sql,array(
-                                                                        $reserva->fecha_total,
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->tiempoReserva,
-                                                                        $restaurante->id
-                                                                        ))->result_array();         
+                                                        ))->row();      
                                                                         
-        if(count($cantidadDeReservasPrevias) < $restaurante->cantidadMesas
-        and count($cantidadDeReservasPosteriores) < $restaurante->cantidadMesas){
+        if(true){
             $sql = "SELECT *
                     FROM reservas_servicio
                     WHERE id_reserva = ?";
             $reservas_servicio = $this->_database->query($sql, array(
                                                                 $reserva->id
-                                                                ))->result_array();         
-            
-                 
-            
+                                                                ))->result_array(); 
+
             $precioTotal = 0;                                                    
             foreach($reservas_servicio as $item){
                 $sql = "SELECT *

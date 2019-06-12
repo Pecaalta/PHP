@@ -80,18 +80,17 @@ class Reserva extends CI_Controller {
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
 
-		//if($apertura <= $horaReserva and $clausura >= $horaReserva){
+		$data = array(
+			"fecha" => $this->input->post('fechaIndicada'),
+			"turno" => $this->input->post('turnoIndicado'),
+			"restaurante" => $userRestaurante,
+			"idUsuario" => $user['id']
+		);
+		$array = array(
+			"respuesta" => $this->model_reserva->disponibilidadMesa($data)
+		);
 
-			$data = array(
-				"fecha" => str_replace( 'T', ' ', $this->input->post('fechaIndicada')),
-				"restaurante" => $userRestaurante,
-				"idUsuario" => $user['id']
-			);
-			$array = array(
-				"respuesta" => $this->model_reserva->disponibilidadMesa($data)
-			);
-
-			$this->load->view('componentes/reserva/fecha', $array);
+		$this->load->view('componentes/reserva/fecha', $array);
 	}
 
 	public function infoServicio(){

@@ -222,4 +222,14 @@ class Model_servicio extends MY_Model
         $query = $this->_database->query($sql, array($data))->result();
         return $query;
     }
+
+    public function listaComentarios($idServicio)
+    {
+        $sql = "SELECT c.*, u.nickname
+                FROM Comentario c, Servicio s, Usuario u
+                WHERE s.id = ?
+                AND c.id_servicio = ?
+                AND u.id = c.id_usuario";
+        return $this->_database->query($sql,array($idServicio,$idServicio))->result_array();        
+    }
 }
