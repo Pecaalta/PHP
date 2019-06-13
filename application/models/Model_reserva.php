@@ -213,15 +213,15 @@ class Model_reserva extends MY_Model
                 WHERE id = ?
                 ";
         $restaurante = $this->_database->query($sql, array(
-                                                        $reserva->id_restaurante
+                                                        $reserva['id_restaurante']
                                                         ))->row();      
                                                                         
-        if(true){
+        if(true){       
             $sql = "SELECT *
                     FROM reservas_servicio
                     WHERE id_reserva = ?";
             $reservas_servicio = $this->_database->query($sql, array(
-                                                                $reserva->id
+                                                                $reserva['id']
                                                                 ))->result_array(); 
 
             $precioTotal = 0;                                                    
@@ -245,8 +245,36 @@ class Model_reserva extends MY_Model
             $this->_database->query($sql,array(
                                                 $precioTotal,
                                                 $data['idUsuario'],
-                                                $restaurante->id
-                                                ));        
+                                                $restaurante['id']
+                                                ));      
+                                                
+            //Instancio los comentarios
+            $sql = "SELECT DISTINCT rs.* 
+                FROM reservas_servicio rs, reservas r
+                WHERE r.id_usuario = ?
+                AND rs.id_reserva = r.id;";
+            $serviciosUsuario = $this->_database->query($sql,array($data['idUsuario']))->result_array();
+            if (count($serviciosUsuario) > 0) {
+                foreach ($serviciosUsuario as $item) {
+                        $sql = "SELECT * 
+                                FROM Comentario c
+                                WHERE c.id_servicio = ?
+                                AND c.id_usuario = ?";
+                        $comen = $this->_database->query($sql, array($item['id'],$data['idUsuario']))->row();     
+                        if ($comen != null) {
+                                $sql = "UPDATE Comentario c
+                                        SET puedeComentar = true
+                                        WHERE c.id_servicio = ?
+                                        AND c.id_usuario = ?";
+                        $this->_database->query($sql, array($item['id'],$data['idUsuario']));                   
+                        }
+                        else{
+                                $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)
+                                        VALUES (?,?,true)";
+                                $this->_database->query($sql, array($item['id'],$data['idUsuario']));  
+                        }           
+                    }   
+            }  
 
             return true;                                    
         }else{

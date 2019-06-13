@@ -58,7 +58,7 @@ class Model_servicio extends MY_Model
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select distinct CONCAT('Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
+            select distinct CONCAT('Servicio/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -139,7 +139,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
+            select distinct CONCAT('/Servicio/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
@@ -172,7 +172,7 @@ class Model_servicio extends MY_Model
             $sqlwhere .= " and Servicio.precio <= $maximo ";
         }
         $sql = "
-            select distinct CONCAT('/Restaurante/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion 
+            select distinct CONCAT('/Servicio/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion 
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
