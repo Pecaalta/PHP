@@ -206,15 +206,15 @@ class Model_reserva extends MY_Model
                 ";
         $reserva = $this->_database->query($sql, array(
                                                         $data['idUsuario']
-                                                        ))->row(); 
+                                                        ))->row_array(); 
 
         $sql = "SELECT *
                 FROM usuario
                 WHERE id = ?
                 ";
         $restaurante = $this->_database->query($sql, array(
-                                                        $reserva['id_restaurante']
-                                                        ))->row();      
+                                                        $reserva{'id_restaurante'}
+                                                        ))->row_array();      
                                                                         
         if(true){       
             $sql = "SELECT *
