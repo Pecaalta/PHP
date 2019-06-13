@@ -116,4 +116,17 @@ class Servicio extends CI_Controller {
 		$this->load->view('restaurante/comentario', $data );
 	}
 
+	public function enviar_comentario(){
+
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+		$data = array(
+			"valoracion" => $this->input->post('valoracion'),
+			"comentar" => $this->input->post('comentar'),
+			"user" => $user['id'],
+		);
+
+		$data["id"] = $this->model_servicio->updateComentario($data);
+	}
+
 }

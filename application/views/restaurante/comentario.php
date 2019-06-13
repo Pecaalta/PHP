@@ -62,7 +62,7 @@
         flex-wrap: wrap;
     }
 
-    .fluid-container > div{
+    .fluid-container>div {
         margin: 10px;
     }
 </style>
@@ -104,7 +104,7 @@
 
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <form class="modal-content" action="<?php echo base_url(); ?>servicio/comentar_servicio" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
+                <form class="modal-content" action="<?php echo base_url(); ?>servicio/enviar_comentario" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
                     <div class="modal-header">
                         <h4 class="modal-title w-100" id="EditModal">Comentar</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -117,18 +117,18 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-4 form-group">
                                         <label>Valoración</label>
-                                        <select name="cars">
+                                        <select name="valoracion">
                                             <option hidden select></option>
-                                            <option value="volvo">1</option>
-                                            <option value="volvo">2</option>
-                                            <option value="saab">3</option>
-                                            <option value="fiat">4</option>
-                                            <option value="audi">5</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                     <div class="col-12 form-group">
-                                        <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario"></textarea>
+                                        <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="comentar" placeholder="Comentario"></textarea>
                                         <div class="invalid-feedback"></div>
                                     </div>
                                 </div>
