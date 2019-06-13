@@ -108,9 +108,6 @@ class Reserva extends CI_Controller {
 	public function agregarComida(){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
-		$array = array(
-			"carrito" => $this->model_reserva->carritoComidas($user["id"])
-		);
 		$data = array(
 			"idUsuario" => $user["id"],
 			"idRestaurante" => $userRestaurante->id,

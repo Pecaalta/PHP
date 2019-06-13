@@ -268,6 +268,11 @@
                     $('#prueba2').html(data);
                 }
             });
+            var precioABorrar = 0;
+            if ($("#eliminarFila" + idSer).length > 0) {
+                precioABorrar = $("#precio" + idSer).html();
+                $("#eliminarFila" + idSer).remove();
+            }
             $('#carrito > tbody:last-child').append(`<tr id="eliminarFila` + idSer + `">
                 <td>
                     <a href="#" onclick="eliminarServicio(` + idSer + `)"><i class="far fa-times-circle"></i></a>
@@ -288,6 +293,7 @@
             `);;
             var precioTotal = document.getElementById('precioTotal').innerHTML;
             precioTotal = (parseFloat(precioTotal) + precio*cantidad);
+            precioTotal = (parseFloat(precioTotal) - parseFloat(precioABorrar));
             $('#precioTotal').html(precioTotal);
         } else {
             $('#errorCantidad').html("<p style='color: red'>La cantidad debe ser de al menos 1 unidad</p>");

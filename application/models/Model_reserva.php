@@ -128,41 +128,6 @@ class Model_reserva extends MY_Model
         }     
     }
 
-    public function carritoComidas($idUsuario)
-    {
-        $sql = "SELECT id
-                FROM reservas
-                WHERE id_usuario = ?
-                AND is_active = 'false'
-                ";
-        $idReserva = $this->_database->query($sql, array(
-                                                        $idUsuario
-                                                        ))->row(); 
-        $sql = "SELECT *
-                FROM reservas_servicio
-                WHERE id_reserva = ? 
-                ";
-        $servicios = $this->_database->query($sql,array(
-                                                        $idReserva->id
-                                                        ))->result_array();
-        $carrito = array();                                                
-        foreach($servicios as $item){
-            $sql = "SELECT *
-                    FROM servicio
-                    WHERE id = ?";
-            $ser = $this->_database->query($sql, array($item['id_servicio']))->row(); 
-            $result = json_decode(json_encode($ser), true);
-            $nombreCantidadPrecio = array(
-                "nombre" => $result['nombre'],
-                "precio" => $result['precio'],
-                "id" => $result['id'],
-                "cantidad" => $item['cantidad']
-            );
-            $carrito[] = $nombreCantidadPrecio;
-        }
-        return $carrito;                                                            
-    }
-
     public function eliminarComida($data)
     {
         $sql = "SELECT id
