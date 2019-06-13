@@ -2,10 +2,10 @@
 -- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 06, 2019 at 11:25 PM
--- Server version: 5.7.24
--- PHP Version: 7.2.14
+-- Servidor: 127.0.0.1:3306
+-- Tiempo de generación: 13-06-2019 a las 01:47:23
+-- Versión del servidor: 5.7.24
+-- Versión de PHP: 7.1.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,13 +19,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `reserbar`
+-- Base de datos: `reserbar`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categoria`
+-- Estructura de tabla para la tabla `categoria`
 --
 
 DROP TABLE IF EXISTS `categoria`;
@@ -39,7 +39,34 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `imagen`
+-- Estructura de tabla para la tabla `comentario`
+--
+
+DROP TABLE IF EXISTS `comentario`;
+CREATE TABLE IF NOT EXISTS `comentario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `texto` varchar(2000) DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_servicio` int(11) NOT NULL,
+  `calificacion` tinyint(5) DEFAULT NULL,
+  `puedeComentar` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `comentario_ibfk_1` (`id_usuario`),
+  KEY `comentario_ibfk_2` (`id_servicio`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `comentario`
+--
+
+INSERT INTO `comentario` (`id`, `texto`, `id_usuario`, `id_servicio`, `calificacion`, `puedeComentar`) VALUES
+(1, 'Muy ricamente rico!', 1, 8, 5, 1),
+(2, 'Semenjante porqueria', 4, 8, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `imagen`
 --
 
 DROP TABLE IF EXISTS `imagen`;
@@ -54,7 +81,7 @@ CREATE TABLE IF NOT EXISTS `imagen` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reservas`
+-- Estructura de tabla para la tabla `reservas`
 --
 
 DROP TABLE IF EXISTS `reservas`;
@@ -68,33 +95,33 @@ CREATE TABLE IF NOT EXISTS `reservas` (
   `id_restaurante` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `fecha_total` date DEFAULT NULL,
-  `turno` varchar(6) DEFAULT NULL,
   `tarjeta` int(11) DEFAULT NULL,
   `titularTarjeta` varchar(200) DEFAULT NULL,
   `cvc` int(3) DEFAULT NULL,
+  `turno` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_restaurante` (`id_restaurante`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `reservas`
+-- Volcado de datos para la tabla `reservas`
 --
 
-INSERT INTO `reservas` (`id`, `is_active`, `fecha_emicion`, `personas`, `precio`, `evalacion`, `id_restaurante`, `id_usuario`, `fecha_total`, `tarjeta`, `titularTarjeta`, `cvc`) VALUES
-(1, 1, '2019-06-03 00:00:00', 4, '652', 3, 2, 1, '2019-06-04 20:00:00', NULL, NULL, NULL),
-(2, 1, '2019-06-03 00:00:00', 3, '452', 3, 2, 5, '2019-06-03 22:30:00', NULL, NULL, NULL),
-(3, 1, '2019-06-01 00:00:00', 1, '320', 5, 2, 7, '2019-06-05 01:00:00', NULL, NULL, NULL),
-(4, 1, '2019-06-03 00:00:00', 6, '2454', 5, 2, 6, '2019-06-04 21:00:00', NULL, NULL, NULL),
-(6, 1, '2019-05-09 00:00:00', 3, '452', 1, 2, 6, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(7, 1, '2019-06-01 00:00:00', 4, '961', 3, 2, 5, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(220, 1, '2019-06-06 20:22:25', 1, '36', NULL, 2, 1, '2019-06-06 21:00:00', 2147483647, 'Lucas', 123),
-(221, 0, NULL, NULL, NULL, NULL, 2, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `reservas` (`id`, `is_active`, `fecha_emicion`, `personas`, `precio`, `evalacion`, `id_restaurante`, `id_usuario`, `fecha_total`, `tarjeta`, `titularTarjeta`, `cvc`, `turno`) VALUES
+(292, 1, '2019-06-10 00:00:00', 2, '654', 2, 2, 6, '2019-06-12', 456464, 'asda', 233, 'Dia'),
+(293, 1, '2019-06-11 00:00:00', 4, '455', 4, 2, 4, '2019-06-12', 577245, 'sdfsdfsdf', 563, 'Dia'),
+(294, 1, '2019-06-12 00:00:00', 2, '3', 1, 2, 7, '2019-06-12', 23232, '112313s', 231, 'Noche'),
+(299, 1, '2019-06-12 19:43:14', NULL, '2761', NULL, 2, 1, NULL, NULL, NULL, NULL, NULL),
+(300, 1, '2019-06-12 21:04:31', NULL, '1204', NULL, 3, 3, NULL, NULL, NULL, NULL, NULL),
+(302, 1, '2019-06-12 21:05:59', NULL, '1802', NULL, 3, 1, NULL, NULL, NULL, NULL, NULL),
+(303, 1, '2019-06-12 22:22:47', NULL, '1380', NULL, 2, 1, NULL, NULL, NULL, NULL, NULL),
+(304, 1, '2019-06-12 22:23:13', NULL, '1104', NULL, 2, 1, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `reservas_servicio`
+-- Estructura de tabla para la tabla `reservas_servicio`
 --
 
 DROP TABLE IF EXISTS `reservas_servicio`;
@@ -107,20 +134,29 @@ CREATE TABLE IF NOT EXISTS `reservas_servicio` (
   PRIMARY KEY (`id`),
   KEY `reservas_servicio_ibfk_1` (`id_servicio`),
   KEY `reservas_servicio_ibfk_2` (`id_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=209 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `reservas_servicio`
+-- Volcado de datos para la tabla `reservas_servicio`
 --
 
 INSERT INTO `reservas_servicio` (`id`, `id_servicio`, `id_reserva`, `cantidad`, `is_active`) VALUES
-(186, 13, 220, 1, 1),
-(187, 8, 220, 2, 1);
+(198, 8, 292, 3, 1),
+(199, 7, 299, 5, 1),
+(200, 8, 299, 3, 1),
+(201, 32, 300, 12, 1),
+(202, 34, 300, 2, 1),
+(203, 37, 302, 12, 1),
+(204, 34, 302, 1, 1),
+(205, 17, 303, 4, 1),
+(206, 25, 304, 45, 1),
+(207, 24, 304, 1, 1),
+(208, 30, 304, 3, 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `restaurante_categoria`
+-- Estructura de tabla para la tabla `restaurante_categoria`
 --
 
 DROP TABLE IF EXISTS `restaurante_categoria`;
@@ -137,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `restaurante_categoria` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `restaurante_imagen`
+-- Estructura de tabla para la tabla `restaurante_imagen`
 --
 
 DROP TABLE IF EXISTS `restaurante_imagen`;
@@ -153,7 +189,7 @@ CREATE TABLE IF NOT EXISTS `restaurante_imagen` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `servicio`
+-- Estructura de tabla para la tabla `servicio`
 --
 
 DROP TABLE IF EXISTS `servicio`;
@@ -167,10 +203,10 @@ CREATE TABLE IF NOT EXISTS `servicio` (
   `imagen` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `servicio_ibfk_1` (`id_restaurante`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `servicio`
+-- Volcado de datos para la tabla `servicio`
 --
 
 INSERT INTO `servicio` (`id`, `is_active`, `nombre`, `descripcion`, `precio`, `id_restaurante`, `imagen`) VALUES
@@ -200,12 +236,13 @@ INSERT INTO `servicio` (`id`, `is_active`, `nombre`, `descripcion`, `precio`, `i
 (33, 1, 'Caraio', 'Filodaputa', '65', 3, NULL),
 (34, 1, 'xc', 'sd', '2', 3, NULL),
 (35, 1, 'jajajaj', 'eee', '23', 3, NULL),
-(36, 1, 'as', 'www', '23', 3, NULL);
+(36, 1, 'as', 'www', '23', 3, NULL),
+(37, 1, 'servicio', 'mmmm rico rico', '150', 3, './uploads/servicios/logo.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `usuario`
+-- Estructura de tabla para la tabla `usuario`
 --
 
 DROP TABLE IF EXISTS `usuario`;
@@ -234,25 +271,26 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `apertura` time DEFAULT NULL,
   `clausura` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `usuario`
+-- Volcado de datos para la tabla `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `is_active`, `nickname`, `password`, `nombre`, `email`, `rut`, `direccion`, `zona`, `telefono`, `apellido`, `fecha_de_nacimiento`, `end_perfil`, `created_at`, `descripcionRestaurante`, `updated_at`, `cantidadMesas`, `avatar`, `lat`, `lng`, `tiempoReserva`, `apertura`, `clausura`) VALUES
-(1, 0, 'admin', '123', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(2, 1, 'tienda', '123', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
+(1, 0, 'lucas', '1', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
+(2, 1, 'RussiaFood', '1', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
 (3, 0, 'rararaa', '1', 'pepapig', 'asdad@sdc', '656', 'asda', '65asd', '515', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (4, 0, 'batlalalal', '', 'asda', 'asds@asf', '656', 'asdasd', 'asds', '5656', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (5, 0, 'batman', '1', 'batman', 'asd@das', NULL, NULL, NULL, NULL, 'lala', '1111-11-11', 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (6, 0, 'superman', '5', 'superhombre35', 'superman@kripton.kr', NULL, NULL, NULL, NULL, 'deacero23', '1111-11-11', 0, '2019-05-30', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(7, 0, 'pepe', '1', 'pepe', 'pepe@gmail.com', NULL, NULL, NULL, NULL, 'jaja', '1965-11-11', 0, '2019-06-03', NULL, NULL, NULL, '0', NULL, NULL, '02:00:00', NULL, NULL);
+(7, 0, 'pepe', '1', 'pepe', 'pepe@gmail.com', NULL, NULL, NULL, NULL, 'jaja', '1965-11-11', 0, '2019-06-03', NULL, NULL, NULL, '0', NULL, NULL, '02:00:00', NULL, NULL),
+(8, 0, 'jepeto', '1', 'jepe', 'jepeto@gmail.com', '233', 'lll', NULL, '2443', NULL, NULL, 0, '2019-06-07', NULL, NULL, NULL, 'Pizza-con-pepperoni.jpg', -34.888, -56.1807, '02:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `zona`
+-- Estructura de tabla para la tabla `zona`
 --
 
 DROP TABLE IF EXISTS `zona`;
@@ -264,38 +302,38 @@ CREATE TABLE IF NOT EXISTS `zona` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `reservas`
+-- Filtros para la tabla `reservas`
 --
 ALTER TABLE `reservas`
   ADD CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`),
   ADD CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`);
 
 --
--- Constraints for table `reservas_servicio`
+-- Filtros para la tabla `reservas_servicio`
 --
 ALTER TABLE `reservas_servicio`
   ADD CONSTRAINT `reservas_servicio_ibfk_1` FOREIGN KEY (`id_servicio`) REFERENCES `servicio` (`id`),
   ADD CONSTRAINT `reservas_servicio_ibfk_2` FOREIGN KEY (`id_reserva`) REFERENCES `reservas` (`id`);
 
 --
--- Constraints for table `restaurante_categoria`
+-- Filtros para la tabla `restaurante_categoria`
 --
 ALTER TABLE `restaurante_categoria`
   ADD CONSTRAINT `restaurante_categoria_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id`),
   ADD CONSTRAINT `restaurante_categoria_ibfk_2` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 
 --
--- Constraints for table `restaurante_imagen`
+-- Filtros para la tabla `restaurante_imagen`
 --
 ALTER TABLE `restaurante_imagen`
   ADD CONSTRAINT `restaurante_imagen_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);
 
 --
--- Constraints for table `servicio`
+-- Filtros para la tabla `servicio`
 --
 ALTER TABLE `servicio`
   ADD CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_restaurante`) REFERENCES `usuario` (`id`);

@@ -227,7 +227,7 @@
                                     
                                 </div>
                                 <div class="card-footer">
-                                    <a href="<?php echo base_url().'restaurante/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>
+                                    <a href="<?php echo base_url().'servicio/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>
                                 </div>
                             </div>
                         </div>

@@ -87,7 +87,7 @@
                 <img 
                     data-toggle="modal" data-target="#imgModal" 
                     onclick="imgaengrande.src = '<?php echo base_url() .  $img; ?>'"
-                    onerror="javascript:imgError(this)"  width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-1"0 />
+                    onerror="javascript:imgError(this)"  width="210px" height="210px;" src="<?php echo base_url() . $img; ?>" class="rounded-circle z-depth-1" />
                 <div class="mt-3" id="botones">
                     <div id="divedit">
                         <a href=<?php echo base_url() . 'usuario/editar/' . $id; ?>>

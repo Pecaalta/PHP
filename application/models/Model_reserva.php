@@ -44,47 +44,26 @@ class Model_reserva extends MY_Model
     public function disponibilidadMesa($data){
         $sql = "SELECT *
                 FROM reservas r
-                WHERE r.fecha_total BETWEEN SUBTIME(?, SUBTIME(?, '0:1:0')) AND ?
+                WHERE r.fecha_total = ?
+                AND r.turno = ?
                 AND r.id_restaurante = ?
-                AND r.is_active = 'true'
                 ";         
-        $cantidadDeReservasPrevias = $this->_database->query($sql,array(
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->tiempoReserva,
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->id
-                                                                        ))->result_array();
-        $sql = "SELECT *
-                FROM reservas r
-                WHERE r.fecha_total BETWEEN ? AND ADDTIME(?, SUBTIME(?, '0:1:0'))
-                AND r.id_restaurante = ?
-                AND r.is_active = 'true'
-                ";         
-        $cantidadDeReservasPosteriores = $this->_database->query($sql,array(
-                                                                        $data['fecha'],
-                                                                        $data['fecha'],
-                                                                        $data['restaurante']->tiempoReserva,
-                                                                        $data['restaurante']->id
-                                                                        ))->result_array();
+        $cantidadDeReservas = $this->_database->query($sql,array(
+                                                                $data['fecha'],
+                                                                $data['turno'],
+                                                                $data['restaurante']->id
+                                                                ))->result_array();
 
-
-        if(count($cantidadDeReservasPrevias) < $data['restaurante']->cantidadMesas
-        and count($cantidadDeReservasPosteriores) < $data['restaurante']->cantidadMesas){
+        if(count($cantidadDeReservas) < $data['restaurante']->cantidadMesas){
             $sql = "UPDATE reservas
-                    SET fecha_total = ?
+                    SET fecha_total = ?, turno = ?
                     WHERE id_usuario = ?
                     AND is_active = 'false'";
-            $this->_database->query($sql,array($data['fecha'],$data['idUsuario']));        
+            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['idUsuario']));        
 
-            return "Mesas disponibles |
-                    previas: ".count($cantidadDeReservasPrevias)." 
-                    posteriores:".count($cantidadDeReservasPosteriores)." 
-                    id_restaurante: ".$data['restaurante']->id;
+            return "Mesas disponibles";
         }
-        return "No hay mesas disponibles a esta hora 
-                previas: ".count($cantidadDeReservasPrevias)." 
-                posteriores:".count($cantidadDeReservasPosteriores)." 
-                id_restaurante: ".$data['restaurante']->id;
+        return "No hay mesas disponibles en el horario seleccionado";
     }
     
     public function prueba($data){
@@ -149,41 +128,6 @@ class Model_reserva extends MY_Model
         }     
     }
 
-    public function carritoComidas($idUsuario)
-    {
-        $sql = "SELECT id
-                FROM reservas
-                WHERE id_usuario = ?
-                AND is_active = 'false'
-                ";
-        $idReserva = $this->_database->query($sql, array(
-                                                        $idUsuario
-                                                        ))->row(); 
-        $sql = "SELECT *
-                FROM reservas_servicio
-                WHERE id_reserva = ? 
-                ";
-        $servicios = $this->_database->query($sql,array(
-                                                        $idReserva->id
-                                                        ))->result_array();
-        $carrito = array();                                                
-        foreach($servicios as $item){
-            $sql = "SELECT *
-                    FROM servicio
-                    WHERE id = ?";
-            $ser = $this->_database->query($sql, array($item['id_servicio']))->row(); 
-            $result = json_decode(json_encode($ser), true);
-            $nombreCantidadPrecio = array(
-                "nombre" => $result['nombre'],
-                "precio" => $result['precio'],
-                "id" => $result['id'],
-                "cantidad" => $item['cantidad']
-            );
-            $carrito[] = $nombreCantidadPrecio;
-        }
-        return $carrito;                                                            
-    }
-
     public function eliminarComida($data)
     {
         $sql = "SELECT id
@@ -227,53 +171,24 @@ class Model_reserva extends MY_Model
                 ";
         $reserva = $this->_database->query($sql, array(
                                                         $data['idUsuario']
-                                                        ))->row(); 
+                                                        ))->row_array(); 
 
         $sql = "SELECT *
                 FROM usuario
                 WHERE id = ?
                 ";
         $restaurante = $this->_database->query($sql, array(
-                                                        $reserva->id_restaurante
-                                                        ))->row(); 
-
-        $sql = "SELECT *
-        FROM reservas r
-        WHERE r.fecha_total BETWEEN SUBTIME(?, SUBTIME(?, '0:1:0')) AND ?
-        AND r.id_restaurante = ?
-        AND r.is_active = 'true'
-        ";                                                             
-        $cantidadDeReservasPrevias = $this->_database->query($sql,array(
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->tiempoReserva,
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->id
-                                                                        ))->result_array();
-
-        $sql = "SELECT *
-                FROM reservas r
-                WHERE r.fecha_total BETWEEN ? AND ADDTIME(?, SUBTIME(?, '0:1:0'))
-                AND r.id_restaurante = ?
-                AND r.is_active = 'true'
-                ";         
-        $cantidadDeReservasPosteriores = $this->_database->query($sql,array(
-                                                                        $reserva->fecha_total,
-                                                                        $reserva->fecha_total,
-                                                                        $restaurante->tiempoReserva,
-                                                                        $restaurante->id
-                                                                        ))->result_array();         
+                                                        $reserva{'id_restaurante'}
+                                                        ))->row_array();      
                                                                         
-        if(count($cantidadDeReservasPrevias) < $restaurante->cantidadMesas
-        and count($cantidadDeReservasPosteriores) < $restaurante->cantidadMesas){
+        if(true){       
             $sql = "SELECT *
                     FROM reservas_servicio
                     WHERE id_reserva = ?";
             $reservas_servicio = $this->_database->query($sql, array(
-                                                                $reserva->id
-                                                                ))->result_array();         
-            
-                 
-            
+                                                                $reserva['id']
+                                                                ))->result_array(); 
+
             $precioTotal = 0;                                                    
             foreach($reservas_servicio as $item){
                 $sql = "SELECT *
@@ -295,8 +210,36 @@ class Model_reserva extends MY_Model
             $this->_database->query($sql,array(
                                                 $precioTotal,
                                                 $data['idUsuario'],
-                                                $restaurante->id
-                                                ));        
+                                                $restaurante['id']
+                                                ));      
+                                                
+            //Instancio los comentarios
+            $sql = "SELECT DISTINCT rs.* 
+                FROM reservas_servicio rs, reservas r
+                WHERE r.id_usuario = ?
+                AND rs.id_reserva = r.id;";
+            $serviciosUsuario = $this->_database->query($sql,array($data['idUsuario']))->result_array();
+            if (count($serviciosUsuario) > 0) {
+                foreach ($serviciosUsuario as $item) {
+                        $sql = "SELECT * 
+                                FROM Comentario c
+                                WHERE c.id_servicio = ?
+                                AND c.id_usuario = ?";
+                        $comen = $this->_database->query($sql, array($item['id'],$data['idUsuario']))->row();     
+                        if ($comen != null) {
+                                $sql = "UPDATE Comentario c
+                                        SET puedeComentar = true
+                                        WHERE c.id_servicio = ?
+                                        AND c.id_usuario = ?";
+                        $this->_database->query($sql, array($item['id'],$data['idUsuario']));                   
+                        }
+                        else{
+                                $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)
+                                        VALUES (?,?,true)";
+                                $this->_database->query($sql, array($item['id'],$data['idUsuario']));  
+                        }           
+                    }   
+            }  
 
             return true;                                    
         }else{

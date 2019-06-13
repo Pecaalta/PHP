@@ -129,7 +129,15 @@
                     <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-5"><input type="datetime-local" id="fecha" name="fecha">
+                    <div class="col-md-5">
+                        <input type="date" id="fecha" name="fecha">
+                        <div class="form-group">
+                        <label for=""></label>
+                        <select class="form-control" name="turno" id="turno">
+                            <option>Dia</option>
+                            <option>Noche</option>
+                        </select>
+                    </div>
                         <p id="fechaAviso"></p>
                     </div>
 
@@ -198,6 +206,7 @@
 
     $("#comprobarDisponibilidad").click(function() {
         var fechaIndicada = $("#fecha").val();
+        var turnoIndicado = $("#turno").val();
         var id_restaurante = "<?php echo $userRestaurante->id ?>";
         var url = "reserva/fechaDisponible"
         $.ajax({
@@ -206,6 +215,7 @@
             dataType: 'html',
             data: {
                 fechaIndicada: fechaIndicada,
+                turnoIndicado: turnoIndicado,
                 id_restaurante: id_restaurante
             },
             success: function(data) {
@@ -258,6 +268,11 @@
                     $('#prueba2').html(data);
                 }
             });
+            var precioABorrar = 0;
+            if ($("#eliminarFila" + idSer).length > 0) {
+                precioABorrar = $("#precio" + idSer).html();
+                $("#eliminarFila" + idSer).remove();
+            }
             $('#carrito > tbody:last-child').append(`<tr id="eliminarFila` + idSer + `">
                 <td>
                     <a href="#" onclick="eliminarServicio(` + idSer + `)"><i class="far fa-times-circle"></i></a>
@@ -278,6 +293,7 @@
             `);;
             var precioTotal = document.getElementById('precioTotal').innerHTML;
             precioTotal = (parseFloat(precioTotal) + precio*cantidad);
+            precioTotal = (parseFloat(precioTotal) - parseFloat(precioABorrar));
             $('#precioTotal').html(precioTotal);
         } else {
             $('#errorCantidad').html("<p style='color: red'>La cantidad debe ser de al menos 1 unidad</p>");

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 06, 2019 at 11:25 PM
+-- Generation Time: Jun 12, 2019 at 08:04 PM
 -- Server version: 5.7.24
 -- PHP Version: 7.2.14
 
@@ -39,6 +39,33 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `comentario`
+--
+
+DROP TABLE IF EXISTS `comentario`;
+CREATE TABLE IF NOT EXISTS `comentario` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `texto` varchar(2000) DEFAULT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_servicio` int(11) NOT NULL,
+  `calificacion` tinyint(5) DEFAULT NULL,
+  `puedeComentar` BOOLEAN DEFAULT TRUE,
+  PRIMARY KEY (`id`),
+  KEY `comentario_ibfk_1` (`id_usuario`),
+  KEY `comentario_ibfk_2` (`id_servicio`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comentario`
+--
+
+INSERT INTO `comentario` (`id`, `texto`, `id_usuario`, `id_servicio`, `calificacion`) VALUES
+(1, 'Muy ricamente rico!', 1, 8, 5),
+(2, 'Semenjante porqueria', 4, 8, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `imagen`
 --
 
@@ -68,28 +95,24 @@ CREATE TABLE IF NOT EXISTS `reservas` (
   `id_restaurante` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `fecha_total` date DEFAULT NULL,
-  `turno` varchar(6) DEFAULT NULL,
   `tarjeta` int(11) DEFAULT NULL,
   `titularTarjeta` varchar(200) DEFAULT NULL,
   `cvc` int(3) DEFAULT NULL,
+  `turno` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_restaurante` (`id_restaurante`),
   KEY `id_usuario` (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=299 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reservas`
 --
 
-INSERT INTO `reservas` (`id`, `is_active`, `fecha_emicion`, `personas`, `precio`, `evalacion`, `id_restaurante`, `id_usuario`, `fecha_total`, `tarjeta`, `titularTarjeta`, `cvc`) VALUES
-(1, 1, '2019-06-03 00:00:00', 4, '652', 3, 2, 1, '2019-06-04 20:00:00', NULL, NULL, NULL),
-(2, 1, '2019-06-03 00:00:00', 3, '452', 3, 2, 5, '2019-06-03 22:30:00', NULL, NULL, NULL),
-(3, 1, '2019-06-01 00:00:00', 1, '320', 5, 2, 7, '2019-06-05 01:00:00', NULL, NULL, NULL),
-(4, 1, '2019-06-03 00:00:00', 6, '2454', 5, 2, 6, '2019-06-04 21:00:00', NULL, NULL, NULL),
-(6, 1, '2019-05-09 00:00:00', 3, '452', 1, 2, 6, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(7, 1, '2019-06-01 00:00:00', 4, '961', 3, 2, 5, '2019-06-04 17:00:00', NULL, NULL, NULL),
-(220, 1, '2019-06-06 20:22:25', 1, '36', NULL, 2, 1, '2019-06-06 21:00:00', 2147483647, 'Lucas', 123),
-(221, 0, NULL, NULL, NULL, NULL, 2, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `reservas` (`id`, `is_active`, `fecha_emicion`, `personas`, `precio`, `evalacion`, `id_restaurante`, `id_usuario`, `fecha_total`, `tarjeta`, `titularTarjeta`, `cvc`, `turno`) VALUES
+(292, 1, '2019-06-10 00:00:00', 2, '654', 2, 2, 6, '2019-06-12', 456464, 'asda', 233, 'Dia'),
+(293, 1, '2019-06-11 00:00:00', 4, '455', 4, 2, 4, '2019-06-12', 577245, 'sdfsdfsdf', 563, 'Dia'),
+(294, 1, '2019-06-12 00:00:00', 2, '3', 1, 2, 7, '2019-06-12', 23232, '112313s', 231, 'Noche'),
+(298, 0, NULL, NULL, NULL, NULL, 2, 1, '2019-06-12', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -107,15 +130,14 @@ CREATE TABLE IF NOT EXISTS `reservas_servicio` (
   PRIMARY KEY (`id`),
   KEY `reservas_servicio_ibfk_1` (`id_servicio`),
   KEY `reservas_servicio_ibfk_2` (`id_reserva`)
-) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reservas_servicio`
 --
 
 INSERT INTO `reservas_servicio` (`id`, `id_servicio`, `id_reserva`, `cantidad`, `is_active`) VALUES
-(186, 13, 220, 1, 1),
-(187, 8, 220, 2, 1);
+(198, 8, 292, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -234,20 +256,21 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `apertura` time DEFAULT NULL,
   `clausura` time DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `usuario`
 --
 
 INSERT INTO `usuario` (`id`, `is_active`, `nickname`, `password`, `nombre`, `email`, `rut`, `direccion`, `zona`, `telefono`, `apellido`, `fecha_de_nacimiento`, `end_perfil`, `created_at`, `descripcionRestaurante`, `updated_at`, `cantidadMesas`, `avatar`, `lat`, `lng`, `tiempoReserva`, `apertura`, `clausura`) VALUES
-(1, 0, 'admin', '123', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(2, 1, 'tienda', '123', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
+(1, 0, 'lucas', '1', 'lucas', 'lucasmontelongo@outlook.com', NULL, NULL, NULL, NULL, 'montelongo', '1996-03-13', 0, '2019-05-29', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
+(2, 1, 'RussiaFood', '1', 'Vladimir', 'rusia@gob.ru', '666', 'Moscow', 'Kremlin', '66585521', 'Putin', '2019-05-01', NULL, '2019-05-27', 'Un lugar de acogida para todos los compatriotas rusos que deseen disfrutar de la gastronomia de la madre patria.', NULL, 2, NULL, NULL, NULL, '02:00:00', '08:00:00', '03:00:00'),
 (3, 0, 'rararaa', '1', 'pepapig', 'asdad@sdc', '656', 'asda', '65asd', '515', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (4, 0, 'batlalalal', '', 'asda', 'asds@asf', '656', 'asdasd', 'asds', '5656', NULL, NULL, 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (5, 0, 'batman', '1', 'batman', 'asd@das', NULL, NULL, NULL, NULL, 'lala', '1111-11-11', 0, '2019-05-30', NULL, NULL, NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
 (6, 0, 'superman', '5', 'superhombre35', 'superman@kripton.kr', NULL, NULL, NULL, NULL, 'deacero23', '1111-11-11', 0, '2019-05-30', NULL, '2019-05-30', NULL, NULL, NULL, NULL, '02:00:00', NULL, NULL),
-(7, 0, 'pepe', '1', 'pepe', 'pepe@gmail.com', NULL, NULL, NULL, NULL, 'jaja', '1965-11-11', 0, '2019-06-03', NULL, NULL, NULL, '0', NULL, NULL, '02:00:00', NULL, NULL);
+(7, 0, 'pepe', '1', 'pepe', 'pepe@gmail.com', NULL, NULL, NULL, NULL, 'jaja', '1965-11-11', 0, '2019-06-03', NULL, NULL, NULL, '0', NULL, NULL, '02:00:00', NULL, NULL),
+(8, 0, 'jepeto', '1', 'jepe', 'jepeto@gmail.com', '233', 'lll', NULL, '2443', NULL, NULL, 0, '2019-06-07', NULL, NULL, NULL, 'Pizza-con-pepperoni.jpg', -34.888, -56.1807, '02:00:00', NULL, NULL);
 
 -- --------------------------------------------------------
 

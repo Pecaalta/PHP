@@ -90,4 +90,30 @@ class Servicio extends CI_Controller {
 		}
 	}
 
+	public function info_servicio($id)
+	{
+		$servicio = $this->model_servicio->infoServicio($id);
+		$comentarios = $this->model_servicio->listaComentarios($id);
+
+		$data = array(
+			'servicio' => $servicio,
+			'comentarios' => $comentarios
+		);
+
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('restaurante/verServicio', $data );
+	}
+
+	public function comentar_servicio($id)
+	{
+		$servicio = $this->model_servicio->comentar($id);
+	
+		$data = array(
+			'servicio' => $servicio,
+		);
+
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('restaurante/comentario', $data );
+	}
+
 }
