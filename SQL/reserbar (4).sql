@@ -49,6 +49,7 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `id_usuario` int(11) NOT NULL,
   `id_servicio` int(11) NOT NULL,
   `calificacion` tinyint(5) DEFAULT NULL,
+  `puedeComentar` BOOLEAN DEFAULT TRUE,
   PRIMARY KEY (`id`),
   KEY `comentario_ibfk_1` (`id_usuario`),
   KEY `comentario_ibfk_2` (`id_servicio`)

@@ -224,6 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <div class="dropdown-menu dropdown-menu-lg-right dropdown-secondary" aria-labelledby="navbarDropdownMenuLink-55">
                     <?php if (isset($id) and !isset($rut)):?>
                         <a class="dropdown-item" href="<?php echo base_url().'usuario/perfil/'.$id; ?>">Mi Perfil</a>
+                        <a class="dropdown-item" href="<?php echo base_url().'servicio/comentar_servicio/'.$id; ?>">Mis Reservas</a>
                     <?php endif;?>
                     <?php if (isset($rut)):?>
                         <a class="dropdown-item" href="<?php echo base_url().'restaurante/principal/'.$id; ?>">Mi local</a>

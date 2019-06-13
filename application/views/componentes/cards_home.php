@@ -118,7 +118,7 @@
     <div class="row">
         <div class="msgNoElement">
             <h1 >No hay servicios</h1>
-            <h2>Pruebe quitar filtros o verifiquela ortografia</h2>
+            <h2>Pruebe quitar filtros o verifique la ortografía</h2>
         </div>
     </div>
 <?php endif;?>
