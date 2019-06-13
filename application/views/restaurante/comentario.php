@@ -62,7 +62,7 @@
         flex-wrap: wrap;
     }
 
-    .fluid-container > div{
+    .fluid-container>div {
         margin: 10px;
     }
 
@@ -124,6 +124,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+<<<<<<< HEAD
             <div class="modal-body">
                 <div class="row">
                     <div class="col-12">
@@ -147,6 +148,53 @@
                         <input type="hidden" id="idServicio" name="idServicio" value="">
                         <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario"></textarea>
                         <div class="invalid-feedback"></div>
+=======
+        </div>
+
+
+
+
+        <script>
+            function dataComentar(id, nombre, descripcion, precio, imagen) {
+                $("#editdescripcion").val(descripcion);
+                $("#editprecio").val(precio);
+            }
+        </script>
+
+
+        <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <form class="modal-content" action="<?php echo base_url(); ?>servicio/enviar_comentario" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
+                    <div class="modal-header">
+                        <h4 class="modal-title w-100" id="EditModal">Comentar</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-8">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-4 form-group">
+                                        <label>Valoración</label>
+                                        <select name="valoracion">
+                                            <option hidden select></option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="comentar" placeholder="Comentario"></textarea>
+                                        <div class="invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+>>>>>>> bc860962aacdebde8ceced6aac697c6e6da904c4
                     </div>
                     <div class="col-12 mt-3 text-right">
                         <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancelar</button>
