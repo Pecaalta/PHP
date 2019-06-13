@@ -204,7 +204,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <ul class="navbar-nav ml-auto nav-flex-icons">
         <form class="form-inline">
             <div class="md-form my-0">
-                <input class="form-control mr-sm-2" type="text" placeholder="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="autocompletado" aria-label="Search">
+                <input class="form-control mr-sm-2" autocomplete="off" type="text" placeholder="Search" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="autocompletado" aria-label="Search">
                 <div id="dropdown-autocompletado" class="dropdown-menu">
                 </div>
             </div>
