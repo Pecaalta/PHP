@@ -111,7 +111,6 @@ class Servicio extends CI_Controller {
 		$data = array(
 			'servicio' => $servicio,
 		);
-
 		$this->load->view('main/navbar', $this->nav);
 		$this->load->view('restaurante/comentario', $data );
 	}
