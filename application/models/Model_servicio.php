@@ -254,4 +254,10 @@ class Model_servicio extends MY_Model
         $query = $this->_database->query($sql, array($data))->result();
         return $query;
     }
+
+    public function updateComentario($data)
+    {
+        $sql = "UPDATE Comentario SET texto = ? , calificacion = ? WHERE id_usuario= ?";
+        $query = $this->_database->query($sql, array($data['comentar'], $data['valoracion'], $data['user']));
+    }
 }
