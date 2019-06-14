@@ -100,7 +100,7 @@
     #star[date-satar="5"] label:nth-child(2),
     #star[date-satar="5"] label:nth-child(3),
     #star[date-satar="5"] label:nth-child(4),
-    #star[date-satar="5"] label:nth-child(5) { color: #007aff; }
+    #star[date-satar="5"] label:nth-child(5) { color: #D8D135; }
 
 
     #editdescripcion {
@@ -118,7 +118,7 @@
 </style>
 <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <form class="modal-content" action="<?php echo base_url(); ?>servicio/comentar_servicio" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
+        <form class="modal-content" action="<?php echo base_url(); ?>servicio/enviar_comentario" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
             <div class="modal-header">
                 <h4 class="modal-title w-100" id="EditModal">Comentar</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

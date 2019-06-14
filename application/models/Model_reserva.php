@@ -236,7 +236,7 @@ class Model_reserva extends MY_Model
                         else{
                                 $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)
                                         VALUES (?,?,true)";
-                                $this->_database->query($sql, array($item['id'],$data['idUsuario']));  
+                                $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));  
                         }           
                     }   
             }  

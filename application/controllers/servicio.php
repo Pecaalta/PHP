@@ -121,11 +121,13 @@ class Servicio extends CI_Controller {
 
 		$data = array(
 			"valoracion" => $this->input->post('valoracion'),
-			"comentar" => $this->input->post('comentar'),
+			"id_servicio" => $this->input->post('idServicio'),
+			"comentar" => $this->input->post('descripcion'),
 			"user" => $user['id'],
 		);
-
+		
 		$data["id"] = $this->model_servicio->updateComentario($data);
+		redirect("/");
 	}
 
 }

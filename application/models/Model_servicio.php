@@ -257,7 +257,8 @@ class Model_servicio extends MY_Model
 
     public function updateComentario($data)
     {
-        $sql = "UPDATE Comentario SET texto = ? , calificacion = ? WHERE id_usuario= ?";
-        $query = $this->_database->query($sql, array($data['comentar'], $data['valoracion'], $data['user']));
+        $sql = "UPDATE Comentario SET puedeComentar = false, texto = '".$data['comentar']."', calificacion = '".$data['valoracion']."' 
+        WHERE id_usuario= '".$data['user']."' AND id_servicio = '".$data['id_servicio']."'";
+        $query = $this->_database->query($sql);
     }
 }
