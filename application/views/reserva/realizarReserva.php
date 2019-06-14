@@ -28,6 +28,12 @@
     }
 </style>
 
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/styles.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/demo.css">
+
+<script src="<?php echo base_url(); ?>/public/js/scriptPagos.js"></script>
+<script src="<?php echo base_url(); ?>/public/js/jquery.payform.min.js" charset="utf-8"></script>
+
 <div class="container contenedor text-center">
     <h3>Reserva</h3>
     <div class="progress">
@@ -42,6 +48,39 @@
         </datalist>
 
         <!--primer pagina!-->
+        <fieldset class="servicios">
+            <div id="cuadroHorario" class="container">
+                <div class="row">
+                    <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <input type="date" id="fecha" name="fecha">
+                        <div class="form-group">
+                            <label for=""></label>
+                            <select class="form-control" name="turno" id="turno">
+                                <option>Dia</option>
+                                <option>Noche</option>
+                            </select>
+                        </div>
+                        <input type="number" id="cantidadPersonas">
+                        <p id="fechaAviso"></p>
+                    </div>
+
+                    <div  class="col-md-4" id="calendar"></div>
+                
+                    <div class="col-md-3"><a href="#" id="comprobarDisponibilidad">Comprobar disponibilidad</a>
+                        <p id="prueba">
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <input type="button" name="next" class="next btn btn-info" id="siguienteFecha" value="Siguiente" />
+        </fieldset>
+
+        <!--segunda pagina!-->
         <fieldset class="servicios">
             <div id="cuadroComida">
                 <h4>Escoge lo que vas a comer en <strong><?php echo $userRestaurante->nickname ?></strong></h4>
@@ -119,63 +158,72 @@
             </div>
             <br>
             <hr>
-            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info" value="Siguiente" />
-        </fieldset>
-
-        <!--segunda pagina!-->
-        <fieldset class="servicios">
-            <div id="cuadroHorario" class="container">
-                <div class="row">
-                    <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <input type="date" id="fecha" name="fecha">
-                        <div class="form-group">
-                        <label for=""></label>
-                        <select class="form-control" name="turno" id="turno">
-                            <option>Dia</option>
-                            <option>Noche</option>
-                        </select>
-                    </div>
-                        <p id="fechaAviso"></p>
-                    </div>
-
-                    <div  class="col-md-4" id="calendar"></div>
-                
-                    <div class="col-md-3"><a href="#" id="comprobarDisponibilidad">Comprobar disponibilidad</a>
-                        <div id="prueba">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
             <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" />
+            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info" value="Siguiente" />
         </fieldset>
 
         <!--tercer pagina!-->
         <fieldset class="servicios">
-            <div id="cuadroHorario" class="container text-left">
-                <div class="row">
-                    <div class="col-md-5">Información de pago: </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">Cantidad de personas<input type="number" id="cantidadPersonas"></div>
-                    <div class="col-md-8">Nombre del titular de la tarjeta<input type="text" id="titularTarjeta"></div>
-                    <div class="col-md-8">Numero de tarjeta<input type="text" id="tarjeta"></div>
-                    <div class="col-md-8">CVC<input type="text" id="cvc"></div>
-                </div>
-                <div id="erroresPago"></div>
+            <div id="cuadroPago" class="container text-left">
+                <div class="container-fluid">
+                    <div class="creditCardForm">
+                        <div class="heading">
+                            <h1>Datos de pago</h1>
+                        </div>
+                        <div class="payment">
+                            <div class="form-group owner">
+                                <label for="owner">Titular</label>
+                                <input type="text" class="form-control" id="owner">
+                            </div>
+                            <div class="form-group CVV">
+                                <label for="cvv">CVC</label>
+                                <input type="text" class="form-control" id="cvv">
+                            </div>
+                            <div class="form-group" id="card-number-field">
+                                <label for="cardNumber">Numero de la tarjeta</label>
+                                <input type="text" class="form-control" id="cardNumber">
+                            </div>
+                            <div class="form-group" id="expiration-date">
+                                <label>Fecha de vencimiento</label>
+                                <select>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero </option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                                <select>
+                                    <option value="19"> 2019</option>
+                                    <option value="20"> 2020</option>
+                                    <option value="21"> 2021</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="credit_cards">
+                                <img src="<?php echo base_url(); ?>public/img/visa.jpg" id="visa">
+                                <img src="<?php echo base_url(); ?>public/img/mastercard.jpg" id="mastercard">
+                                <img src="<?php echo base_url(); ?>public/img/amex.jpg" id="amex">
+                            </div>
+                            <div class="form-group" id="pay-now">
+                                <button type="submit" class="btn btn-default" id="confirm-purchase">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
             </div>
             <hr>
             <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" onclick="datosPago()" />
+            <input type="button" name="next" class="next btn btn-info" value="Siguiente" id="siguientePago" onclick="datosPago()" />
         </fieldset>
         <!--cuarta pagina!-->
         <fieldset class="servicios">
-            <div id="cuadroHorario" class="container">
+            <div id="cuadroConfirmar" class="container">
                 <table class="table">
                     <th>Restaurante</th>
                     <td></td>
@@ -206,22 +254,44 @@
 
     $("#comprobarDisponibilidad").click(function() {
         var fechaIndicada = $("#fecha").val();
-        var turnoIndicado = $("#turno").val();
-        var id_restaurante = "<?php echo $userRestaurante->id ?>";
-        var url = "reserva/fechaDisponible"
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url() ?>" + url,
-            dataType: 'html',
-            data: {
-                fechaIndicada: fechaIndicada,
-                turnoIndicado: turnoIndicado,
-                id_restaurante: id_restaurante
-            },
-            success: function(data) {
-                $("#prueba").html(data);
+        if(fechaIndicada != null && fechaIndicada != ""){
+            var hoy = $.datepicker.formatDate('yy-mm-dd', new Date());
+            if (hoy <= fechaIndicada) {
+                var cantPersonas = $("#cantidadPersonas").val();
+                if(cantPersonas != null && cantidadPersonas != "" && cantPersonas > 0){
+                    $("#fechaAviso").hide();
+                    var turnoIndicado = $("#turno").val();
+                    var id_restaurante = "<?php echo $userRestaurante->id ?>";
+                    var url = "reserva/fechaDisponible"
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() ?>" + url,
+                        dataType: 'html',
+                        data: {
+                            cantPersonas: cantPersonas,
+                            fechaIndicada: fechaIndicada,
+                            turnoIndicado: turnoIndicado,
+                            id_restaurante: id_restaurante
+                        },
+                        success: function(data) {
+                            $("#prueba").html(data);
+                            console.log($("#prueba").text());
+                            if ($.trim($("#prueba").text()) == "Mesas disponibles") {
+                                $("#siguienteFecha").show();
+                            }else{
+                                $("#siguienteFecha").hide();
+                            }
+                        }
+                    });
+                }else{
+                    $("#fechaAviso").html("La cantidad de personas debe ser de al menos una.").show();
+                }
+            }else{
+                $("#fechaAviso").html("La fecha de reserva debe ser igual o mayor a la del dia actual.").show();
             }
-        });
+        }else{
+            $("#fechaAviso").html("Debes indicar una fecha para comprobar su disponibilidad.").show();
+        }
     });
 
 
@@ -321,16 +391,15 @@
     }
 
     function datosPago() {
-        var cantPersonas = $("#cantidadPersonas").val();
-        var tarjeta = $("#tarjeta").val();
-        var titularTarjeta = $("#titularTarjeta").val();
-        var cvc = $("#cvc").val();
+        var tarjeta = $("#cardNumber").val();
+        console.log(tarjeta);
+        var titularTarjeta = $("#owner").val();
+        var cvc = $("#cvv").val();
         var url = "reserva/datosPago";
         $.ajax({
             type: "POST",
             url: "<?php echo base_url() ?>" + url,
             data: {
-                cantidadPersonas: cantPersonas,
                 tarjeta: tarjeta,
                 titularTarjeta: titularTarjeta,
                 cvc: cvc
@@ -338,6 +407,7 @@
             dataType: "html",
             success: function (data) {
                 $('#erroresPago').text(data);
+                $("#siguientePago").hide();
             }
         });
     }
@@ -356,6 +426,8 @@
     }
 
     $(document).ready(function() {
+        $("#siguientePago").hide();
+        $("#siguienteFecha").hide();
         var current = 1,
             current_step, next_step, steps;
         steps = $("fieldset").length;

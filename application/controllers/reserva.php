@@ -81,6 +81,7 @@ class Reserva extends CI_Controller {
 		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
 
 		$data = array(
+			"cantPersonas" => $this->input->post('cantPersonas'),
 			"fecha" => $this->input->post('fechaIndicada'),
 			"turno" => $this->input->post('turnoIndicado'),
 			"restaurante" => $userRestaurante,
@@ -133,31 +134,14 @@ class Reserva extends CI_Controller {
 	{
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$data = array(
-			"cantidadPersonas" => $this->input->post('cantidadPersonas'),
 			"tarjeta" => $this->input->post('tarjeta'),
 			"titularTarjeta" => $this->input->post('titularTarjeta'),
 			"cvc" => $this->input->post('cvc'),
 			"idUsuario" => $user['id']
 		);
-		$errores = "";
-		if(($data["cantidadPersonas"]) <= 0){
-			$errores = $errores."La cantidad de personas deben ser al menos 1\n";
-		}
-		if(strlen($data["tarjeta"]) < 16){
-			$errores = $errores."La tarjeta debe se tener al menos 16 digitos\n";
-		}
-		if($data["titularTarjeta"] == ""){
-			$errores = $errores."Debe brindar el nombre del titular de la tarjeta \n";
-		}
-		if(strlen($data["cvc"]) != 3){
-			$errores = $errores."El codigo CVC debe tener 3 digitos \n";
-		}
-		if($errores != ""){
-			echo $errores;
-		}else{
-			$this->model_reserva->datosPago($data);
-			echo "Todo bien huevon";
-		}
+		
+		$this->model_reserva->datosPago($data);
+		
 	}
 
 	public function finalizarReserva()
