@@ -51,14 +51,18 @@ $(function() {
         if(owner.val().length < 5){
             alert("Titular inválido");
             $("#siguientePago").hide();
+            datosPagoValidos = false;
         } else if (!isCardValid) {
             alert("Numero inválido");
             $("#siguientePago").hide();
+            datosPagoValidos = false;
         } else if (!isCvvValid) {
             alert("CVC inválido");
             $("#siguientePago").hide();
+            datosPagoValidos = false;
         } else {
             $("#siguientePago").show();
+            datosPagoValidos = true;
         }
     });
 });

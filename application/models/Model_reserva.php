@@ -230,7 +230,7 @@ class Model_reserva extends MY_Model
                                         SET puedeComentar = true
                                         WHERE c.id_servicio = ?
                                         AND c.id_usuario = ?";
-                        $this->_database->query($sql, array($item['id'],$data['idUsuario']));                   
+                        $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));                   
                         }
                         else{
                                 $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)

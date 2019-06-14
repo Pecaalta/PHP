@@ -48,7 +48,7 @@
         </datalist>
 
         <!--primer pagina!-->
-        <fieldset class="servicios">
+        <fieldset class="servicios" id="cuadroFechaF">
             <div id="cuadroHorario" class="container">
                 <div class="row">
                     <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
@@ -77,11 +77,12 @@
                 </div>
             </div>
             <hr>
-            <input type="button" name="next" class="next btn btn-info" id="siguienteFecha" value="Siguiente" />
+            <input type="button" name="next" class="next btn btn-info cuadroServicio preOrdenSi" id="siguienteFecha" value="PreOrden" />
+            <input type="button" name="nextConfirmar" class="next btn btn-info cuadroConfirmar preOrdenNo" id="siguientelala" value="Reservar mesa" />
         </fieldset>
 
         <!--segunda pagina!-->
-        <fieldset class="servicios">
+        <fieldset class="servicios" id="cuadroServicioF">
             <div id="cuadroComida">
                 <h4>Escoge lo que vas a comer en <strong><?php echo $userRestaurante->nickname ?></strong></h4>
 
@@ -158,12 +159,12 @@
             </div>
             <br>
             <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info" value="Siguiente" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroFecha" value="Anterior" />
+            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info cuadroPago" value="Siguiente" />
         </fieldset>
 
         <!--tercer pagina!-->
-        <fieldset class="servicios">
+        <fieldset class="servicios" id="cuadroPagoF">
             <div id="cuadroPago" class="container text-left">
                 <div class="container-fluid">
                     <div class="creditCardForm">
@@ -218,11 +219,11 @@
                 </div>    
             </div>
             <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" id="siguientePago" onclick="datosPago()" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroServicio" value="Anterior" />
+            <input type="button" name="next" class="next btn btn-info cuadroConfirmar" value="Siguiente" id="siguientePago" onclick="datosPago()" />
         </fieldset>
         <!--cuarta pagina!-->
-        <fieldset class="servicios">
+        <fieldset class="servicios" id="cuadroConfirmarF">
             <div id="cuadroConfirmar" class="container">
                 <table class="table">
                     <th>Restaurante</th>
@@ -236,7 +237,8 @@
                 <div id="respuestaFinal"></div>
             </div>
             <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroPago" id="aCuadroPago" value="Anterior" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroFecha" id="aCuadroFecha" value="Anterior" />
         </fieldset>
     </form>
 </div>
@@ -251,6 +253,9 @@
 </script>
 
 <script>
+
+    var serviciosAgregados = 0;
+    var datosPagoValidos = false;
 
     $("#comprobarDisponibilidad").click(function() {
         var fechaIndicada = $("#fecha").val();
@@ -278,19 +283,27 @@
                             console.log($("#prueba").text());
                             if ($.trim($("#prueba").text()) == "Mesas disponibles") {
                                 $("#siguienteFecha").show();
+                                $("#siguientelala").show();
                             }else{
                                 $("#siguienteFecha").hide();
+                                $("#siguientelala").hide();
                             }
                         }
                     });
                 }else{
                     $("#fechaAviso").html("La cantidad de personas debe ser de al menos una.").show();
+                    $("#siguienteFecha").hide();
+                    $("#siguientelala").hide();
                 }
             }else{
                 $("#fechaAviso").html("La fecha de reserva debe ser igual o mayor a la del dia actual.").show();
+                $("#siguienteFecha").hide();
+                $("#siguientelala").hide();
             }
         }else{
             $("#fechaAviso").html("Debes indicar una fecha para comprobar su disponibilidad.").show();
+            $("#siguienteFecha").hide();
+            $("#siguientelala").hide();
         }
     });
 
@@ -336,6 +349,7 @@
                 dataType: "html",
                 success: function(data) {
                     $('#prueba2').html(data);
+                    serviciosAgregados++;
                 }
             });
             var precioABorrar = 0;
@@ -386,6 +400,7 @@
                 precioTotal = (precioTotal - precio);
                 $('#' + idfila).remove();
                 $('#precioTotal').html(precioTotal);
+                serviciosAgregados--;
             }
         });
     }
@@ -414,46 +429,93 @@
 
     function finalizarReserva(){
         var url = "reserva/finalizarReserva";
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url() ?>" + url,
-            data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
-            dataType: "html",
-            success: function (data) {
-                $("#respuestaFinal").text(data);
+        if(serviciosAgregados != 0){
+            if(datosPagoValidos == true){
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() ?>" + url,
+                    data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
+                    dataType: "html",
+                    success: function (data) {
+                        $("#respuestaFinal").text(data);
+                    }
+                });
+            }else{
+                $("#respuestaFinal").text("Agregaste comidas a la preorden y aun no has pagado.");
             }
-        });
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() ?>" + url,
+                data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
+                dataType: "html",
+                success: function (data) {
+                    $("#respuestaFinal").text(data);
+                }
+            });
+        }
     }
 
     $(document).ready(function() {
         $("#siguientePago").hide();
         $("#siguienteFecha").hide();
-        var current = 1,
-            current_step, next_step, steps;
-        steps = $("fieldset").length;
-        $(".next").click(function() {
-            current_step = $(this).parent();
-            next_step = $(this).parent().next();
-            next_step.show();
-            current_step.hide();
-            setProgressBar(++current);
+        $("#siguientelala").hide();
+
+        var current = 1;
+        var preOrden = false;
+
+        $(".cuadroConfirmar").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").show();
+            current = 4;
+            setProgressBar(current);
         });
-        $(".previous").click(function() {
-            current_step = $(this).parent();
-            next_step = $(this).parent().prev();
-            next_step.show();
-            current_step.hide();
-            setProgressBar(--current);
+        $(".cuadroServicio").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").show();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").hide();
+            current = 2;
+            setProgressBar(current);
         });
-        setProgressBar(current);
+        $(".cuadroPago").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").show();
+            $("#cuadroConfirmarF").hide();
+            current = 3;
+            setProgressBar(current);
+        });
+        $(".cuadroFecha").click(function() {
+            $("#cuadroFechaF").show();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").hide();
+            current = 1;
+            setProgressBar(current);
+        });
         // Change progress bar action
         function setProgressBar(curStep) {
-            var percent = parseFloat(100 / steps) * curStep;
+            var percent = parseFloat(100 / 4) * curStep;
             percent = percent.toFixed();
             $(".progress-bar")
                 .css("width", percent + "%")
                 .html(percent + "%");
         }
+        $(".preOrdenSi").click(function() {
+            preOrden = true;
+            console.log(preOrden)
+            $("#aCuadroFecha").hide();
+            $("#aCuadroPago").show();
+        });
+        $(".preOrdenNo").click(function() {
+            preOrden = false;
+            console.log(preOrden)
+            $("#aCuadroFecha").show();
+            $("#aCuadroPago").hide();
+        });
     });
 
     
