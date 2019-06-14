@@ -56,10 +56,10 @@ class Model_reserva extends MY_Model
 
         if(count($cantidadDeReservas) < $data['restaurante']->cantidadMesas){
             $sql = "UPDATE reservas
-                    SET fecha_total = ?, turno = ?
+                    SET fecha_total = ?, turno = ?, personas = ?
                     WHERE id_usuario = ?
                     AND is_active = 'false'";
-            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['idUsuario']));        
+            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['cantPersonas'],$data['idUsuario']));        
 
             return "Mesas disponibles";
         }
@@ -150,11 +150,10 @@ class Model_reserva extends MY_Model
     public function datosPago($data)
     {
         $sql = "UPDATE reservas
-                SET personas = ?, tarjeta = ?, titularTarjeta = ?, cvc = ?
+                SET tarjeta = ?, titularTarjeta = ?, cvc = ?
                 WHERE id_usuario = ?
                 AND is_active = 'false'";
         $this->_database->query($sql, array(
-                                            $data['cantidadPersonas'],
                                             $data['tarjeta'],
                                             $data['titularTarjeta'],
                                             $data['cvc'],
@@ -236,7 +235,7 @@ class Model_reserva extends MY_Model
                         else{
                                 $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)
                                         VALUES (?,?,true)";
-                                $this->_database->query($sql, array($item['id'],$data['idUsuario']));  
+                                $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));  
                         }           
                     }   
             }  
