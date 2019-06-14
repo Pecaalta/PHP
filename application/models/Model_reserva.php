@@ -165,12 +165,10 @@ class Model_reserva extends MY_Model
     {
         $sql = "SELECT *
                 FROM reservas
-                WHERE id_usuario = ?
-                AND is_active = 'false'
+                WHERE id_usuario = ".$data['idUsuario']."
+                AND is_active = false
                 ";
-        $reserva = $this->_database->query($sql, array(
-                                                        $data['idUsuario']
-                                                        ))->row_array(); 
+        $reserva = $this->_database->query($sql)->row_array(); 
 
         $sql = "SELECT *
                 FROM usuario
@@ -215,17 +213,19 @@ class Model_reserva extends MY_Model
             //Instancio los comentarios
             $sql = "SELECT DISTINCT rs.* 
                 FROM reservas_servicio rs, reservas r
-                WHERE r.id_usuario = ?
-                AND rs.id_reserva = r.id;";
-            $serviciosUsuario = $this->_database->query($sql,array($data['idUsuario']))->result_array();
+                WHERE r.id_usuario = ".$data['idUsuario']."
+                AND rs.id_reserva = r.id 
+                AND r.id = ".$reserva['id'];
+    
+            $serviciosUsuario = $this->_database->query($sql)->result_array();
             if (count($serviciosUsuario) > 0) {
                 foreach ($serviciosUsuario as $item) {
                         $sql = "SELECT * 
                                 FROM Comentario c
                                 WHERE c.id_servicio = ?
                                 AND c.id_usuario = ?";
-                        $comen = $this->_database->query($sql, array($item['id'],$data['idUsuario']))->row();     
-                        if ($comen != null) {
+                        $comen = $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']))->result_array();     
+                        if (sizeof($comen) > 0) {
                                 $sql = "UPDATE Comentario c
                                         SET puedeComentar = true
                                         WHERE c.id_servicio = ?
