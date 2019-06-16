@@ -157,4 +157,18 @@ class Reserva extends CI_Controller {
 		}
 	}
 
+	public function mis_reservas(){
+
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+		$reserva = $this->model_reserva->misReservas($user['id']);
+
+		$data = array(
+			'reserva' => $reserva,
+		);
+
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('reserva/reservas-cliente', $data);
+	}
+
 }    
