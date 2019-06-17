@@ -35,7 +35,7 @@ class Reserva extends CI_Controller {
 
 	private function controlAcceso($id){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user) or $user['id'] != $id or is_null($user['rut'])) {
+		if (is_null($user) or $user['id'] == $id or !is_null($user['rut'])) {
 			$this->load->view('main/navbar', $this->nav);
 			$this->load->view('errors/index');
 			return false;
@@ -63,17 +63,19 @@ class Reserva extends CI_Controller {
     }
 
     public function realizarReserva($id_restaurante){
-        $user = json_decode(json_encode($this->session->userdata('user')), true);
-        if (!is_null($user)){
-			$data = array(
-				"id_usuario" => $user['id'],
-				"id_restaurante" => $id_restaurante
-			);
-			$this->model_reserva->instanciarPreReserva($data);
-            $data = $this->infoGeneral($user['id'], $id_restaurante);
-            $this->load->view('main/navbar', $this->nav);
-			$this->load->view('reserva/realizarReserva', $data);
-        }
+		if ($this->controlAcceso($id_restaurante)) {
+			$user = json_decode(json_encode($this->session->userdata('user')), true);
+			if (!is_null($user)){
+				$data = array(
+					"id_usuario" => $user['id'],
+					"id_restaurante" => $id_restaurante
+				);
+				$this->model_reserva->instanciarPreReserva($data);
+				$data = $this->infoGeneral($user['id'], $id_restaurante);
+				$this->load->view('main/navbar', $this->nav);
+				$this->load->view('reserva/realizarReserva', $data);
+			}
+		}
     }
 
     public function fechaDisponible(){
