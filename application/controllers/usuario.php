@@ -24,10 +24,10 @@ class usuario extends CI_Controller {
 			"msg_error" => $msg_error
 		);
 		if (!is_null($user)){
-			if(!is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
+			if(isset($user['avatar']) && !is_null($user['avatar'])) $this->nav["img"] = $user['avatar'];
 			else $this->nav["img"] = null;
-			if(!is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
-			if(!is_null($user['id'])) $this->nav["id"] = $user['id'];
+			if(isset($user['rut']) && !is_null($user['rut'])) $this->nav["rut"] = $user['rut'];
+			if(isset($user['id']) && !is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 	}
 
@@ -108,5 +108,16 @@ class usuario extends CI_Controller {
 			echo json_encode( array('status' => false , "body" => $th ) );
 		}
 	}
+
+
+    public function listaCategorias() {
+		$list = $this->model_servicio->listaCategorias($this->input->post('codigo'));
+		$arreglo = array();
+		foreach ($list as $value) {
+			$arreglo[$value["nombre"]] = null;
+		}
+		echo json_encode($arreglo);
+    }
+    
 
 }

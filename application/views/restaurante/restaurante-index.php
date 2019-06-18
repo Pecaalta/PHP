@@ -103,7 +103,12 @@
         padding: 15px;
     }
     
+    .card {
+        overflow: hidden;
+    } 
+    
     .card .view{
+        overflow: hidden;
         height: 150px;
         display: flex;
         justify-content: center;
@@ -115,9 +120,21 @@
         width: 100%;
         height: auto;
     }
+    .card-image {
+        overflow: hidden;
+        height: 150px;
+        max-height: 10vw;
+    }
     
+    .card-text {
+        height: 50px;
+    }
+
     .card h4 {
         margin-bottom: 0!important;
+    }
+    .modal-content {
+        padding: 0!important;
     }
 </style>
 	<div id="carousel-example-2" class="z-index-1 carousel slide carousel-fade" data-ride="carousel">
@@ -178,7 +195,7 @@
             <div class="row">
                 <div class="msgNoElement">
                     <h3>Parese que no hay imagenes</h3>
-                    <img src="<?php echo base_url()?>/asset/img/cesta_vacia.png" alt="" srcset="">
+                    <img src="<?php echo base_url()?>/public/img/cesta_vacia.png" alt="" srcset="">
                 </div>
             </div>
         <?php endif;?>
@@ -202,7 +219,7 @@
             <div class="row">
                 <div class="msgNoElement">
                     <h3 >Parese que no tiene ningun Servicio aun </h3>
-                    <img src="<?php echo base_url()?>/asset/img/ambre.png" alt="" srcset="">
+                    <img src="<?php echo base_url()?>/public/img/ambre.png" alt="" srcset="">
                 </div>
             </div>
         <?php endif;?>
@@ -213,7 +230,7 @@
                     <?php if($item->is_active):?>
                         <div class=" col-sm-6 col-md-4">
                             <div class="card mb-4">
-                                <div class="view overlay">
+                                <div class="card-image">
                                     <img 
                                         data-toggle="modal" data-target="#imgModal" 
                                         onclick="imgaengrande.src = '<?php echo base_url() .  $item->imagen; ?>'"
@@ -224,7 +241,6 @@
                                     <h4 class="card-title"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?> </h4>
                                     <p class="card-text"><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
                                     <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
-                                    
                                 </div>
                                 <div class="card-footer">
                                     <a href="<?php echo base_url().'servicio/info_servicio/'.$item->id ?>" class="btn btn-primary">Ver</a>

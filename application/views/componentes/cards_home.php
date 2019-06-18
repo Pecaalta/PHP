@@ -30,7 +30,8 @@
         cursor: pointer;
     }
 
-    .star .active { color: #007aff; }
+    
+    .star .active {     color: #ffa000; }
     .star .inactive { color: #eee; }
 
     .star[date-satar="5"] .active::before   { content: '\f005 \f005 \f005 \f005 \f005'; }
@@ -71,16 +72,16 @@
 		mapaAjax(data);
 	}
 </script>
-<?php if ($tienda != null && sizeof($tienda) != 0):?>
-    <div class="row">
-        <div class="col-12 mb-3">
-            <?php foreach ($filter as $item):?>
-                <div class="badge badge-pill badge-default">
-                        <?php echo $item['key'] . " = " . $item['value'] ?><i onclick="bag(<?php echo $item['key'] ?>)" class="close fas fa-times"></i>
-                </div>
-            <?php endforeach;?>
-        </div>
+<div class="row">
+    <div class="col-12 mb-3">
+        <?php foreach ($filter as $item):?>
+            <div class="badge badge-pill badge-default">
+                    <?php echo $item['key'] . " = " . $item['value'] ?><i onclick="bag(<?php echo $item['key'] ?>)" class="close fas fa-times"></i>
+            </div>
+        <?php endforeach;?>
     </div>
+</div>
+<?php if ($tienda != null && sizeof($tienda) != 0):?>
     <div class="row">
         <?php foreach ($tienda as $item):?>
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 mb-5">

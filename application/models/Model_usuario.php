@@ -5,7 +5,7 @@ class Model_usuario extends MY_Model
     public $table = 'Usuario';
 	public $primary_key = 'id'; 
 	public $fillable = array(
-		"id","nickname","nombre","rut","avatar","lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at","cantiadMesas","apertura","clausura","tiempoReserva"
+		"id","nickname","nombre","rut","avatar","cantidadMesas", "apertura", "clausura", "lat", "lng","direccion","zona","telefono","email","apellido","fecha_de_nacimiento","end_perfil","is_active","password","descripcionRestaurante","updated_at","cantiadMesas","apertura","clausura","tiempoReserva"
     ); 
 	public $protected = array();
     
@@ -115,5 +115,51 @@ class Model_usuario extends MY_Model
         ->where('is_active', 1)
         ->get()->result_array();
     }
+
+
+    public function addCategoria($nombre)
+    {
+        $sql = "SELECT * FROM categoria WHERE nombre = '".$nombre."'";
+        $query = $this->_database->query($sql)->result_array();
+        if (sizeof($query) == 0) {
+            $sql = "INSERT INTO `categoria`(`nombre`, `is_active`) VALUES ('".$nombre."',1)";
+            $query = $this->_database->query($sql);
+            $sql = "SELECT * FROM categoria WHERE nombre = '".$nombre."'";
+            $query = $this->_database->query($sql)->result_array();
+        }
+        return $query[0]['id'];
+    }
+
+    public function VaciarCategoriaRestaurante($id_restaurante)
+    {
+        $sql = "UPDATE restaurante_categoria SET is_active=0 WHERE id_restaurante=".$id_restaurante;
+        $query = $this->_database->query($sql);    
+    }
+
+    public function CategoriaRestaurante($id_categoria,$id_restaurante)
+    {
+
+        $sql = "SELECT * FROM restaurante_categoria WHERE id_categoria = ".$id_categoria." AND id_restaurante=".$id_restaurante;
+        $query = $this->_database->query($sql)->result_array();
+        if (sizeof($query) == 0) {
+            $sql = "INSERT INTO `restaurante_categoria`(`id_categoria`, `id_restaurante`) VALUES (".$id_categoria.",".$id_restaurante.")";
+            $query = $this->_database->query($sql);
+        }else {
+            $sql = "UPDATE restaurante_categoria SET id_categoria = ".$id_categoria.",id_restaurante = ".$id_restaurante.",is_active=1
+            WHERE id_categoria = ".$id_categoria." AND id_restaurante=".$id_restaurante;
+            $query = $this->_database->query($sql);        
+        }
+    }
+
+    public function misCategorias($id)
+    {
+        $sql = "SELECT *
+                FROM categoria
+                join restaurante_categoria on restaurante_categoria.id_categoria = categoria.id 
+                WHERE categoria.is_active = 1 AND restaurante_categoria.is_active = 1 AND id_restaurante=".$id;
+        return $this->_database->query($sql)->result_array();
+    }
+    
+    
     
 }

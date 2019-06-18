@@ -43,9 +43,12 @@ class Model_servicio extends MY_Model
     public function toptienda()
     {
         $sql = "
-            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evalacion  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, 
+            usuario.nickname as nombre_restaurante, Servicio.*, 
+            ROUND(avg(Comentario.calificacion)) as evalacion  
+            from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
-            left join reservas on reservas.id_restaurante = usuario.id
+            left join Comentario on Comentario.id_servicio = Servicio.id
             where Servicio.is_active and usuario.is_active
             group by Servicio.id
             order by evalacion
@@ -58,10 +61,13 @@ class Model_servicio extends MY_Model
         if ($offset == null || $offset < 0) $offset = 0;
         if ($limit == null || $limit < 1) $limit = 10;
         $sql = "
-            select distinct CONCAT('Servicio/info_servicio/', Servicio.id )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion)) as evaluacion
+            select distinct 
+                CONCAT('Servicio/info_servicio/', Servicio.id )  as href, 
+                usuario.nickname as nombre_restaurante, 
+                Servicio.*, ROUND(avg(Comentario.calificacion)) as evaluacion
             from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
-            left join reservas on reservas.id_restaurante = usuario.id
+            left join Comentario on Comentario.id_servicio = Servicio.id
             where Servicio.is_active and usuario.is_active
             group by Servicio.id
             LIMIT $limit OFFSET $offset
@@ -71,7 +77,9 @@ class Model_servicio extends MY_Model
     public function alltiendaCount($date, $offset, $limit)
     {
         $sql = "
-            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, ROUND(avg(reservas.evalacion))  from Servicio 
+            select distinct CONCAT('Restaurante/principal/', Servicio.id_restaurante )  as href, usuario.nickname as nombre_restaurante, Servicio.*, 
+            ROUND(avg(reservas.evalacion))  
+            from Servicio 
             join usuario on Servicio.id_restaurante = usuario.id
             left join reservas on reservas.id_restaurante = usuario.id
             where Servicio.is_active and usuario.is_active
@@ -125,12 +133,16 @@ class Model_servicio extends MY_Model
         $sqljoin = "";
         if ($categoria != null) {
             $sqlwhere .= "
-                and restaurante_categoria.id_categoria = $categoria 
-                and restaurante_categoria.is_active ";
-            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+            and restaurante_categoria.is_active = 1    
+            and categoria.nombre = '$categoria' 
+            ";
+        $sqljoin .= " 
+                left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante 
+                left join categoria on categoria.id = restaurante_categoria.id_categoria ";
         }
         if ($zona != null) {
-            $sqlwhere .= " and usuario.zona = $zona ";
+            $sqlwhere .= " and zona.nombre = '$zona' ";
+            $sqljoin .= " left join zona on usuario.zona = zona.id ";
         }
         if ($minimo != null) {
             $sqlwhere .= " and Servicio.precio >= $minimo ";
@@ -158,12 +170,16 @@ class Model_servicio extends MY_Model
         $sqljoin = "";
         if ($categoria != null) {
             $sqlwhere .= "
-                and restaurante_categoria.id_categoria = $categoria 
-                and restaurante_categoria.is_active ";
-            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+                and restaurante_categoria.is_active = 1    
+                and categoria.nombre = '$categoria' 
+                ";
+            $sqljoin .= " 
+                    left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante 
+                    left join categoria on categoria.id = restaurante_categoria.id_categoria ";
         }
         if ($zona != null) {
-            $sqlwhere .= " and usuario.zona = $zona ";
+            $sqlwhere .= " and zona.nombre = '$zona' ";
+            $sqljoin .= " left join zona on usuario.zona = zona.id ";
         }
         if ($minimo != null) {
             $sqlwhere .= " and Servicio.precio >= $minimo ";
@@ -190,12 +206,16 @@ class Model_servicio extends MY_Model
         $sqljoin = "";
         if ($categoria != null) {
             $sqlwhere .= "
-                and restaurante_categoria.id_categoria = $categoria 
-                and restaurante_categoria.is_active ";
-            $sqljoin .= " left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante ";
+                and restaurante_categoria.is_active = 1    
+                and categoria.nombre = '$categoria' 
+                ";
+            $sqljoin .= " 
+                    left join restaurante_categoria on usuario.id = restaurante_categoria.id_restaurante 
+                    left join categoria on categoria.id = restaurante_categoria.id_categoria ";
         }
         if ($zona != null) {
-            $sqlwhere .= " and usuario.zona = $zona ";
+            $sqlwhere .= " and zona.nombre = '$zona' ";
+            $sqljoin .= " left join zona on usuario.zona = zona.id ";
         }
         if ($minimo != null) {
             $sqlwhere .= " and Servicio.precio >= $minimo ";
@@ -229,16 +249,17 @@ class Model_servicio extends MY_Model
 
     public function infoServicio($data)
     {
-        $sql = "SELECT *
+        $sql = "SELECT Servicio.*, Usuario.nombre as autor, Usuario.id as IdAutor
                 FROM Servicio
-                WHERE id = ?";
+                Join Usuario on Usuario.id = Servicio.id_restaurante
+                WHERE Servicio.id = ?";
         $query = $this->_database->query($sql, array($data))->result();
         return $query;
     }
 
     public function listaComentarios($idServicio)
     {
-        $sql = "SELECT c.*, u.nickname
+        $sql = "SELECT c.*, u.nickname, u.avatar
                 FROM Comentario c, Servicio s, Usuario u
                 WHERE s.id = ?
                 AND c.id_servicio = ?
@@ -257,7 +278,23 @@ class Model_servicio extends MY_Model
 
     public function updateComentario($data)
     {
-        $sql = "UPDATE Comentario SET texto = ? , calificacion = ? WHERE id_usuario= ?";
-        $query = $this->_database->query($sql, array($data['comentar'], $data['valoracion'], $data['user']));
+        $sql = "UPDATE Comentario SET texto = '".$data['comentar']."' , calificacion = '".$data['valoracion']."' WHERE id_usuario= ".$data['user']." and id_servicio=".$data['id_servicio'];
+        $query = $this->_database->query($sql);
     }
+
+    public function listaCategorias($code)
+    {
+        $sql = "SELECT *
+                FROM categoria
+                WHERE is_active = 1";
+        if($code != null ) $sql .= "AND s.codigo like  '".$code."%'";
+        return $this->_database->query($sql)->result_array();
+    }
+    
+    public function nuevaCategoria($nombre,$codigo)
+    {
+        $sql = "INSERT INTO `categoria`(`nombre`, `codigo`, `is_active`) VALUES ('".$nombre."','".$codigo."',1)";
+        return $this->_database->query($sql);
+    }
+    
 }

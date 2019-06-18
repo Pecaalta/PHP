@@ -7,12 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="<?php echo base_url('public/css/bootstrap.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('public/css/mdb.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('public/css/style.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('public/css/materialize.min.css'); ?>" rel="stylesheet">
+
 
     <style>
         html,
@@ -195,8 +200,9 @@
             <div class="col-12">
                 <p class="error"><?php echo $msg; ?></p>
             </div>
-            <div class="col-12">
-                <input class="margin-auto btn btn-primary m-b-15px" type="submit" value="Registrarse">
+            <div class="col-12 text-align mb-3 mt-3">
+                <a href="<?php echo base_url('login')?>" class="btn btn-primary ml-0"> Entrar </a>
+                <input class="btn btn-primary" type="submit" value="Registrarse">
             </div>
         </form>
 </body>

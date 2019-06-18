@@ -57,7 +57,7 @@ p {
 </head>
 <body>
 	<div id="container">
-		<h1><?php echo $heading; ?></h1>
+		<h1><?php echo $heading . $_SERVER['REQUEST_SCHEME'].'://'.$_SERVER['SERVER_NAME']. '/' .$_SERVER['REQUEST_URI']; ?></h1>
 		<?php echo $message; ?>
 	</div>
 </body>

@@ -1,4 +1,7 @@
 <style>
+    .modal .modal-content {
+        padding: 0px;
+    }
     body{
         background: url("https://images8.alphacoders.com/809/809022.jpg");
     }
@@ -27,53 +30,53 @@
         position: absolute;
         font-size: 0.75rem;
         left: 1rem;
+        bottom: -1rem;
     }
     .textDescripcion {
-        margin-top: 10px;
         height: 135px!important;
         resize: none
     }
     #drop_file_zone {
-            background-color: #fff;
-            border: 1px solid #ced4da;
-            width: 100%; 
-            height: 200px;
-            padding: 8px;
-            font-size: 18px;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-        .drag_upload_file {
-            width:50%;
-            margin:0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-        .drag_upload_file i {
-            text-align: center;
-            font-size: 5rem;
-        }
-        
-        .drag_upload_file #editselectfile, 
-        .drag_upload_file #selectfile {
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            cursor: pointer;
-        }
-        #editoutput,
-        #output {
-            max-width: 100%;
-            max-height: 100%;
-            position: absolute;
-        }
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        width: 100%; 
+        height: 135px!important;
+        padding: 8px;
+        font-size: 18px;
+        border-radius: 5px;
+        overflow: hidden;
+        position: relative;
+    }
+    .drag_upload_file {
+        width:50%;
+        margin:0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+    .drag_upload_file i {
+        text-align: center;
+        font-size: 5rem;
+    }
+    
+    .drag_upload_file #editselectfile, 
+    .drag_upload_file #selectfile {
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        cursor: pointer;
+    }
+    #editoutput,
+    #output {
+        max-width: 100%;
+        max-height: 100%;
+        position: absolute;
+    }
     .descripcion {
         color: #666;
     }
@@ -81,6 +84,10 @@
         font-size: 1.5rem;
         color: rgb(33, 150, 243);;
         font-weight: 900;
+        width: 100%;
+        text-align: center;
+        display: inline-block;
+        padding-bottom: -15px;
     }
     .card h4 {
         margin-bottom: 0!important;
@@ -96,6 +103,35 @@
     .card .view img{
         width: 100%;
         height: auto;
+    }
+    .card-action {
+        display: flex;
+        justify-content: center;
+    }
+    .card .card-content {
+        padding: 15px;
+    }
+    .card .card-content .card-title {
+        text-align: left;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+        
+    .card .card-reveal .card-title {
+        text-align: left;
+        color: #222!important;
+    }    
+    .card .card-reveal p {
+        text-align: left;
+        color: #666!important;
+    }
+
+    .card .card-image {
+        height: 100px;
+    }
+    .card .card-content {
+        padding-bottom: 10px;
     }
 </style>
     <script>
@@ -128,36 +164,25 @@
     <div class="tab-content">
         <div id="home" class="container tab-pane text-center servicios"><br>
             <form class="row" action="<?php echo base_url(); ?>restaurante/nuevoServicio" method="post" enctype='multipart/form-data' id="frm_nuevoServicio">
-                <div class="col-sm-12 col-md-8">
-                    <div class="row">
-                        <div class="col-xs-12 col-sm-8 form-group">
-                            <input id="nombreNuevoServicio" class="form-control" type="text" name="nombre" placeholder="Nombre">
-                            <div class="invalid-feedback">
-                                
-                            </div>
-                            <label id="prueba" class="control-label" for="nombreNuevoServicio"></label>
-                        </div>
-                        <div class="col-xs-12 col-sm-4 form-group">
-                            <input class="form-control" type="number" name="precio" placeholder="Precio">
-                            <div class="invalid-feedback">
-                                
-                            </div>
-                        </div>
-                        <div class="col-12 form-group">
-                            <textarea class="textDescripcion form-control" type="text" name="descripcion" placeholder="Descripcion"></textarea>
-                            <div class="invalid-feedback">
-                                
-                            </div>
-                        </div>
-
-                    </div>
-                </div>    
+                <div class="col-xs-12 col-sm-8 form-group">
+                    <input id="nombreNuevoServicio" class="form-control" type="text" name="nombre" placeholder="Nombre">
+                    <div class="invalid-feedback"></div>
+                    <label id="prueba" class="control-label" for="nombreNuevoServicio"></label>
+                </div>
+                <div class="col-xs-12 col-sm-4 form-group">
+                    <input class="form-control" type="number" name="precio" placeholder="Precio">
+                    <div class="invalid-feedback"></div>
+                </div>
+                <div class="col-xs-12 col-sm-8 form-group">
+                    <textarea class="textDescripcion form-control" type="text" name="descripcion" placeholder="Descripcion"></textarea>
+                    <div class="invalid-feedback"></div>
+                </div>
                 <div class="col-sm-12 col-md-4">
                     <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
                         <div class="drag_upload_file">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event,'output')">
-                        <img id="output" src="" alt="">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <input type="file" id="selectfile" name="img" accept="image/*" onchange="loadFile(event,'output')">
+                            <img id="output" src="" alt="">
                         </div>
                     </div>
                 </div>
@@ -169,33 +194,34 @@
 
         <div id="menu1" class="container active tab-pane text-right servicios"><br>
             <div class="row">
-                    <?php foreach($servicio->result() as $item):?>
-                        <?php if($item->is_active):?>
-                            <div class=" col-sm-6 col-md-4">
-                                <div class="card mb-4">
-                                    <div class="view overlay">
-                                        <img 
+                <?php for ($i=0; $i < sizeof($servicio->result()); $i++) { $item = $servicio->result()[$i];?>
+                    <?php if($item->is_active):?>
+                        <div class="col-xs-12 col-sm-6 col-md-4">
+                            <div class="card">
+                                <div class="card-image waves-effect waves-block waves-light">
+                                    <img 
                                         data-toggle="modal" data-target="#imgModal" 
                                         onclick="imgaengrande.src = '<?php echo base_url() .  $item->imagen; ?>'"
-                                         onerror="javascript:imgError(this)" class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" alt="Card image cap">
-                                        <a href="#!">
-                                            <div class="mask rgba-white-slight"></div>
-                                        </a>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?> </h4>
-                                        <p class="card-text"><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
-                                        <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
-                                        
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <a data-toggle="modal" onclick="dataEdit(<?php echo "'" . $item->id . "','" . $item->nombre . "','" . $item->descripcion . "','" . $item->precio . "','" . base_url().$item->imagen. "'" ?>)" data-target="#EditModal" class="btn btn-primary">Editar</a>
-                                        <a data-toggle="modal" onclick="dataBorrar(<?php echo "'" . $item->id . "','" . $item->nombre . "'" ?>)" data-target="#BorrarModal" class="btn btn-primary">Borrar</a>
-                                    </div>
+                                        onerror="javascript:imgError(this)" class="card-img-top" src="<?php echo base_url() . $item->imagen; ?>" 
+                                        alt="Card image cap"    
+                                        class="activator" >
+                                </div>
+                                <div class="card-content">
+                                    <span class="card-title activator grey-text text-darken-4"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?><i class="material-icons right">more_vert</i></span>
+                                    <span class="costo"><?php echo isset($item->precio) && $item->precio != '' ? '$'.$item->precio : 'sin precio'; ?></span>
+                                </div>
+                                <div class="card-reveal">
+                                    <span class="card-title grey-text text-darken-4"><?php echo isset($item->nombre) && $item->nombre != '' ? $item->nombre : 'Sin titulo'; ?><i class="material-icons right">close</i></span>
+                                    <p><?php echo isset($item->text_corto) && $item->text_corto != '' ? $item->text_corto : 'Sin descripcion'; ?></p>
+                                </div>
+                                <div class="card-action">
+                                    <a data-toggle="modal" onclick="dataEdit(<?php echo $i ?>)" data-target="#EditModal" class="btn btn-sm btn-primary">Editar</a>
+                                    <a data-toggle="modal" onclick="dataBorrar(<?php echo "'" . $item->id . "','" . $item->nombre . "'" ?>)" data-target="#BorrarModal" class="btn btn-sm btn-primary">Borrar</a>
                                 </div>
                             </div>
-                        <?php endif;?>
-                    <?php endforeach;?>
+                        </div>
+                    <?php endif;?>
+                <?php };?>
             </div>
         </div>
     </div>
@@ -230,6 +256,7 @@
     </script>
 !-->
 <script>
+    var listaServicios = <?php echo isset($servicio) && $servicio != null ?  json_encode($servicio->result()) : '[]'; ?>;
     $("#nombreNuevoServicio").keyup(function() {
         var nombreSer = $( "#nombreNuevoServicio" ).val();
         var url="restaurante/existeServicio"
@@ -246,12 +273,15 @@
        
     })
     .keyup();    
-    function dataEdit(id, nombre, descripcion, precio, imagen ) {
-         $("#editid").val(id);
-         $("#editnombre").val(nombre);
-         $("#editdescripcion").val(descripcion);
-         $("#editprecio").val(precio);
-         document.getElementById('editoutput').src = imagen;
+    function dataEdit(i) {
+        if (listaServicios[i]){
+            $("#editid").val(listaServicios[i].id);
+            $("#editnombre").val(listaServicios[i].nombre);
+            $("#editdescripcion").val(listaServicios[i].descripcion);
+            $("#editprecio").val(listaServicios[i].precio);
+            document.getElementById('editoutput').src = "<?php echo base_url()?>" + listaServicios[i].imagen;
+            
+        }
     }
     function dataBorrar(id, nombre ) {
          $("#borrarid").val(id);
@@ -273,39 +303,35 @@
               </button>
             </div>
             <div class="modal-body">
-                  <div class="row" >
-                          <div class="col-sm-12 col-md-8">
-                              <div class="row">
-                                  <input id="editid" type="hidden" name="id" placeholder="Nombre">
-                                  <div class="col-xs-12 col-sm-8 form-group">
-                                      <input id="editnombre" class="form-control" type="text" name="nombre" placeholder="Nombre">
-                                      <div class="invalid-feedback"></div>
-                                      <label id="prueba" class="control-label" for="nombreNuevoServicio"></label>
-                                  </div>
-                                  <div class="col-xs-12 col-sm-4 form-group">
-                                      <input id="editprecio" class="form-control" type="number" name="precio" placeholder="Precio">
-                                      <div class="invalid-feedback"></div>
-                                  </div>
-                                  <div class="col-12 form-group">
-                                      <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Descripcion"></textarea>
-                                      <div class="invalid-feedback"></div>
-                                  </div>
-                              </div>
-                          </div>    
-                          <div class="col-sm-12 col-md-4">
-                              <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
-                                  <div class="drag_upload_file">
-                                  <i class="fas fa-cloud-upload-alt"></i>
-                                  <input type="file" id="editselectfile" name="img" accept="image/*" onchange="loadFile(event,'editoutput')">
-                                  <img id="editoutput" src="" alt="">
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+                <div class="row" >
+                    <div class="col-xs-12 col-sm-4 form-group">
+                        <input id="editprecio" class="form-control" type="number" name="precio" placeholder="Precio">
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <input id="editid" type="hidden" name="id" placeholder="Nombre">
+                    <div class="col-xs-12 col-sm-8">
+                        <input id="editnombre" class="form-control" type="text" name="nombre" placeholder="Nombre">
+                        <div class="invalid-feedback"></div>
+                        <label id="prueba" class="control-label" for="nombreNuevoServicio"></label>
+                    </div>
+                    <div class="col-sm-12 col-md-8 form-group">
+                        <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Descripcion"></textarea>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-sm-12 col-md-4">
+                        <div id="drop_file_zone" ondrop="upload_file(event)" ondragover="return false">
+                            <div class="drag_upload_file">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <input type="file" id="editselectfile" name="img" accept="image/*" onchange="loadFile(event,'editoutput')">
+                            <img id="editoutput" src="" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
               <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+              <button type="submit" class="btn btn-primary btn-sm ml-3">Guardar</button>
             </div>
           </form>
         </div>
@@ -329,7 +355,7 @@
         </div>
         <div class="modal-footer">
             <button type="reset" class="btn btn-secondary btn-sm" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary btn-sm">Eliminar</button>
+            <button type="submit" class="btn btn-primary btn-sm ml-3">Eliminar</button>
         </div>
         </form>
     </div>

@@ -33,7 +33,6 @@ class Restaurante extends CI_Controller
 			if(isset($user['id']) &&!is_null($user['id'])) $this->nav["id"] = $user['id'];
 		}
 	}
-
 	private function controlAcceso($id)
 	{
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
@@ -50,11 +49,16 @@ class Restaurante extends CI_Controller
 		$user = $this->model_usuario->get($id);
 		$lImg = $this->model_usuario->getImgpefil($id);
 		$servicios = $this->model_servicio->serviciosDisponibles($id);
-		
+		$miCategorias = $this->model_usuario->misCategorias($id);
+		$lCategorias = array();
+		foreach ($miCategorias as $oCategorias) {
+			$lCategorias[] = array( "tag" => $oCategorias["nombre"] );
+		}
 		$data = array(
 			"user" => json_decode(json_encode($user), true),
 			"img" => $lImg,
-			"servicio" => $servicios
+			"servicio" => $servicios,
+			"categorias" => $lCategorias
 		);
 		return $data;
 	}
@@ -147,7 +151,10 @@ class Restaurante extends CI_Controller
 							"apellido" => $this->input->post('apellido'),
 							"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
 							"lat" => $this->input->post('lat'),
-							"lng" => $this->input->post('lng')
+							"lng" => $this->input->post('lng'),
+							"cantidadMesas" => $this->input->post('mesa'),
+							"apertura" => $this->input->post('apertura'),
+							"clausura" => $this->input->post('cierre')
 						);
 						if ($this->input->post('password') != "" && $this->input->post('password') == $this->input->post('repassword') ){
 							$data["password"] = $this->input->post('password');
@@ -174,6 +181,17 @@ class Restaurante extends CI_Controller
 								}
 						}
 						$this->model_usuario->update($data,"id");
+
+						$categorias = $this->input->post('categoria');
+						$this->model_usuario->VaciarCategoriaRestaurante($data["id"]);
+						if ($categorias != null) {
+							$categorias = json_decode($categorias);
+							foreach ($categorias as $item) {
+								$IdCategoria = $this->model_usuario->addCategoria($item->tag);
+								$this->model_usuario->CategoriaRestaurante($IdCategoria,$data["id"]);
+							}
+						}
+			
 						$this->session->set_userdata('user',$data);
 					} else {
 						$this->session->set_userdata('msg_error', "la contraseña no coincide");

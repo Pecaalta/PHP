@@ -106,6 +106,8 @@ class Registro extends CI_Controller {
 	}
 
 	public function post_cliente(){
+		var_dump($this->input->post());
+
 		$data = array(
 			"nickname" => $this->input->post('nickname'),
 			"nombre" => $this->input->post('nombre'),
@@ -116,6 +118,9 @@ class Registro extends CI_Controller {
 			"email" => $this->input->post('email'),
 			"apellido" => $this->input->post('apellido'),
 			"password" => $this->input->post('password'),
+			"cantidadMesas" => $this->input->post('mesa'),
+			"apertura" => $this->input->post('apertura'),
+			"clausura" => $this->input->post('cierre'),
 			"lat" => $this->input->post('lat'),
 			"lng" => $this->input->post('lng'),
 			"fecha_de_nacimiento" => $this->input->post('fecha_de_nacimiento'),
@@ -142,24 +147,25 @@ class Registro extends CI_Controller {
 			}
 			$data["id"] = $this->model_usuario->insert($data);
 
-			$this->load->library('email');
-			//Indicamos el protocolo a utilizar
-			$config['protocol'] = 'ssmtp';
-			//El servidor de correo que utilizaremos
-			$config['smtp_host'] = 'ssl: //ssmtp.googlemail.com';
-			//Nuestro usuario
-			$config['smtp_user'] = 'contacto.reserbar@gmail.com';
-			//Nuestra contraseña
-			$config['smtp_pass'] = 'reserbar123';
-			//El puerto que utilizará el servidor smtp
-			$config['smtp_port'] = '587';
-			//El juego de caracteres a utilizar
-			$config['charset'] = 'utf-8';
-			//Permitimos que se puedan cortar palabras
-			$config['wordwrap'] = TRUE;
-			//El email debe ser valido 
-			$config['validate'] = true;
+			$categorias = $this->input->post('categoria');
+			$this->model_usuario->VaciarCategoriaRestaurante($data["id"]);
+			if ($categorias != null) {
+				$categorias = json_decode($categorias);
+				foreach ($categorias as $item) {
+					$IdCategoria = $this->model_usuario->addCategoria($item->tag);
+					$this->model_usuario->CategoriaRestaurante($IdCategoria,$data["id"]);
+				}
+			}
 
+			$this->load->library('email');
+			$config['protocol'] = 'ssmtp';
+			$config['smtp_host'] = 'ssl: //ssmtp.googlemail.com';
+			$config['smtp_user'] = 'contacto.reserbar@gmail.com';
+			$config['smtp_pass'] = 'reserbar123';
+			$config['smtp_port'] = '587';
+			$config['charset'] = 'utf-8';
+			$config['wordwrap'] = TRUE;
+			$config['validate'] = true;
 			$config['mailtype'] = 'html';
 			$this->email->initialize($config);
 			$this->email->from('contacto.reserbar@gmail.com', 'ReserBAR');
@@ -194,7 +200,8 @@ class Registro extends CI_Controller {
 
 	}
 public function editar_cliente(){
-
+	var_dump($this->input->post());
+	exit();
 	$user = json_decode(json_encode($this->session->userdata('user')), true);
 
 	$data = array(

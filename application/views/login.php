@@ -9,6 +9,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.0/css/mdb.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/public/css/style.css">
+    <link href="<?php echo base_url('public/css/materialize.min.css'); ?>" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
         html, body {
@@ -61,7 +63,7 @@
         <input class="form-control m-b-15px" name="nickname" type="text" placeholder="nickname">
         <input class="form-control m-b-15px" name="password" type="password" placeholder="Password">
         <p><?php echo $msg; ?></p>
-        <input class="btn btn-primary m-b-15px" type="submit" value="Iniciar sesion">
+        <input class="btn btn-primary mt-5 m-b-15px" type="submit" value="Iniciar sesion">
         <footer>
             <a class="link" href="<?php echo base_url(); ?>registro/restaurante">Registro Restaurante</a>
             -
