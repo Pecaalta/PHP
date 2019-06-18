@@ -140,6 +140,17 @@
                                     </p>
                                 <?php endif; ?>
                             </div>
+                            <div>
+                                <ul>
+                                    <?php foreach($servicios as $item2): ?>
+                                        <?php if($item2->id_reserva == $item->id):?>
+                                            <li>
+                                                <?php echo $item2->nombre ?>
+                                            </li>
+                                        <?php endif;?>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

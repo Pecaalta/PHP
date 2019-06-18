@@ -334,12 +334,23 @@ class Model_reserva extends MY_Model
 
     public function misReservas($data){
 
-        $sql = "SELECT r.personas, r.precio, r.fecha_total, r.turno, u.nickname
+        $sql = "SELECT r.personas, r.precio, r.fecha_total, r.turno, u.nickname, r.id
                 FROM reservas r, usuario u
                 WHERE r.id_usuario = ?
                 AND u.id = r.id_restaurante
                 ORDER BY r.fecha_total DESC ";
          $result =  $this->_database->query($sql, array($data))->result();
          return $result;
+    }
+
+    public function misReservasServicios($data)
+    {
+        $sql = "SELECT s.*, rs.id_reserva, rs.cantidad
+                FROM servicio s, reservas_servicio rs, reservas r
+                WHERE rs.id_reserva = r.id
+                AND r.id_usuario = ?
+                AND s.id = rs.id_servicio";
+        $result =  $this->_database->query($sql, array($data))->result();
+        return $result;        
     }
 }    
