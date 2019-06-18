@@ -167,7 +167,9 @@ class Reserva extends CI_Controller {
 	{
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$data = array(
-			"idUsuario" => $user['id']
+			"idUsuario" => $user['id'],
+			"mailUsuario" => $user['email'],
+			"nickUsuario" => $user['nickname']
 		);
 		if($this->model_reserva->validacionFinalUltimate($data)){
 			echo "Putin te tiene en su gloria, esto funciono :)";

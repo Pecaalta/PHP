@@ -257,7 +257,7 @@ class Model_reserva extends MY_Model
                 WHERE r.id_usuario = ".$data['idUsuario']."
                 AND rs.id_reserva = r.id 
                 AND r.id = ".$reserva['id'];
-    
+                                                
             $serviciosUsuario = $this->_database->query($sql)->result_array();
             if (count($serviciosUsuario) > 0) {
                 foreach ($serviciosUsuario as $item) {
@@ -279,7 +279,52 @@ class Model_reserva extends MY_Model
                                 $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));  
                         }           
                     }   
-            }  
+            }
+            
+                 //Mail
+
+                $this->load->library('email');
+                //Indicamos el protocolo a utilizar
+                $config['protocol'] = 'ssmtp';
+                //El servidor de correo que utilizaremos
+                $config['smtp_host'] = 'ssl: //ssmtp.googlemail.com';
+                //Nuestro usuario
+                $config['smtp_user'] = 'contacto.reserbar@gmail.com';
+                //Nuestra contraseña
+                $config['smtp_pass'] = 'reserbar123';
+                //El puerto que utilizará el servidor smtp
+                $config['smtp_port'] = '587';
+                //El juego de caracteres a utilizar
+                $config['charset'] = 'utf-8';
+                //Permitimos que se puedan cortar palabras
+                $config['wordwrap'] = TRUE;
+                //El email debe ser valido 
+                $config['validate'] = true;
+
+                $config['mailtype'] = 'html';
+                $this->email->initialize($config);
+                $this->email->from('contacto.reserbar@gmail.com', 'ReserBAR');
+                $this->email->to($data['mailUsuario']);
+                $this->email->subject('Reserva realizada en ReserBAR');
+
+                $preorden = null;
+                if($reserva['tarjeta'] == null){
+                        $preorden = "No preordeno ningun servicio";
+                }else{
+                        $preorden = "Preordeno servicios";
+                }
+
+                $this->email->message('<h2><b>' . $data['nickUsuario'] . ' has realizado una reserva en  ' . $restaurante['nickname'] . '</b></h2>' .
+                        'Estos son los datos de tu reserva: <br><br> ' . 
+                        'Nombre del restaurante: ' . $restaurante['nickname'] . '<br>' .
+                        'Nombre del reservante: ' . $data['nombreUsuario'] . ' ' . $data['apellidoUsuario'] . '<br>' .
+                        'Fecha de la reserva: ' . $reserva['fecha_total'] . '<br>' .
+                        'Turno de la reserva: ' . $reserva['turno'] . '<br>' .
+                        'Cantidad de personas: ' . $reserva['personas'] . '<br>' .
+                        'Preorden: ' . $preorden . '<br><br>' .
+                        'Para mas detalles consulte la seccion "Mis reservas" en <a href="localhost/PHP/">ReserBAR</a> ');
+
+                $this->email->send();
 
             return true;                                    
         }else{
