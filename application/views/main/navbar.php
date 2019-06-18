@@ -82,8 +82,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     ?>
 
     <style>
+        .modal {
+            height: auto;
+            background: none;
+        }
         nav .logo {
             height: 15px;
+        }
+        nav button:focus {
+            background: none!important;
         }
         .avatar-img{
             overflow: hidden;
@@ -138,8 +145,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
 
         #imgModal .modal-content {
-        background: #000;
-
+            background: #000;
+            padding: 0;
+            border-radius: 5px;
+            overflow: hidden;
         }
         @media only screen and (max-width: 990px) {
             *:not(nav) .nav-item {
