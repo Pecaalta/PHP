@@ -278,7 +278,14 @@ class Model_servicio extends MY_Model
 
     public function updateComentario($data)
     {
-        $sql = "UPDATE Comentario SET texto = '".$data['comentar']."' , calificacion = '".$data['valoracion']."' WHERE id_usuario= ".$data['user']." and id_servicio=".$data['id_servicio'];
+        $sql = "UPDATE Comentario SET 
+                puedeComentar = false, 
+                texto = '".$data['comentar']."', 
+                calificacion = '".$data['valoracion']."' 
+            WHERE 
+                id_usuario= '".$data['user']."' 
+                AND id_servicio = '".$data['id_servicio']."'
+            ";
         $query = $this->_database->query($sql);
     }
 
@@ -290,11 +297,11 @@ class Model_servicio extends MY_Model
         if($code != null ) $sql .= "AND s.codigo like  '".$code."%'";
         return $this->_database->query($sql)->result_array();
     }
-    
+
     public function nuevaCategoria($nombre,$codigo)
     {
         $sql = "INSERT INTO `categoria`(`nombre`, `codigo`, `is_active`) VALUES ('".$nombre."','".$codigo."',1)";
         return $this->_database->query($sql);
     }
-    
+        
 }

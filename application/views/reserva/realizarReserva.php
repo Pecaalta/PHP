@@ -26,7 +26,19 @@
     .table-wrapper-scroll-y {
         display: block;
     }
+    .form-control {
+        width:auto;
+        display:inline-block;
+    }
 </style>
+
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/styles.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/demo.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/jquery-ui.min.css">
+
+<script src="<?php echo base_url(); ?>/public/js/scriptPagos.js"></script>
+<script src="<?php echo base_url(); ?>/public/js/jquery.payform.min.js" charset="utf-8"></script>
+<script src="<?php echo base_url(); ?>/public/js/jquery-ui.min.js" charset="utf-8"></script>
 
 <div class="container contenedor text-center">
     <h3>Reserva</h3>
@@ -42,7 +54,46 @@
         </datalist>
 
         <!--primer pagina!-->
-        <fieldset class="servicios">
+        <fieldset class="servicios" id="cuadroFechaF">
+            <div id="cuadroHorario" class="container">
+                <div class="row">
+                    <div class="col-md-12" style="text-align: center">Selecciona la fecha y el turno de tu reserva: </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-4" id="datepicker"></div>
+
+                    <div class="col-md-5">
+                        <p id="prueba">
+
+                        </p>
+                        <div class="form-group">
+                            <label for="turno">Turno</label>
+                            <select class="form-control" name="turno" id="turno" style="width: 30%">
+                                <option>Dia</option>
+                                <option>Noche</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="cantidadPersonas">Cantidad de asistentes</label>
+                            <input type="number" id="cantidadPersonas" name="cantidadPersonas" style="width: 10%">
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" id="comprobarDisponibilidad">Seleccionar esta fecha</button>
+                    </div>
+
+                    <div class="col-md-3">
+                        <p id="fechaAviso"></p>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <input type="button" name="next" class="next btn btn-info cuadroServicio preOrdenSi" id="siguienteFecha" value="PreOrden" />
+            <input type="button" name="nextConfirmar" class="next btn btn-info cuadroConfirmar preOrdenNo" id="siguientelala" value="Reservar mesa" />
+        </fieldset>
+
+        <!--segunda pagina!-->
+        <fieldset class="servicios" id="cuadroServicioF">
             <div id="cuadroComida">
                 <h4>Escoge lo que vas a comer en <strong><?php echo $userRestaurante->nickname ?></strong></h4>
 
@@ -119,63 +170,72 @@
             </div>
             <br>
             <hr>
-            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info" value="Siguiente" />
-        </fieldset>
-
-        <!--segunda pagina!-->
-        <fieldset class="servicios">
-            <div id="cuadroHorario" class="container">
-                <div class="row">
-                    <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <input type="date" id="fecha" name="fecha">
-                        <div class="form-group">
-                        <label for=""></label>
-                        <select class="form-control" name="turno" id="turno">
-                            <option>Dia</option>
-                            <option>Noche</option>
-                        </select>
-                    </div>
-                        <p id="fechaAviso"></p>
-                    </div>
-
-                    <div  class="col-md-4" id="calendar"></div>
-                
-                    <div class="col-md-3"><a href="#" id="comprobarDisponibilidad">Comprobar disponibilidad</a>
-                        <div id="prueba">
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroFecha" value="Anterior" />
+            <input type="button" name="next" id="primerSiguiente" class="next btn btn-info cuadroPago" value="Siguiente" />
         </fieldset>
 
         <!--tercer pagina!-->
-        <fieldset class="servicios">
-            <div id="cuadroHorario" class="container text-left">
-                <div class="row">
-                    <div class="col-md-5">Información de pago: </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-8">Cantidad de personas<input type="number" id="cantidadPersonas"></div>
-                    <div class="col-md-8">Nombre del titular de la tarjeta<input type="text" id="titularTarjeta"></div>
-                    <div class="col-md-8">Numero de tarjeta<input type="text" id="tarjeta"></div>
-                    <div class="col-md-8">CVC<input type="text" id="cvc"></div>
-                </div>
-                <div id="erroresPago"></div>
+        <fieldset class="servicios" id="cuadroPagoF">
+            <div id="cuadroPago" class="container text-left">
+                <div class="container-fluid">
+                    <div class="creditCardForm">
+                        <div class="heading">
+                            <h1>Datos de pago</h1>
+                        </div>
+                        <div class="payment">
+                            <div class="form-group owner">
+                                <label for="owner">Titular</label>
+                                <input type="text" class="form-control" id="owner">
+                            </div>
+                            <div class="form-group CVV">
+                                <label for="cvv">CVC</label>
+                                <input type="text" class="form-control" id="cvv">
+                            </div>
+                            <div class="form-group" id="card-number-field">
+                                <label for="cardNumber">Numero de la tarjeta</label>
+                                <input type="text" class="form-control" id="cardNumber">
+                            </div>
+                            <div class="form-group" id="expiration-date">
+                                <label>Fecha de vencimiento</label>
+                                <select>
+                                    <option value="01">Enero</option>
+                                    <option value="02">Febrero </option>
+                                    <option value="03">Marzo</option>
+                                    <option value="04">Abril</option>
+                                    <option value="05">Mayo</option>
+                                    <option value="06">Junio</option>
+                                    <option value="07">Julio</option>
+                                    <option value="08">Agosto</option>
+                                    <option value="09">Septiembre</option>
+                                    <option value="10">Octubre</option>
+                                    <option value="11">Noviembre</option>
+                                    <option value="12">Diciembre</option>
+                                </select>
+                                <select>
+                                    <option value="19"> 2019</option>
+                                    <option value="20"> 2020</option>
+                                    <option value="21"> 2021</option>
+                                </select>
+                            </div>
+                            <div class="form-group" id="credit_cards">
+                                <img src="<?php echo base_url(); ?>public/img/visa.jpg" id="visa">
+                                <img src="<?php echo base_url(); ?>public/img/mastercard.jpg" id="mastercard">
+                                <img src="<?php echo base_url(); ?>public/img/amex.jpg" id="amex">
+                            </div>
+                            <div class="form-group" id="pay-now">
+                                <button type="submit" class="btn btn-default" id="confirm-purchase">Confirmar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
             </div>
             <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
-            <input type="button" name="next" class="next btn btn-info" value="Siguiente" onclick="datosPago()" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroServicio" value="Anterior" />
+            <input type="button" name="next" class="next btn btn-info cuadroConfirmar" value="Siguiente" id="siguientePago" onclick="datosPago()" />
         </fieldset>
         <!--cuarta pagina!-->
-        <fieldset class="servicios">
-            <div id="cuadroHorario" class="container">
+        <fieldset class="servicios" id="cuadroConfirmarF">
+            <div id="cuadroConfirmar" class="container">
                 <table class="table">
                     <th>Restaurante</th>
                     <td></td>
@@ -188,40 +248,123 @@
                 <div id="respuestaFinal"></div>
             </div>
             <hr>
-            <input type="button" name="previous" class="previous btn btn-default" value="Anterior" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroPago" id="aCuadroPago" value="Anterior" />
+            <input type="button" name="previous" class="previous btn btn-default cuadroFecha" id="aCuadroFecha" value="Anterior" />
         </fieldset>
     </form>
 </div>
 
+
 <script>
-    $('#calendar').datepicker({
+    $( "#datepicker" ).datepicker({
         inline: true,
         firstDay: 1,
         showOtherMonths: true,
-        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    });
+        minDate: new Date(),
+        nextText: "Siguiente mes",
+        altFormat: "yy-mm-dd",
+        autoSize: true,
+        dayNamesMin: [
+            'Do',
+            'Lu', 
+            'Ma', 
+            'Mi', 
+            'Ju', 
+            'Vi', 
+            'Sa'],
+        monthNames: [
+            'Enero',
+            'Febrero',
+            'Marzo',
+            'Abril',
+            'Mayo',
+            'Junio',
+            'Julio',
+            'Agosto',
+            'Septiembre',
+            'Octubre',
+            'Noviembre',
+            'Diciembre'],
+            onSelect: function(date) {
+                var dateTypeVar = $('#datepicker').datepicker('getDate');
+                var fechaIndicada = $.datepicker.formatDate('yy-mm-dd', dateTypeVar);
+                var id_restaurante = "<?php echo $userRestaurante->id ?>";
+                var url = "reserva/turnoDisponible";
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url() ?>" + url,
+                    data: {
+                        fechaIndicada: fechaIndicada,
+                        id_restaurante: id_restaurante
+                    },
+                    dataType: "html",
+                    success: function (response) {
+                        $("#prueba").html(response);
+                    }
+                });
+            }    
+});
+
+function pepe(){
+    var dateTypeVar = $('#datepicker').datepicker('getDate');
+    console.log($.datepicker.formatDate('yy-mm-dd', dateTypeVar));
+}
+    var currentDate = $( ".datepicker" ).datepicker( "getDate" );
 </script>
 
 <script>
 
+    var serviciosAgregados = 0;
+    var datosPagoValidos = false;
+
     $("#comprobarDisponibilidad").click(function() {
-        var fechaIndicada = $("#fecha").val();
-        var turnoIndicado = $("#turno").val();
-        var id_restaurante = "<?php echo $userRestaurante->id ?>";
-        var url = "reserva/fechaDisponible"
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url() ?>" + url,
-            dataType: 'html',
-            data: {
-                fechaIndicada: fechaIndicada,
-                turnoIndicado: turnoIndicado,
-                id_restaurante: id_restaurante
-            },
-            success: function(data) {
-                $("#prueba").html(data);
+        var dateTypeVar = $('#datepicker').datepicker('getDate');
+        var fechaIndicada = $.datepicker.formatDate('yy-mm-dd', dateTypeVar);
+        if(fechaIndicada != null && fechaIndicada != ""){
+            var hoy = $.datepicker.formatDate('yy-mm-dd', new Date());
+            if (hoy <= fechaIndicada) {
+                var cantPersonas = $("#cantidadPersonas").val();
+                if(cantPersonas != null && cantidadPersonas != "" && cantPersonas > 0){
+                    $("#fechaAviso").hide();
+                    var turnoIndicado = $("#turno").val();
+                    var id_restaurante = "<?php echo $userRestaurante->id ?>";
+                    var url = "reserva/fechaDisponible"
+                    $.ajax({
+                        type: "POST",
+                        url: "<?php echo base_url() ?>" + url,
+                        dataType: 'html',
+                        data: {
+                            cantPersonas: cantPersonas,
+                            fechaIndicada: fechaIndicada,
+                            turnoIndicado: turnoIndicado,
+                            id_restaurante: id_restaurante
+                        },
+                        success: function(data) {
+                            $("#fechaAviso").html(data).show();
+                            if (data) {
+                                $("#siguienteFecha").show();
+                                $("#siguientelala").show();
+                            }else{
+                                $("#siguienteFecha").hide();
+                                $("#siguientelala").hide();
+                            }
+                        }
+                    });
+                }else{
+                    $("#fechaAviso").html('<p class="alert alert-danger">La cantidad de personas debe ser de al menos una.</p>').show();
+                    $("#siguienteFecha").hide();
+                    $("#siguientelala").hide();
+                }
+            }else{
+                $("#fechaAviso").html('<p class="alert alert-danger">La fecha de reserva debe ser igual o mayor a la del dia actual.</p>').show();
+                $("#siguienteFecha").hide();
+                $("#siguientelala").hide();
             }
-        });
+        }else{
+            $("#fechaAviso").html('<p class="alert alert-danger">Debes indicar una fecha para comprobar su disponibilidad.</p>').show();
+            $("#siguienteFecha").hide();
+            $("#siguientelala").hide();
+        }
     });
 
 
@@ -266,6 +409,7 @@
                 dataType: "html",
                 success: function(data) {
                     $('#prueba2').html(data);
+                    serviciosAgregados++;
                 }
             });
             var precioABorrar = 0;
@@ -316,21 +460,21 @@
                 precioTotal = (precioTotal - precio);
                 $('#' + idfila).remove();
                 $('#precioTotal').html(precioTotal);
+                serviciosAgregados--;
             }
         });
     }
 
     function datosPago() {
-        var cantPersonas = $("#cantidadPersonas").val();
-        var tarjeta = $("#tarjeta").val();
-        var titularTarjeta = $("#titularTarjeta").val();
-        var cvc = $("#cvc").val();
+        var tarjeta = $("#cardNumber").val();
+        console.log(tarjeta);
+        var titularTarjeta = $("#owner").val();
+        var cvc = $("#cvv").val();
         var url = "reserva/datosPago";
         $.ajax({
             type: "POST",
             url: "<?php echo base_url() ?>" + url,
             data: {
-                cantidadPersonas: cantPersonas,
                 tarjeta: tarjeta,
                 titularTarjeta: titularTarjeta,
                 cvc: cvc
@@ -338,50 +482,100 @@
             dataType: "html",
             success: function (data) {
                 $('#erroresPago').text(data);
+                $("#siguientePago").hide();
             }
         });
     }
 
     function finalizarReserva(){
         var url = "reserva/finalizarReserva";
-        $.ajax({
-            type: "POST",
-            url: "<?php echo base_url() ?>" + url,
-            data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
-            dataType: "html",
-            success: function (data) {
-                $("#respuestaFinal").text(data);
+        if(serviciosAgregados != 0){
+            if(datosPagoValidos == true){
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url() ?>" + url,
+                    data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
+                    dataType: "html",
+                    success: function (data) {
+                        $("#respuestaFinal").text(data);
+                    }
+                });
+            }else{
+                $("#respuestaFinal").text("Agregaste comidas a la preorden y aun no has pagado.");
             }
-        });
+        }else{
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url() ?>" + url,
+                data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
+                dataType: "html",
+                success: function (data) {
+                    $("#respuestaFinal").text(data);
+                }
+            });
+        }
     }
 
     $(document).ready(function() {
-        var current = 1,
-            current_step, next_step, steps;
-        steps = $("fieldset").length;
-        $(".next").click(function() {
-            current_step = $(this).parent();
-            next_step = $(this).parent().next();
-            next_step.show();
-            current_step.hide();
-            setProgressBar(++current);
+        $("#siguientePago").hide();
+        $("#siguienteFecha").hide();
+        $("#siguientelala").hide();
+
+        var current = 1;
+        var preOrden = false;
+
+        $(".cuadroConfirmar").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").show();
+            current = 4;
+            setProgressBar(current);
         });
-        $(".previous").click(function() {
-            current_step = $(this).parent();
-            next_step = $(this).parent().prev();
-            next_step.show();
-            current_step.hide();
-            setProgressBar(--current);
+        $(".cuadroServicio").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").show();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").hide();
+            current = 2;
+            setProgressBar(current);
         });
-        setProgressBar(current);
+        $(".cuadroPago").click(function() {
+            $("#cuadroFechaF").hide();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").show();
+            $("#cuadroConfirmarF").hide();
+            current = 3;
+            setProgressBar(current);
+        });
+        $(".cuadroFecha").click(function() {
+            $("#cuadroFechaF").show();
+            $("#cuadroServicioF").hide();
+            $("#cuadroPagoF").hide();
+            $("#cuadroConfirmarF").hide();
+            current = 1;
+            setProgressBar(current);
+        });
         // Change progress bar action
         function setProgressBar(curStep) {
-            var percent = parseFloat(100 / steps) * curStep;
+            var percent = parseFloat(100 / 4) * curStep;
             percent = percent.toFixed();
             $(".progress-bar")
                 .css("width", percent + "%")
                 .html(percent + "%");
         }
+        $(".preOrdenSi").click(function() {
+            preOrden = true;
+            console.log(preOrden)
+            $("#aCuadroFecha").hide();
+            $("#aCuadroPago").show();
+        });
+        $(".preOrdenNo").click(function() {
+            preOrden = false;
+            console.log(preOrden)
+            $("#aCuadroFecha").show();
+            $("#aCuadroPago").hide();
+        });
     });
 
     

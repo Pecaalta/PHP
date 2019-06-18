@@ -100,7 +100,7 @@
     #star[date-satar="5"] label:nth-child(2),
     #star[date-satar="5"] label:nth-child(3),
     #star[date-satar="5"] label:nth-child(4),
-    #star[date-satar="5"] label:nth-child(5) { color: #007aff; }
+    #star[date-satar="5"] label:nth-child(5) { color: #D8D135; }
 
 
     #editdescripcion {

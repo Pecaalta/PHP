@@ -53,17 +53,58 @@ class Model_reserva extends MY_Model
                                                                 $data['turno'],
                                                                 $data['restaurante']->id
                                                                 ))->result_array();
-
+        $res = array();
         if(count($cantidadDeReservas) < $data['restaurante']->cantidadMesas){
             $sql = "UPDATE reservas
-                    SET fecha_total = ?, turno = ?
+                    SET fecha_total = ?, turno = ?, personas = ?
                     WHERE id_usuario = ?
                     AND is_active = 'false'";
-            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['idUsuario']));        
+            $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['cantPersonas'],$data['idUsuario']));        
 
-            return "Mesas disponibles";
+            $res['positivo'] = "Mesa reservada en " . $data['restaurante']->nickname . " en la fecha " . $data['fecha'] . " en el turno " . $data['turno'];
+            $res['negativo'] = "falso";
+        }else{
+                $res['negativo'] =  "No se pudo realizar la reserva, por favor revise lo que selecciono y compruebe que no hay ningun error";
+                $res['positivo'] = "falso";
         }
-        return "No hay mesas disponibles en el horario seleccionado";
+        return $res;
+    }
+
+    public function disponibilidadTurno($data)
+    {
+        $sql = "SELECT *
+        FROM reservas r
+        WHERE r.fecha_total = ?
+        AND r.turno = 'Dia'
+        AND r.id_restaurante = ?
+        ";         
+        $cantidadDeReservasDia = $this->_database->query($sql,array(
+                                                        $data['fecha'],
+                                                        $data['restaurante']->id
+                                                        ))->result_array();       
+        $sql = "SELECT *
+        FROM reservas r
+        WHERE r.fecha_total = ?
+        AND r.turno = 'Noche'
+        AND r.id_restaurante = ?
+        ";         
+        $cantidadDeReservasNoche = $this->_database->query($sql,array(
+                                                        $data['fecha'],
+                                                        $data['restaurante']->id
+                                                        ))->result_array();       
+
+        $respuesta = array();
+        if (count($cantidadDeReservasDia) < $data['restaurante']->cantidadMesas) {
+                $respuesta["dia"] = true;
+        } else{
+                $respuesta["dia"] = false;
+        }
+        if(count($cantidadDeReservasNoche) < $data['restaurante']->cantidadMesas) {
+                $respuesta["noche"] = true;
+        } else{
+                $respuesta["noche"] = false;
+        }
+        return $respuesta;
     }
     
     public function prueba($data){
@@ -150,11 +191,10 @@ class Model_reserva extends MY_Model
     public function datosPago($data)
     {
         $sql = "UPDATE reservas
-                SET personas = ?, tarjeta = ?, titularTarjeta = ?, cvc = ?
+                SET tarjeta = ?, titularTarjeta = ?, cvc = ?
                 WHERE id_usuario = ?
                 AND is_active = 'false'";
         $this->_database->query($sql, array(
-                                            $data['cantidadPersonas'],
                                             $data['tarjeta'],
                                             $data['titularTarjeta'],
                                             $data['cvc'],
@@ -166,12 +206,10 @@ class Model_reserva extends MY_Model
     {
         $sql = "SELECT *
                 FROM reservas
-                WHERE id_usuario = ?
-                AND is_active = 'false'
+                WHERE id_usuario = ".$data['idUsuario']."
+                AND is_active = false
                 ";
-        $reserva = $this->_database->query($sql, array(
-                                                        $data['idUsuario']
-                                                        ))->row_array(); 
+        $reserva = $this->_database->query($sql)->row_array(); 
 
         $sql = "SELECT *
                 FROM usuario
@@ -216,34 +254,103 @@ class Model_reserva extends MY_Model
             //Instancio los comentarios
             $sql = "SELECT DISTINCT rs.* 
                 FROM reservas_servicio rs, reservas r
-                WHERE r.id_usuario = ?
-                AND rs.id_reserva = r.id;";
-            $serviciosUsuario = $this->_database->query($sql,array($data['idUsuario']))->result_array();
+                WHERE r.id_usuario = ".$data['idUsuario']."
+                AND rs.id_reserva = r.id 
+                AND r.id = ".$reserva['id'];
+                                                
+            $serviciosUsuario = $this->_database->query($sql)->result_array();
             if (count($serviciosUsuario) > 0) {
                 foreach ($serviciosUsuario as $item) {
                         $sql = "SELECT * 
                                 FROM Comentario c
                                 WHERE c.id_servicio = ?
                                 AND c.id_usuario = ?";
-                        $comen = $this->_database->query($sql, array($item['id'],$data['idUsuario']))->row();     
-                        if ($comen != null) {
+                        $comen = $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']))->result_array();     
+                        if (sizeof($comen) > 0) {
                                 $sql = "UPDATE Comentario c
                                         SET puedeComentar = true
                                         WHERE c.id_servicio = ?
                                         AND c.id_usuario = ?";
-                        $this->_database->query($sql, array($item['id'],$data['idUsuario']));                   
+                        $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));                   
                         }
                         else{
                                 $sql = "INSERT INTO `Comentario` (`id_servicio`,`id_usuario`,`puedeComentar`)
                                         VALUES (?,?,true)";
-                                $this->_database->query($sql, array($item['id'],$data['idUsuario']));  
+                                $this->_database->query($sql, array($item['id_servicio'],$data['idUsuario']));  
                         }           
                     }   
-            }  
+            }
+            
+                 //Mail
+
+                $this->load->library('email');
+                //Indicamos el protocolo a utilizar
+                $config['protocol'] = 'ssmtp';
+                //El servidor de correo que utilizaremos
+                $config['smtp_host'] = 'ssl: //ssmtp.googlemail.com';
+                //Nuestro usuario
+                $config['smtp_user'] = 'contacto.reserbar@gmail.com';
+                //Nuestra contraseña
+                $config['smtp_pass'] = 'reserbar123';
+                //El puerto que utilizará el servidor smtp
+                $config['smtp_port'] = '587';
+                //El juego de caracteres a utilizar
+                $config['charset'] = 'utf-8';
+                //Permitimos que se puedan cortar palabras
+                $config['wordwrap'] = TRUE;
+                //El email debe ser valido 
+                $config['validate'] = true;
+
+                $config['mailtype'] = 'html';
+                $this->email->initialize($config);
+                $this->email->from('contacto.reserbar@gmail.com', 'ReserBAR');
+                $this->email->to($data['mailUsuario']);
+                $this->email->subject('Reserva realizada en ReserBAR');
+
+                $preorden = null;
+                if($reserva['tarjeta'] == null){
+                        $preorden = "No preordeno ningun servicio";
+                }else{
+                        $preorden = "Preordeno servicios";
+                }
+
+                $this->email->message('<h2><b>' . $data['nickUsuario'] . ' has realizado una reserva en  ' . $restaurante['nickname'] . '</b></h2>' .
+                        'Estos son los datos de tu reserva: <br><br> ' . 
+                        'Nombre del restaurante: ' . $restaurante['nickname'] . '<br>' .
+                        'Nombre del reservante: ' . $data['nombreUsuario'] . ' ' . $data['apellidoUsuario'] . '<br>' .
+                        'Fecha de la reserva: ' . $reserva['fecha_total'] . '<br>' .
+                        'Turno de la reserva: ' . $reserva['turno'] . '<br>' .
+                        'Cantidad de personas: ' . $reserva['personas'] . '<br>' .
+                        'Preorden: ' . $preorden . '<br><br>' .
+                        'Para mas detalles consulte la seccion "Mis reservas" en <a href="localhost/PHP/">ReserBAR</a> ');
+
+                $this->email->send();
 
             return true;                                    
         }else{
             return false;
         }                                                             
+    }
+
+    public function misReservas($data){
+
+        $sql = "SELECT r.personas, r.precio, r.fecha_total, r.turno, u.nickname, r.id
+                FROM reservas r, usuario u
+                WHERE r.id_usuario = ?
+                AND u.id = r.id_restaurante
+                ORDER BY r.fecha_total DESC ";
+         $result =  $this->_database->query($sql, array($data))->result();
+         return $result;
+    }
+
+    public function misReservasServicios($data)
+    {
+        $sql = "SELECT s.*, rs.id_reserva, rs.cantidad
+                FROM servicio s, reservas_servicio rs, reservas r
+                WHERE rs.id_reserva = r.id
+                AND r.id_usuario = ?
+                AND s.id = rs.id_servicio";
+        $result =  $this->_database->query($sql, array($data))->result();
+        return $result;        
     }
 }    

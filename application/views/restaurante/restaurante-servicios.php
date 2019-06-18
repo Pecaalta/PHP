@@ -226,35 +226,7 @@
         </div>
     </div>
 </div>
-<!--
-<script>
-        $(document).ready(function(){
 
-            $( "#autocompletado" ).keypress(function() {
-                console.log( "Handler for .keypress() called." );
-                $.ajax({
-                    url: '<?php echo base_url(); ?>/welcome/sugerencias',
-                    type: 'POST',
-                    dataType: 'html',
-                    data: {text: $(this).val() },
-                    beforeSend: function(e) {
-                        // animacion de carga
-                    },
-                    success: function(e){
-                        $("#dropdown-autocompletado").html(e);
-                    },
-                    error: function(e){
-                        console.log(e);
-                    },
-                    complete: function(e) {
-                        console.log(e);
-                    },
-                });
-            });
-        });
-        
-    </script>
-!-->
 <script>
     var listaServicios = <?php echo isset($servicio) && $servicio != null ?  json_encode($servicio->result()) : '[]'; ?>;
     $("#nombreNuevoServicio").keyup(function() {

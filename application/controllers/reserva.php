@@ -35,7 +35,7 @@ class Reserva extends CI_Controller {
 
 	private function controlAcceso($id){
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
-		if (is_null($user) or $user['id'] != $id or is_null($user['rut'])) {
+		if (is_null($user) or $user['id'] == $id or !is_null($user['rut'])) {
 			$this->load->view('main/navbar', $this->nav);
 			$this->load->view('errors/index');
 			return false;
@@ -63,17 +63,19 @@ class Reserva extends CI_Controller {
     }
 
     public function realizarReserva($id_restaurante){
-        $user = json_decode(json_encode($this->session->userdata('user')), true);
-        if (!is_null($user)){
-			$data = array(
-				"id_usuario" => $user['id'],
-				"id_restaurante" => $id_restaurante
-			);
-			$this->model_reserva->instanciarPreReserva($data);
-            $data = $this->infoGeneral($user['id'], $id_restaurante);
-            $this->load->view('main/navbar', $this->nav);
-			$this->load->view('reserva/realizarReserva', $data);
-        }
+		if ($this->controlAcceso($id_restaurante)) {
+			$user = json_decode(json_encode($this->session->userdata('user')), true);
+			if (!is_null($user)){
+				$data = array(
+					"id_usuario" => $user['id'],
+					"id_restaurante" => $id_restaurante
+				);
+				$this->model_reserva->instanciarPreReserva($data);
+				$data = $this->infoGeneral($user['id'], $id_restaurante);
+				$this->load->view('main/navbar', $this->nav);
+				$this->load->view('reserva/realizarReserva', $data);
+			}
+		}
     }
 
     public function fechaDisponible(){
@@ -81,13 +83,31 @@ class Reserva extends CI_Controller {
 		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
 
 		$data = array(
+			"cantPersonas" => $this->input->post('cantPersonas'),
 			"fecha" => $this->input->post('fechaIndicada'),
 			"turno" => $this->input->post('turnoIndicado'),
 			"restaurante" => $userRestaurante,
 			"idUsuario" => $user['id']
 		);
 		$array = array(
-			"respuesta" => $this->model_reserva->disponibilidadMesa($data)
+			"respuesta2" => $this->model_reserva->disponibilidadMesa($data)
+		);
+
+		$this->load->view('componentes/reserva/puedeReservar', $array);
+	}
+
+	public function turnoDisponible()
+	{
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		$data = array(
+			"fecha" => $this->input->post('fechaIndicada'),
+			"restaurante" => $userRestaurante,
+			"idUsuario" => $user['id']
+		);
+		$array = array(
+			"respuesta" => $this->model_reserva->disponibilidadTurno($data)
 		);
 
 		$this->load->view('componentes/reserva/fecha', $array);
@@ -133,44 +153,47 @@ class Reserva extends CI_Controller {
 	{
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$data = array(
-			"cantidadPersonas" => $this->input->post('cantidadPersonas'),
 			"tarjeta" => $this->input->post('tarjeta'),
 			"titularTarjeta" => $this->input->post('titularTarjeta'),
 			"cvc" => $this->input->post('cvc'),
 			"idUsuario" => $user['id']
 		);
-		$errores = "";
-		if(($data["cantidadPersonas"]) <= 0){
-			$errores = $errores."La cantidad de personas deben ser al menos 1\n";
-		}
-		if(strlen($data["tarjeta"]) < 16){
-			$errores = $errores."La tarjeta debe se tener al menos 16 digitos\n";
-		}
-		if($data["titularTarjeta"] == ""){
-			$errores = $errores."Debe brindar el nombre del titular de la tarjeta \n";
-		}
-		if(strlen($data["cvc"]) != 3){
-			$errores = $errores."El codigo CVC debe tener 3 digitos \n";
-		}
-		if($errores != ""){
-			echo $errores;
-		}else{
-			$this->model_reserva->datosPago($data);
-			echo "Todo bien huevon";
-		}
+		
+		$this->model_reserva->datosPago($data);
+		
 	}
 
 	public function finalizarReserva()
 	{
 		$user = json_decode(json_encode($this->session->userdata('user')), true);
 		$data = array(
-			"idUsuario" => $user['id']
+			"idUsuario" => $user['id'],
+			"mailUsuario" => $user['email'],
+			"nickUsuario" => $user['nickname'],
+			"nombreUsuario" => $user['nombre'],
+			"apellidoUsuario" => $user['apellido'],
 		);
 		if($this->model_reserva->validacionFinalUltimate($data)){
 			echo "Putin te tiene en su gloria, esto funciono :)";
 		}else{
 			echo "Error, la fecha y hora que seleccionaste ya no estan disponibles, por favor elige otra";
 		}
+	}
+
+	public function mis_reservas(){
+
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+
+		$reserva = $this->model_reserva->misReservas($user['id']);
+		$reservaServicios = $this->model_reserva->misReservasServicios($user['id']);
+
+		$data = array(
+			'reserva' => $reserva,
+			'servicios' => $reservaServicios
+		);
+
+		$this->load->view('main/navbar', $this->nav);
+		$this->load->view('reserva/reservas-cliente', $data);
 	}
 
 }    
