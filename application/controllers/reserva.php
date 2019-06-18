@@ -169,7 +169,9 @@ class Reserva extends CI_Controller {
 		$data = array(
 			"idUsuario" => $user['id'],
 			"mailUsuario" => $user['email'],
-			"nickUsuario" => $user['nickname']
+			"nickUsuario" => $user['nickname'],
+			"nombreUsuario" => $user['nombre'],
+			"apellidoUsuario" => $user['apellido'],
 		);
 		if($this->model_reserva->validacionFinalUltimate($data)){
 			echo "Putin te tiene en su gloria, esto funciono :)";
