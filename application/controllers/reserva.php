@@ -90,7 +90,24 @@ class Reserva extends CI_Controller {
 			"idUsuario" => $user['id']
 		);
 		$array = array(
-			"respuesta" => $this->model_reserva->disponibilidadMesa($data)
+			"respuesta2" => $this->model_reserva->disponibilidadMesa($data)
+		);
+
+		$this->load->view('componentes/reserva/puedeReservar', $array);
+	}
+
+	public function turnoDisponible()
+	{
+		$user = json_decode(json_encode($this->session->userdata('user')), true);
+		$userRestaurante = $this->model_usuario->get($this->input->post('id_restaurante'));
+
+		$data = array(
+			"fecha" => $this->input->post('fechaIndicada'),
+			"restaurante" => $userRestaurante,
+			"idUsuario" => $user['id']
+		);
+		$array = array(
+			"respuesta" => $this->model_reserva->disponibilidadTurno($data)
 		);
 
 		$this->load->view('componentes/reserva/fecha', $array);

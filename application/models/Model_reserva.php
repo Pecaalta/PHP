@@ -53,7 +53,7 @@ class Model_reserva extends MY_Model
                                                                 $data['turno'],
                                                                 $data['restaurante']->id
                                                                 ))->result_array();
-
+        $res = array();
         if(count($cantidadDeReservas) < $data['restaurante']->cantidadMesas){
             $sql = "UPDATE reservas
                     SET fecha_total = ?, turno = ?, personas = ?
@@ -61,9 +61,50 @@ class Model_reserva extends MY_Model
                     AND is_active = 'false'";
             $this->_database->query($sql,array($data['fecha'],$data['turno'],$data['cantPersonas'],$data['idUsuario']));        
 
-            return "Mesas disponibles";
+            $res['positivo'] = "Mesa reservada en " . $data['restaurante']->nickname . " en la fecha " . $data['fecha'] . " en el turno " . $data['turno'];
+            $res['negativo'] = "falso";
+        }else{
+                $res['negativo'] =  "No se pudo realizar la reserva, por favor revise lo que selecciono y compruebe que no hay ningun error";
+                $res['positivo'] = "falso";
         }
-        return "No hay mesas disponibles en el horario seleccionado";
+        return $res;
+    }
+
+    public function disponibilidadTurno($data)
+    {
+        $sql = "SELECT *
+        FROM reservas r
+        WHERE r.fecha_total = ?
+        AND r.turno = 'Dia'
+        AND r.id_restaurante = ?
+        ";         
+        $cantidadDeReservasDia = $this->_database->query($sql,array(
+                                                        $data['fecha'],
+                                                        $data['restaurante']->id
+                                                        ))->result_array();       
+        $sql = "SELECT *
+        FROM reservas r
+        WHERE r.fecha_total = ?
+        AND r.turno = 'Noche'
+        AND r.id_restaurante = ?
+        ";         
+        $cantidadDeReservasNoche = $this->_database->query($sql,array(
+                                                        $data['fecha'],
+                                                        $data['restaurante']->id
+                                                        ))->result_array();       
+
+        $respuesta = array();
+        if (count($cantidadDeReservasDia) < $data['restaurante']->cantidadMesas) {
+                $respuesta["dia"] = true;
+        } else{
+                $respuesta["dia"] = false;
+        }
+        if(count($cantidadDeReservasNoche) < $data['restaurante']->cantidadMesas) {
+                $respuesta["noche"] = true;
+        } else{
+                $respuesta["noche"] = false;
+        }
+        return $respuesta;
     }
     
     public function prueba($data){

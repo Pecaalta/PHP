@@ -26,13 +26,19 @@
     .table-wrapper-scroll-y {
         display: block;
     }
+    .form-control {
+        width:auto;
+        display:inline-block;
+    }
 </style>
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/styles.css">
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/demo.css">
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>/public/css/jquery-ui.min.css">
 
 <script src="<?php echo base_url(); ?>/public/js/scriptPagos.js"></script>
 <script src="<?php echo base_url(); ?>/public/js/jquery.payform.min.js" charset="utf-8"></script>
+<script src="<?php echo base_url(); ?>/public/js/jquery-ui.min.js" charset="utf-8"></script>
 
 <div class="container contenedor text-center">
     <h3>Reserva</h3>
@@ -51,28 +57,33 @@
         <fieldset class="servicios" id="cuadroFechaF">
             <div id="cuadroHorario" class="container">
                 <div class="row">
-                    <div class="col-md-5">Selecciona la fecha y el turno de tu reserva: </div>
+                    <div class="col-md-12" style="text-align: center">Selecciona la fecha y el turno de tu reserva: </div>
                 </div>
+                <br>
                 <div class="row">
+                    <div class="col-md-4" id="datepicker"></div>
+
                     <div class="col-md-5">
-                        <input type="date" id="fecha" name="fecha">
+                        <p id="prueba">
+
+                        </p>
                         <div class="form-group">
-                            <label for=""></label>
-                            <select class="form-control" name="turno" id="turno">
+                            <label for="turno">Turno</label>
+                            <select class="form-control" name="turno" id="turno" style="width: 30%">
                                 <option>Dia</option>
                                 <option>Noche</option>
                             </select>
                         </div>
-                        <input type="number" id="cantidadPersonas">
-                        <p id="fechaAviso"></p>
+                        <div class="form-group">
+                            <label for="cantidadPersonas">Cantidad de asistentes</label>
+                            <input type="number" id="cantidadPersonas" name="cantidadPersonas" style="width: 10%">
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" id="comprobarDisponibilidad">Seleccionar esta fecha</button>
                     </div>
 
-                    <div  class="col-md-4" id="calendar"></div>
-                
-                    <div class="col-md-3"><a href="#" id="comprobarDisponibilidad">Comprobar disponibilidad</a>
-                        <p id="prueba">
-
-                        </p>
+                    <div class="col-md-3">
+                        <p id="fechaAviso"></p>
                     </div>
                 </div>
             </div>
@@ -243,13 +254,62 @@
     </form>
 </div>
 
+
 <script>
-    $('#calendar').datepicker({
+    $( "#datepicker" ).datepicker({
         inline: true,
         firstDay: 1,
         showOtherMonths: true,
-        dayNamesMin: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-    });
+        minDate: new Date(),
+        nextText: "Siguiente mes",
+        altFormat: "yy-mm-dd",
+        autoSize: true,
+        dayNamesMin: [
+            'Do',
+            'Lu', 
+            'Ma', 
+            'Mi', 
+            'Ju', 
+            'Vi', 
+            'Sa'],
+        monthNames: [
+            'Enero',
+            'Febrero',
+            'Marzo',
+            'Abril',
+            'Mayo',
+            'Junio',
+            'Julio',
+            'Agosto',
+            'Septiembre',
+            'Octubre',
+            'Noviembre',
+            'Diciembre'],
+            onSelect: function(date) {
+                var dateTypeVar = $('#datepicker').datepicker('getDate');
+                var fechaIndicada = $.datepicker.formatDate('yy-mm-dd', dateTypeVar);
+                var id_restaurante = "<?php echo $userRestaurante->id ?>";
+                var url = "reserva/turnoDisponible";
+                $.ajax({
+                    type: "post",
+                    url: "<?php echo base_url() ?>" + url,
+                    data: {
+                        fechaIndicada: fechaIndicada,
+                        id_restaurante: id_restaurante
+                    },
+                    dataType: "html",
+                    success: function (response) {
+                        $("#prueba").html(response);
+                    }
+                });
+            }    
+});
+
+function pepe(){
+    var dateTypeVar = $('#datepicker').datepicker('getDate');
+    console.log($.datepicker.formatDate('yy-mm-dd', dateTypeVar));
+}
+    var currentDate = $( ".datepicker" ).datepicker( "getDate" );
 </script>
 
 <script>
@@ -258,7 +318,8 @@
     var datosPagoValidos = false;
 
     $("#comprobarDisponibilidad").click(function() {
-        var fechaIndicada = $("#fecha").val();
+        var dateTypeVar = $('#datepicker').datepicker('getDate');
+        var fechaIndicada = $.datepicker.formatDate('yy-mm-dd', dateTypeVar);
         if(fechaIndicada != null && fechaIndicada != ""){
             var hoy = $.datepicker.formatDate('yy-mm-dd', new Date());
             if (hoy <= fechaIndicada) {
@@ -279,9 +340,8 @@
                             id_restaurante: id_restaurante
                         },
                         success: function(data) {
-                            $("#prueba").html(data);
-                            console.log($("#prueba").text());
-                            if ($.trim($("#prueba").text()) == "Mesas disponibles") {
+                            $("#fechaAviso").html(data).show();
+                            if (data) {
                                 $("#siguienteFecha").show();
                                 $("#siguientelala").show();
                             }else{
@@ -291,17 +351,17 @@
                         }
                     });
                 }else{
-                    $("#fechaAviso").html("La cantidad de personas debe ser de al menos una.").show();
+                    $("#fechaAviso").html('<p class="alert alert-danger">La cantidad de personas debe ser de al menos una.</p>').show();
                     $("#siguienteFecha").hide();
                     $("#siguientelala").hide();
                 }
             }else{
-                $("#fechaAviso").html("La fecha de reserva debe ser igual o mayor a la del dia actual.").show();
+                $("#fechaAviso").html('<p class="alert alert-danger">La fecha de reserva debe ser igual o mayor a la del dia actual.</p>').show();
                 $("#siguienteFecha").hide();
                 $("#siguientelala").hide();
             }
         }else{
-            $("#fechaAviso").html("Debes indicar una fecha para comprobar su disponibilidad.").show();
+            $("#fechaAviso").html('<p class="alert alert-danger">Debes indicar una fecha para comprobar su disponibilidad.</p>').show();
             $("#siguienteFecha").hide();
             $("#siguientelala").hide();
         }
