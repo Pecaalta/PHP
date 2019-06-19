@@ -1,6 +1,6 @@
 <style>
     body {
-        background-image: url("https://mott.pe/noticias/wp-content/uploads/2016/05/Sin-duda-probarlos-podr%C3%ADa-provocarte-una-muerte-deliciosa-pero-tranquilo-estos-postres-solo-te-alegrar%C3%A1n-la-vida-4.jpg");
+        background-image: url("https://s2.best-wallpaper.net/wallpaper/1920x1080/1610/Chocolate-cupcakes-raspberry-cakes-dessert_1920x1080.jpg");
     }
 
     .column {
@@ -89,7 +89,7 @@
     #nick {
         margin-right: 30px;
         padding: 2px;
-    } 
+    }
 </style>
 <div class="container">
     <ol id="lista5">
@@ -113,8 +113,8 @@
 
                                 <p><i class="fas fa-users"></i> Cantidad de Personas <?php echo $item->personas; ?></p>
                                 <hr>
-                                </div>
-                                <div style="margin-left: 35px;">
+                            </div>
+                            <div style="margin-left: 35px;">
                                 <?php if ($item->turno == 'Dia') : ?>
                                     <p>
                                         <i class="fas fa-cloud-sun"></i> Turno <?php echo $item->turno; ?>
@@ -141,20 +141,38 @@
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <ul>
-                                    <?php foreach($servicios as $item2): ?>
-                                        <?php if($item2->id_reserva == $item->id):?>
-                                            <li>
-                                                <?php echo $item2->nombre ?>
-                                            </li>
-                                        <?php endif;?>
-                                    <?php endforeach; ?>
-                                </ul>
+                                <a data-toggle="modal" data-target="#EditModal" class="container btn btn-primary">Servicios Reservados</a>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
+            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-body">
+                        <div class="row">
+
+                            <div class="col-12">
+                                <input type="hidden" id="idServicio" name="idServicio" value="">
+                                <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario">
+                            <?php foreach ($servicios as $item2) : ?>
+                                    <?php if ($item2->nombre != NULL) : ?>
+                                            <?php if ($item2->id_reserva == $item->id) : ?>
+                                    
+                                                        <?php echo $item2->nombre ?>
+                                   
+                                            <?php endif; ?>
+                                    <?php else : ?>
+                                    <?php endif; ?>
+                            <?php endforeach; ?>
+                        </textarea>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <?php endforeach; ?>
     </ol>
 </div>
