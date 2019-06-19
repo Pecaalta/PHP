@@ -106,8 +106,6 @@ class Registro extends CI_Controller {
 	}
 
 	public function post_cliente(){
-		var_dump($this->input->post());
-
 		$data = array(
 			"nickname" => $this->input->post('nickname'),
 			"nombre" => $this->input->post('nombre'),
@@ -200,8 +198,7 @@ class Registro extends CI_Controller {
 
 	}
 public function editar_cliente(){
-	var_dump($this->input->post());
-	exit();
+
 	$user = json_decode(json_encode($this->session->userdata('user')), true);
 
 	$data = array(
