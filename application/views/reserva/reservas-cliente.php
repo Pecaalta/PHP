@@ -141,38 +141,37 @@
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <a data-toggle="modal" data-target="#EditModal" class="container btn btn-primary">Servicios Reservados</a>
-
+                                <a data-toggle="modal" data-target="#EditModal" onclick="getservicios(<?php echo $item->id ?>)" class="container btn btn-primary">Servicios Reservados</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
-            <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
-                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                    <div class="modal-body">
-                        <div class="row">
-
-                            <div class="col-12">
-                                <input type="hidden" id="idServicio" name="idServicio" value="">
-                                <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario">
-                            <?php foreach ($servicios as $item2) : ?>
-                                    <?php if ($item2->nombre != NULL) : ?>
-                                            <?php if ($item2->id_reserva == $item->id) : ?>
-                                    
-                                                        <?php echo $item2->nombre ?>
-                                   
-                                            <?php endif; ?>
-                                    <?php else : ?>
-                                    <?php endif; ?>
-                            <?php endforeach; ?>
-                        </textarea>
-
-                            </div>
+        <?php endforeach; ?>
+        <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <input type="hidden" id="idServicio" name="idServicio" value="">
+                            <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario">
+                            </textarea>
                         </div>
                     </div>
                 </div>
             </div>
-        <?php endforeach; ?>
+        </div>
     </ol>
 </div>
+<script>
+    var servicios = <?php echo isset($servicios) && $servicios != null ? json_encode($servicios) : '[]'; ?>;
+    function getservicios(id) {
+        let text = '';
+        let misservicios = servicios.filter((r)=>r.id_reserva = id );
+        misservicios.forEach(element => {
+            text += element['nombre']
+        });
+        document.getElementById('editdescripcion').value = text;       
+    
+    }
+</script>
