@@ -141,26 +141,36 @@
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <a data-toggle="modal" data-target="#EditModal" onclick="getservicios(<?php echo $item->id ?>)" class="container btn btn-primary">Servicios Reservados</a>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal<?php echo $item->id ?>">
+                                    Servicios preordenados
+                                </button>
+                                <div class="modal" id="myModal<?php echo $item->id ?>">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Lista de servicios</h4>
+                                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <ul>
+                                                    <?php foreach($servicios as $item2):?>
+                                                        <?php if($item2->id_reserva == $item->id):?>    
+                                                            <li>
+                                                                <?php echo $item2->nombre ?>
+                                                            </li>
+                                                        <?php endif; ?>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </li>
         <?php endforeach; ?>
-        <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="EditModal" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <input type="hidden" id="idServicio" name="idServicio" value="">
-                            <textarea id="editdescripcion" class="textDescripcion form-control" type="text" name="descripcion" placeholder="Comentario">
-                            </textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </ol>
 </div>
 <script>
