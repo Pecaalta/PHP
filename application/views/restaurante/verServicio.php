@@ -124,23 +124,25 @@
             </div>
             <?php if(count($comentarios) > 0):?>
                 <?php foreach($comentarios as $item):?>
-                    <div class="col-12">    
-                        <div class="news">
-                            <div class="label">
-                                <img onerror="javascript:imgError(this)" src="<?php echo base_url() . '/uploads/servicios/' . $item['avatar']; ?>"  class="rounded-circle z-depth-1-half">
-                            </div>
-                            <div class="excerpt mb-0">
-                                <div class="brief">
-                                    <a class="name"><?php echo $item['nickname'] ?></a>
-                                    <span class="star" date-satar="<?php echo isset($item['calificacion']) || $item['calificacion'] != '' ? $item['calificacion'] : '0'; ?>">
-                                        <span class="active fas"></span>
-                                        <span class="inactive fas"></span>
-                                    </span>
+                    <?php if($item['texto'] != null):?>
+                        <div class="col-12">    
+                            <div class="news">
+                                <div class="label">
+                                    <img onerror="javascript:imgError(this)" src="<?php echo base_url() . '/uploads/servicios/' . $item['avatar']; ?>"  class="rounded-circle z-depth-1-half">
                                 </div>
-                                <div class="added-text"><?php echo $item['texto'] ?></div>
+                                <div class="excerpt mb-0">
+                                    <div class="brief">
+                                        <a class="name"><?php echo $item['nickname'] ?></a>
+                                        <span class="star" date-satar="<?php echo isset($item['calificacion']) || $item['calificacion'] != '' ? $item['calificacion'] : '0'; ?>">
+                                            <span class="active fas"></span>
+                                            <span class="inactive fas"></span>
+                                        </span>
+                                    </div>
+                                    <div class="added-text"><?php echo $item['texto'] ?></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    <?php endif;?>    
                 <?php endforeach;?>
             <?php endif;?>
             <?php if(count($comentarios) <= 0):?>

@@ -263,7 +263,8 @@ class Model_servicio extends MY_Model
                 FROM Comentario c, Servicio s, Usuario u
                 WHERE s.id = ?
                 AND c.id_servicio = ?
-                AND u.id = c.id_usuario";
+                AND u.id = c.id_usuario
+                AND c.calificacion != NULL";
         return $this->_database->query($sql, array($idServicio, $idServicio))->result_array();
     }
 
