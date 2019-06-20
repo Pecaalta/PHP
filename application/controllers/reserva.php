@@ -174,9 +174,9 @@ class Reserva extends CI_Controller {
 			"apellidoUsuario" => $user['apellido'],
 		);
 		if($this->model_reserva->validacionFinalUltimate($data)){
-			echo "Putin te tiene en su gloria, esto funciono :)";
+			$this->load->view('componentes/reserva/reservaConfirmada', $data);
 		}else{
-			echo "Error, la fecha y hora que seleccionaste ya no estan disponibles, por favor elige otra";
+			echo "Ha habido un error con su reserva, por favor vuelva a intentarlo";
 		}
 	}
 

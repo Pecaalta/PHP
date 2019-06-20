@@ -40,7 +40,7 @@
 <script src="<?php echo base_url(); ?>/public/js/jquery.payform.min.js" charset="utf-8"></script>
 <script src="<?php echo base_url(); ?>/public/js/jquery-ui.min.js" charset="utf-8"></script>
 
-<div class="container contenedor text-center">
+<div class="container contenedor text-center" id="raiz">
     <h3>Reserva</h3>
     <div class="progress">
         <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
@@ -341,13 +341,6 @@ function pepe(){
                         },
                         success: function(data) {
                             $("#fechaAviso").html(data).show();
-                            if (data) {
-                                $("#siguienteFecha").show();
-                                $("#siguientelala").show();
-                            }else{
-                                $("#siguienteFecha").hide();
-                                $("#siguientelala").hide();
-                            }
                         }
                     });
                 }else{
@@ -497,7 +490,7 @@ function pepe(){
                     data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
                     dataType: "html",
                     success: function (data) {
-                        $("#respuestaFinal").text(data);
+                        $("#raiz").html(data);
                     }
                 });
             }else{
@@ -510,7 +503,7 @@ function pepe(){
                 data:{notengonadapamandarteahoramismo: "pablitoclavounclavito"},
                 dataType: "html",
                 success: function (data) {
-                    $("#respuestaFinal").text(data);
+                    $("#raiz").html(data);
                 }
             });
         }

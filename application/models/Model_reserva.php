@@ -280,7 +280,7 @@ class Model_reserva extends MY_Model
                         }           
                     }   
             }
-            
+            /*
                  //Mail
 
                 $this->load->library('email');
@@ -324,7 +324,7 @@ class Model_reserva extends MY_Model
                         'Preorden: ' . $preorden . '<br><br>' .
                         'Para mas detalles consulte la seccion "Mis reservas" en <a href="localhost/PHP/">ReserBAR</a> ');
 
-                $this->email->send();
+                $this->email->send(); */
 
             return true;                                    
         }else{
