@@ -124,7 +124,6 @@
             </div>
             <?php if(count($comentarios) > 0):?>
                 <?php foreach($comentarios as $item):?>
-                    <?php if($item['texto'] != null):?>
                         <div class="col-12">    
                             <div class="news">
                                 <div class="label">
@@ -142,7 +141,6 @@
                                 </div>
                             </div>
                         </div>
-                    <?php endif;?>    
                 <?php endforeach;?>
             <?php endif;?>
             <?php if(count($comentarios) <= 0):?>
