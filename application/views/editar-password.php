@@ -169,19 +169,19 @@
 
     function Validar() {
         if ($("#oldpassword").val().trim() == "") {
-            toastr.error("Error, falsta la contraseña actual");
+            toastr.error("Error, falta la contraseña actual");
             return false;
         }
         if ($("#password").val().trim() == "") {
-            toastr.error("Error no hay contraseña");
+            toastr.error("Error, falta la nueva contraseña");
             return false;
         }
         if ($("#repassword").val().trim() == "") {
-            toastr.error("Error no hay repeticion contraseña");
+            toastr.error("Error, falta la confirmación de la contraseña");
             return false;
         }
         if ($("#repassword").val().trim() != $("#password").val().trim() ) {
-            toastr.error("Error no coincide la contraseña");
+            toastr.error("Error, la contraseña y su confirmación no coinciden");
             return false;
         }
         return true;

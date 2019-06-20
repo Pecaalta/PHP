@@ -8,7 +8,7 @@
     <title>ReserBar</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
@@ -153,9 +153,9 @@
                 });
             });
         });
-    </script> 
+    </script>
     !-->
-    
+
 </head>
 
 <body>
@@ -212,22 +212,22 @@
 
     $("#email").keyup(function() {
         check(
-            "usuario/email_disponible", 
+            "usuario/email_disponible",
             { email: $("#email").val()},
             $("#emailOK") ,
             (e) => { email_disponible = e; }
         );
     });
-    
+
     $("#disponible").keyup(function() {
         check(
-            "usuario/nick_disponible", 
+            "usuario/nick_disponible",
             { nombre: $("#disponible").val()},
             $("#prueba"),
             (e) => { nick_disponible = e; }
         );
     });
-    
+
     function check(url,data, input, colback) {
         $.ajax({
             type: "POST",
@@ -245,56 +245,56 @@
 
     function Validar() {
         if ($("#disponible").val() == "") {
-            toastr.error("Error no hay ningun nicknombre");
+            toastr.error("Error, el nick no está disponible");
             return false;
         }
         if (!nick_disponible) {
-            toastr.error("Error, el nick no esta disponible");
+            toastr.error("Error, el nick no está disponible");
             return false;
         }
         if ($("#nombre").val().trim() == "") {
-            toastr.error("Error falta el nombre");
+            toastr.error("Error, falta el nombre");
             return false;
         }
         if ($("#apellido").val().trim() == "") {
-            toastr.error("Error falta el apellido");
+            toastr.error("Error, falta el apellido");
             return false;
         }
         if ($("#fecha_de_nacimiento").val().trim() == "") {
-            toastr.error("Error la fecha de naciminto");
+            toastr.error("Error, falta la fecha de nacimiento");
             return false;
         }
         let fecha_de_nacimiento = new Date($("#fecha_de_nacimiento").val());
         if (fecha_de_nacimiento.getTime() > (new Date()).getTime()) {
-            toastr.error("Error  la fecha de naciminto");
+            toastr.error("Error, la fecha de naciminto no puede ser mayor a la actual");
             return false;
         }
         if ($("#email").val().trim() == "") {
-            toastr.error("Error el email");
+            toastr.error("Error, falta el email");
             return false;
         }
         if (($("#email").val()).indexOf("@") == -1) {
-            toastr.error("Error Formato incorecto");
+            toastr.error("Error, email con formato incorecto");
             return false;
         }
         if (!email_disponible) {
-            toastr.error("Error, el email no esta disponible");
+            toastr.error("Error, el email no está disponible");
             return false;
         }
         if ($("#password").val().trim() == "") {
-            toastr.error("Error no hay contraseña");
+            toastr.error("Error, falta la contraseña");
             return false;
         }
         if ($("#repassword").val().trim() == "") {
-            toastr.error("Error no hay repeticion contraseña");
+            toastr.error("Error, falta la confirmación de la contraseña");
             return false;
         }
         if ($("#repassword").val().trim() != $("#password").val().trim() ) {
-            toastr.error("Error no coincide la contraseña");
+            toastr.error("Error, la contraseña y su confirmación no coinciden");
             return false;
         }
         if ($("#output").attr("src") == "") {
-            toastr.error("Error, no hay imagen cargada");
+            toastr.error("Error, no se ha cargado la imágen");
             return false;
         }
         return true;
