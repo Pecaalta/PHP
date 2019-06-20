@@ -53,7 +53,7 @@
             }
             h3 {
                 text-align: center;
-                margin-bottom: 10px; 
+                margin-bottom: 10px;
                 margin-top: 0px;
                 font-size: 20px;
                 color: #666;
@@ -202,9 +202,9 @@
                 <div class="col-sm-12 col-md-6">
                     <input class="form-control" type="password" id="repassword" name="repassword" placeholder="Repetir Contraseña" require>
                 </div>
-                
+
                 <div class="col-sm-12 col-md-4">
-                    <input class="form-control" type="number" id="mesas" name="mesa" placeholder="Numera de mesas" require>
+                    <input class="form-control" type="number" id="mesas" name="mesa" placeholder="Número de mesas" require>
                 </div>
                 <div class="col-sm-6 col-md-4">
                     <input class="timepicker"  type="time" id="apertura" name="apertura" placeholder="Clausura" require>
@@ -217,7 +217,7 @@
                     <input type="hidden" id="categoria" name="categoria">
                     <div class="chips col-12 chips-placeholder"></div>
                 </div>
-                
+
                 <div class="col-sm-12 col-md-8">
                     <input class="form-control" id="direccion" name="direccion" type="text" placeholder="Dirección" require>
                 </div>
@@ -245,7 +245,7 @@
                     <input type="hidden" id="lat" name="lat" >
                     <input type="hidden" id="lng" name="lng" >
                 </div>
-                
+
                 <div class="col-12">
                     <p id="error" class="error"><?php echo $msg; ?></p>
                 </div>
@@ -259,7 +259,7 @@
 </html>
 
 <script type="text/javascript" src="<?php echo base_url('public/js/jquery-3.4.1.min.js') ?>"></script>
-<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>  
+<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og==" crossorigin=""></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url('public/js/popper.min.js') ?>"></script>
 <script type="text/javascript" src="<?php echo base_url('public/js/bootstrap.min.js') ?>"></script>
@@ -277,16 +277,16 @@
             output.src = reader.result;
         };
         reader.readAsDataURL(event.target.files[0]);
-        if (event.target.files[0].size > 200) document.getElementById('error').value = "Imagen demaciada pesada" ;
+        if (event.target.files[0].size > 200) document.getElementById('error').value = "Imagen demasiado pesada" ;
     };
 
     $(function() {
         $( document ).ready(function() {
-            
+
             let cierre = $('#cierre').timepicker({
                 twelveHour: false
             });
-            
+
             let apertura = $('#apertura').timepicker({
                 twelveHour: false
             });
@@ -294,7 +294,7 @@
             $('.datepicker').datepicker();
 
             $('select').formSelect();
-            
+
             cargaMapa();
 
             $.get(<?php echo "'".base_url('usuario/listaCategorias')."'" ?>, function(data, status){
@@ -310,22 +310,22 @@
 
             $("#email").keyup(function() {
                 check(
-                    "usuario/email_disponible", 
+                    "usuario/email_disponible",
                     { email: $("#email").val()},
                     $("#emailOK") ,
                     (e) => { email_disponible = e; }
                 );
             });
-            
+
             $("#disponible").keyup(function() {
                 check(
-                    "usuario/nick_disponible", 
+                    "usuario/nick_disponible",
                     { nombre: $("#disponible").val()},
                     $("#prueba"),
                     (e) => { nick_disponible = e; }
                 );
             });
-    
+
         });
     });
 
@@ -348,11 +348,11 @@
         $("#categoria").val(JSON.stringify(categorias.chipsData));
 
         if (!email_disponible) {
-            toastr.error("Error, el email no esta disponible");
+            toastr.error("Error, el email no está disponible");
             return false;
         }
         if (!nick_disponible) {
-            toastr.error("Error, el nick no esta disponible");
+            toastr.error("Error, el nick no está disponible");
             return false;
         }
         if ($("#disponible").val().trim() == "") {
@@ -380,15 +380,15 @@
             return false;
         }
         if ($("#password").val().trim() == "") {
-            toastr.error("Error, no hay un password");
+            toastr.error("Error, falta la contraseña");
             return false;
         }
         if ($("#repassword").val().trim() == "") {
-            toastr.error("Error, el password no coincide");
+            toastr.error("Error, falta la confirmación de la contraseña");
             return false;
         }
         if ($("#repassword").val().trim() != $("#password").val().trim() ) {
-            toastr.error("Error, el password no coincide");
+            toastr.error("Error, la contraseña y su confirmación no coinciden");
             return false;
         }
         if ($("#output").attr("src") == "") {
@@ -396,7 +396,7 @@
             return false;
         }
         if ($("#mesas").val() == null) {
-            toastr.error("Error, no a un numero de mesas");
+            toastr.error("Error, debe especificar el numero de mesas");
             return false;
         }
         if ($("#apertura").val() == '') {
@@ -406,21 +406,21 @@
         if ($("#cierre").val() == '') {
             toastr.error("Error, no hay hora de cierre");
             return false;
-        }              
-        if ((new Date("01/01/2000 " + $("#cierre").val())).getTime() <= (new Date("01/01/2000 " +$("#apertura").val())).getTime()) {
-            toastr.error("Error,el horario de cierre no puede ser menor al de apretura");
-            return false;
         }
+/*        if ((new Date("01/01/2000 " + $("#cierre").val())).getTime() <= (new Date("01/01/2000 " +$("#apertura").val())).getTime()) {
+            toastr.error("Error, el horario de cierre no puede ser menor al de apretura");
+            return false;
+        }   */
         if ($("#direccion").val().trim() == "") {
-            toastr.error("Error, falta la direccion");
+            toastr.error("Error, falta la dirección");
             return false;
         }
         if ($("#zona").val() == null) {
-            toastr.error("Error, no a seleccionado una zona");
+            toastr.error("Error, no se ha seleccionado una zona");
             return false;
         }
         if ($("#lat").val().trim() == "" && $("#lng").val().trim() == "") {
-            toastr.error("Error, falta coordenadas");
+            toastr.error("Error, faltan las coordenadas");
             return false;
         }
         if ($("#lat").val().trim() == "") {
@@ -436,11 +436,11 @@
 
 	function cargaMapa() {
         var mymap = L.map('mapid').locate({
-            setView: true, 
+            setView: true,
             maxZoom: 16
         }).setView([51.505, -0.09], 13);
         L.tileLayer(
-            'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', 
+            'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
             {
                 maxZoom: 18,
                 id: 'mapbox.streets'
@@ -449,13 +449,13 @@
         var restaurante = null;
         var popup = L.popup();
         mymap.on('click', function (e) {
-            document.getElementById('lat').value = e.latlng.lat; 
+            document.getElementById('lat').value = e.latlng.lat;
             document.getElementById('lng').value = e.latlng.lng;
             if(restaurante == null) {
-                popup.setLatLng(e.latlng).setContent("Aqui estaria tu restaurante ").openOn(mymap);
+                popup.setLatLng(e.latlng).setContent("Aqui estaría tu restaurante ").openOn(mymap);
                 restaurante = L.marker(e.latlng).addTo(mymap);
             } else {
-                restaurante.setLatLng(e.latlng); 
+                restaurante.setLatLng(e.latlng);
             }
         });
     }

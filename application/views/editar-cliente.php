@@ -170,7 +170,7 @@
     $("#email").keyup(function() {
         if($("#mailActual").val().trim() == "" || $("#mailActual").val().trim() != $("#email").val().trim()) {
             check(
-                "usuario/email_disponible", 
+                "usuario/email_disponible",
                 { email: $("#email").val().trim()},
                 $("#emailOK") ,
                 (e) => { email_disponible = e; }
@@ -179,14 +179,14 @@
             email_disponible = true;
         }
     });
-    
+
     $("#nickname").keyup(function() {
         if(
-            $("#nicknameActual").val().trim() == "" || 
+            $("#nicknameActual").val().trim() == "" ||
             $("#nicknameActual").val().trim() != $("#nickname").val().trim()
         ) {
             check(
-                "usuario/nick_disponible", 
+                "usuario/nick_disponible",
                 { nombre: $("#nickname").val()},
                 $("#prueba"),
                 (e) => { nick_disponible = e; }
@@ -212,46 +212,46 @@
 
 
     function Validar() {
-        
+
         if ($("#disponible").val().trim() == "") {
-            toastr.error("Error no hay ningun nicknombre");
+            toastr.error("Error, el nick no está disponible");
             return false;
         }
         if (!nick_disponible) {
-            toastr.error("Error, el nick no esta disponible");
+            toastr.error("Error, el nick no está disponible");
             return false;
         }
         if ($("#nombre").val().trim() == "") {
-            toastr.error("Error falta el nombre");
+            toastr.error("Error, falta el nombre");
             return false;
         }
         if ($("#apellido").val().trim() == "") {
-            toastr.error("Error falta el apellido");
+            toastr.error("Error, falta el apellido");
             return false;
         }
         if ($("#fecha_de_nacimiento").val().trim() == "") {
-            toastr.error("Error la fecha de naciminto");
+            toastr.error("Error, falta la fecha de naciminto");
             return false;
         }
         let fecha_de_nacimiento = new Date($("#fecha_de_nacimiento").val().trim());
         if (fecha_de_nacimiento.getTime() > (new Date()).getTime()) {
-            toastr.error("Error  la fecha de naciminto");
+            toastr.error("Error, la fecha de naciminto no puede ser mayor a la actual");
             return false;
         }
         if ($("#email").val().trim() == "") {
-            toastr.error("Error el email");
+            toastr.error("Error, falta el email");
             return false;
         }
         if (($("#email").val().trim()).indexOf("@") == -1) {
-            toastr.error("Error Formato incorecto");
+            toastr.error("Error, email con formato incorecto");
             return false;
         }
         if (!email_disponible) {
-            toastr.error("Error, el email no esta disponible");
+            toastr.error("Error, el email no está disponible");
             return false;
         }
         if ($("#img").val().trim() == "") {
-            toastr.error("Error no as cargado ninguna imagen");
+            toastr.error("Error, no se ha cargado la imágen");
             return false;
         }
         return true;

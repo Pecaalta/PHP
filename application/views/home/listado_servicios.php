@@ -122,7 +122,7 @@ $(document).ready(function(){
 		</div>
 		<form class="col-md-4 mt-3" action="" id="form" id="form" method="get" >
 			<div class="row">
-				<h3 class="col-12 mt-3">Configuracion</h3>
+				<h3 class="col-12 mt-3">Configuración</h3>
 
 				<label class="col-md-12 col-sm-4 mt-3">Limite</label>
 				<div class="col-md-12 col-sm-8">
@@ -139,14 +139,14 @@ $(document).ready(function(){
 
 				<label class="col-md-12 col-sm-4 mt-3">Precio</label>
 				<div class="col-md-6 col-sm-4">
-					<input class="filtros" type="text" id="minimo" value="<?php if (isset($get['minimo'])) echo $get['minimo']; ?>" placeholder="Minimo">
+					<input class="filtros" type="text" id="minimo" value="<?php if (isset($get['minimo'])) echo $get['minimo']; ?>" placeholder="Mínimo">
 				</div>
 				<div class="col-md-6 col-sm-4">
-					<input class="filtros" type="text" id="maximo" value="<?php if (isset($get['maximo'])) echo $get['maximo']; ?>" placeholder="Maximo">
+					<input class="filtros" type="text" id="maximo" value="<?php if (isset($get['maximo'])) echo $get['maximo']; ?>" placeholder="Máximo">
 				</div>
 
 				<label class="col-md-12 col-sm-4 mt-3">Zona</label>
-				
+
                 <div class="col-sm-12">
                     <select id="zona" class="filtros" name="zona" require>
 						<option value="" selected>Todas</option>
@@ -156,7 +156,7 @@ $(document).ready(function(){
                     </select>
                 </div>
 
-				<label class="col-md-12 col-sm-4 mt-3">Categoria</label>
+				<label class="col-md-12 col-sm-4 mt-3">Categoría</label>
 				<div class="col-md-12 col-sm-8">
 					<input type="hidden" name="categoria" id="categoria">
 					<?php foreach (array_slice($categorias,2)  as $zona):?>
@@ -173,7 +173,7 @@ $(document).ready(function(){
 	</div>
 </div>
 
-	  
+
 	  <!-- Modal -->
 	  <div class="modal fade" id="categoriasModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
 		aria-hidden="true">
@@ -211,7 +211,7 @@ $(function() {
 	var mymap = L.map('mapid').locate({setView: true, maxZoom: 16}).setView([51.505, -0.09], 13);
 
 	L.tileLayer(
-		'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', 
+		'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
 		{
 			maxZoom: 18,
 			id: 'mapbox.streets'
@@ -223,7 +223,7 @@ $(function() {
 
 	function setMarker(tiendas) {
 		allMarker.clearLayers();
-		tiendas.forEach(e => {		
+		tiendas.forEach(e => {
 			L.marker([e.lat, e.lng])
 				.addTo(allMarker)
 				.bindPopup(
