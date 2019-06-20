@@ -107,6 +107,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }
         nav .dropdown-item {
             color: #555!important;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
         nav .dropdown-item:hover {
             border-radius: 5px;
@@ -131,6 +134,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             margin: 0!important;
             transition: all .5s;
             margin: 0 15px 0 -15px!important;
+            overflow: hidden;
         }
         .md-form .form-control:hover{
             background: rgba(250,250,250,.20)!important;
@@ -177,6 +181,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script>
         function imgError(img) {
             img.error="";
+            console.log(img.src);
+            
             img.src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/img%20(49).jpg";
         }
         $(document).ready(function(){

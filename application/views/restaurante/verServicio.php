@@ -100,9 +100,9 @@
                         <img 
                             data-toggle="modal" data-target="#imgModal" 
                             onerror="javascript:imgError(this)" 
-                            onclick="imgaengrande.src = <?php echo base_url( '/uploads/servicios/' . $item->imagen ); ?>"
+                            onclick="imgaengrande.src = <?php echo base_url( $item->imagen ); ?>"
                             class="img-fluid" 
-                            src="<?php echo base_url( '/uploads/servicios/' . $item->imagen ); ?>">
+                            src="<?php echo base_url( $item->imagen ); ?>">
                             
                         <a><div class="mask rgba-white-slight"></div></a>
                     </div>
@@ -127,7 +127,7 @@
                     <div class="col-12">    
                         <div class="news">
                             <div class="label">
-                                <img onerror="javascript:imgError(this)" src="<?php echo base_url() . '/uploads/servicios/' . $item['avatar']; ?>"  class="rounded-circle z-depth-1-half">
+                                <img onerror="javascript:imgError(this)" src="<?php echo base_url() . $item['avatar']; ?>"  class="rounded-circle z-depth-1-half">
                             </div>
                             <div class="excerpt mb-0">
                                 <div class="brief">
