@@ -260,11 +260,12 @@ class Model_servicio extends MY_Model
     public function listaComentarios($idServicio)
     {
         $sql = "SELECT c.*, u.nickname, u.avatar
-                FROM Comentario c, Servicio s, Usuario u
-                WHERE s.id = ?
-                AND c.id_servicio = ?
-                AND u.id = c.id_usuario";
-        return $this->_database->query($sql, array($idServicio, $idServicio))->result_array();
+                FROM Comentario c
+                join servicio on servicio.id = c.id_servicio
+                join usuario u on  c.id_usuario = u.id
+                WHERE c.id_servicio = ".$idServicio."
+                AND c.calificacion is not NULL";
+        return $this->_database->query($sql)->result_array();
     }
 
     public function comentar($data)
