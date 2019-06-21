@@ -195,6 +195,7 @@
                                 <label for="cardNumber">Numero de la tarjeta</label>
                                 <input type="text" class="form-control" id="cardNumber">
                             </div>
+                            <!--
                             <div class="form-group" id="expiration-date">
                                 <label>Fecha de vencimiento</label>
                                 <select>
@@ -217,6 +218,7 @@
                                     <option value="21"> 2021</option>
                                 </select>
                             </div>
+                            !-->
                             <div class="form-group" id="credit_cards">
                                 <img src="<?php echo base_url(); ?>public/img/visa.jpg" id="visa">
                                 <img src="<?php echo base_url(); ?>public/img/mastercard.jpg" id="mastercard">
@@ -236,15 +238,10 @@
         <!--cuarta pagina!-->
         <fieldset class="servicios" id="cuadroConfirmarF">
             <div id="cuadroConfirmar" class="container">
-                <table class="table">
-                    <th>Restaurante</th>
-                    <td></td>
-                </table>
             </div>
             <div class="col-12">
                 <br>
-                <p>Aca mostrare los datos antes de que confirme, lo dejo para despues</p>
-                <a href="#" onclick="finalizarReserva()">Confirmar reserva</a>
+                <button type="button" onclick="finalizarReserva()" class="btn btn-primary" id="comprobarDisponibilidad">Seleccionar esta fecha</button>
                 <div id="respuestaFinal"></div>
             </div>
             <hr>

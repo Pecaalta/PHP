@@ -141,7 +141,7 @@
                                 <?php endif; ?>
                             </div>
                             <div>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal<?php echo $item->id ?>">
+                                <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal<?php echo $item->id ?>">
                                     Servicios preordenados
                                 </button>
                                 <div class="modal" id="myModal<?php echo $item->id ?>">
