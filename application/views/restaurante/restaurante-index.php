@@ -136,6 +136,10 @@
     .modal-content {
         padding: 0!important;
     }
+
+    #compartir{
+        font-size: 2em;
+    }
 </style>
 	<div id="carousel-example-2" class="z-index-1 carousel slide carousel-fade" data-ride="carousel">
         <div class="mask-blanco"></div>
@@ -170,7 +174,7 @@
     </div>
 
 <div class="container contenedor text-center  z-depth-1">
-<a href=<?php echo 'https://www.facebook.com/sharer/sharer.php?u=http%3A//127.0.0.1/PHP/PHP/Restaurante/principal/' . $user['id'] ?> target="_blank">Compartir en Facebook</a>
+<a id="compartir" href=<?php echo 'https://www.facebook.com/sharer/sharer.php?u=http%3A//127.0.0.1/PHP/PHP/Restaurante/principal/' . $user['id'] ?> target="_blank"><i class="fab fa-facebook-square"></i></a>
   <h1><?php echo $user["nickname"]?></h1>
   <p class="descripcion"><?php echo $user["descripcionRestaurante"] ?></p>
   <br>

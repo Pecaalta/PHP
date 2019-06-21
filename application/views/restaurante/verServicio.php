@@ -126,6 +126,11 @@
         text-align: center;
         color: #666
     }
+
+    #compartir{
+        font-size: 3em;
+        margin-left: 3em;
+    }
 </style>
 
 <div class="container">
@@ -133,8 +138,6 @@
 
     <div class="col-12 mt-4 mb-4 card p-0 z-depth-1">
         <?php foreach ($servicio as $item) : ?>
-        <a href=<?php echo 'https://www.facebook.com/sharer/sharer.php?u=http%3A//127.0.0.1/PHP/PHP/Servicio/info_servicio/' . $item->id; ?> target="_blank">Compartir en Facebook</a>
-
             <div class="row p-15">
                 <div class="col-lg-5 col-xl-4">
                     <div class="view overlay rounded z-depth-1-half mb-lg-0 mb-4">
@@ -144,6 +147,8 @@
                             <div class="mask rgba-white-slight"></div>
                         </a>
                     </div>
+                    <a id="compartir" href=<?php echo 'https://www.facebook.com/sharer/sharer.php?u=http%3A//127.0.0.1/PHP/PHP/Servicio/info_servicio/' . $item->id; ?> target="_blank"><i class="fab fa-facebook-square"></i></a>
+
                 </div>
                 <div class="body-servicio col-lg-7 col-xl-8">
                     <a class="font-weight-bold text-muted" href="<?php echo base_url('Restaurante/principal/' . $item->IdAutor); ?>"><?php echo isset($item->autor) && $item->autor != null ? 'Visita ' . $item->autor : 'Sin autor'; ?></a>
