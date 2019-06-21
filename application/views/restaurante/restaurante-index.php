@@ -170,6 +170,7 @@
     </div>
 
 <div class="container contenedor text-center  z-depth-1">
+<a href=<?php echo 'https://www.facebook.com/sharer/sharer.php?u=http%3A//127.0.0.1/PHP/PHP/Restaurante/principal/' . $user['id'] ?> target="_blank">Compartir en Facebook</a>
   <h1><?php echo $user["nickname"]?></h1>
   <p class="descripcion"><?php echo $user["descripcionRestaurante"] ?></p>
   <br>
