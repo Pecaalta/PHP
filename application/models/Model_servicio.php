@@ -249,7 +249,7 @@ class Model_servicio extends MY_Model
 
     public function infoServicio($data)
     {
-        $sql = "SELECT Servicio.*, Usuario.nombre as autor, Usuario.id as IdAutor
+        $sql = "SELECT Servicio.*, Usuario.nickname as autor, Usuario.id as IdAutor
                 FROM Servicio
                 Join Usuario on Usuario.id = Servicio.id_restaurante
                 WHERE Servicio.id = ?";
